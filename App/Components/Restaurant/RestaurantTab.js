@@ -47,14 +47,12 @@ export default class RestaurantTab extends Component {
 				RestaurantAction.getRestaurant();
 				RestaurantStore.addChangeListener(this._onChange);
 			}
-			setTimeout( ()=> {
 				if(this.props.index !=1){
 					const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
 					const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
 					const state = Object.assign({},restaurantData,dataSource)
 					this.setState(state)
 				}
-			}, this.props.index*1000);
 			// setTimeout(() =>{
 			// 	const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
 			// 	const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
