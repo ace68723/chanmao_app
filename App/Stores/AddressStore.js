@@ -29,9 +29,8 @@ let addressListState = Object.assign({},
 		addressType:"",
 		formattedAddress:"",
 		searchAddress:""
-	},
-		{addressList},
-	)
+	},{addressList},
+)
 const _updateDataSource = () => {
 		let addressList = realm.objects('Address');
 		let selectedUaid;
@@ -57,7 +56,6 @@ const AddressStore = Object.assign({},EventEmitter.prototype,{
 			this.removeListener(CHANGE_EVENT, callback)
 			// realm.removeAllListeners();
 	},
-
 	getPredictionsSuccess(autocompleteData){
 		predictionsData = autocompleteData.predictions;
 	},

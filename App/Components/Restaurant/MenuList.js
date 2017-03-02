@@ -7,7 +7,7 @@ import React, {
 	Component,
 } from 'react';
 import {
-  AlertIOS,
+  Alert,
 	Animated,
 	Dimensions,
   Image,
@@ -112,7 +112,7 @@ class Menu extends Component {
             restaurant:this.props.restaurant,
           })
         }else{
-          AlertIOS.alert(
+          Alert.alert(
             '馋猫订餐提醒您',
             '不足'+this.state.startAmount+'只能自取哦～',
             [
@@ -323,7 +323,6 @@ class Menu extends Component {
 		 							</View>
 		 						</TouchableOpacity>
 		 						<TouchableOpacity style={{paddingTop:22,
-		  																			paddingRight:8,
 		  																			paddingRight:20,
 		  																			paddingBottom:20,
 		  																			position:'absolute',

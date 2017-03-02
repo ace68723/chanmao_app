@@ -25,16 +25,14 @@ const restaurantData = () => {
 
 export default class RestaurantTab extends Component {
   constructor(props){
-    super(props)
-		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-        open:[],
-        close:[],
-        isRefreshing:false,
-				dataSource: this.ds.cloneWithRows([]),
-        restaurantCoverOpacity: new Animated.Value(0), // init restaurant tab view opacity 0
-				index:props.index,
-      };
+	    super(props)
+			this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+	    const state = {
+					dataSource: this.ds.cloneWithRows([]),
+	        restaurantCoverOpacity: new Animated.Value(0), // init restaurant tab view opacity 0
+					index:props.index,
+	      };
+			this.state = Object.assign({},state,RestaurantStore.getRestaurantState())
       this._onChange = this._onChange.bind(this);
       this._handleRestaurantPress = this._handleRestaurantPress.bind(this)
       this._onRefresh = this._onRefresh.bind(this);

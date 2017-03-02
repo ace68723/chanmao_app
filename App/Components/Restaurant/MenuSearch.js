@@ -3,7 +3,7 @@ import React, {
 	Component,
 } from 'react';
 import {
-	AlertIOS,
+	Alert,
   Animated,
   Dimensions,
   Image,
@@ -70,7 +70,7 @@ export default class LoginButton extends Component {
 					restaurant:this.state.restaurant,
 				})
 			}else{
-				AlertIOS.alert(
+				Alert.alert(
 					'馋猫订餐提醒您',
 					'不足'+this.state.restaurant.start_amount+'只能自取哦～',
 					[

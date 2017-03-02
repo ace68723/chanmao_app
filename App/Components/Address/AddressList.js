@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import {
   Animated,
-	AlertIOS,
+	Alert,
   Dimensions,
   Image,
 	ListView,
@@ -75,7 +75,7 @@ export default class LoginButton extends Component {
 	}
 
 	_deleteAddress(address){
-		AlertIOS.alert(
+		Alert.alert(
 			'删除地址',
 			"addressDescription",
 			[

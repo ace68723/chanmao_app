@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {
   Animated,
-  AlertIOS,
+  Alert,
   Dimensions,
   Easing,
 	Keyboard,
@@ -50,23 +50,14 @@ class Confirm extends Component {
         super(props);
         const cart = MenuStore.getCart()
         const total = MenuStore.getCartTotals().total
-        const state={  cart,
+        const state={ cart,
                       total,
-                      addressList:[],
-                      dltype:1,
-                      rid:this.props.restaurant.rid,
-                      pretax:0,
-                      code:'',
-                      dltypeList:[
-                        {dltype:-1,
-                         description:'请先选择地址信息'
-                        }],
-                      isLoading: true,
+											rid:this.props.restaurant.rid,
                       startAmount:this.props.restaurant.start_amount,
                       viewBottom:new Animated.Value(0),
 											anim: new Animated.Value(0), //for background image
 											AnimatedImage:props.restaurant.imgUrl,
-											showBanner:true,
+											renderAddress:false,
                     }
 				this.state = Object.assign({},state,RestaurantStore.getCheckoutSate())
         this._onChange = this._onChange.bind(this);
@@ -108,6 +99,7 @@ class Confirm extends Component {
 			const startAmount = this.state.startAmount;
 			setTimeout(()=>{
 				RestaurantAction.beforCheckout(rid,pretax,navigator,startAmount);
+				this.setState({renderAddress:true})
 			}, 500);
       RestaurantStore.addChangeListener(this._onChange);
     }
@@ -116,7 +108,7 @@ class Confirm extends Component {
     }
     _onChange(){
         this.setState(RestaurantStore.getCheckoutSate());
-				// console.log("Checkout State update",this.state);
+				console.log("Checkout State update",this.state);
 				if(this.state.checkoutSuccessful){
 					this._goToHistory();
 				}
@@ -160,7 +152,7 @@ class Confirm extends Component {
         break;
       }
 
-      AlertIOS.alert(
+      Alert.alert(
         dldec,
         '  税后总价: $' + this.state.total + '\n' +
         '确认就不可以修改了哟～' ,
@@ -268,7 +260,7 @@ class Confirm extends Component {
 			)
 		}
 		_renderAddress(){
-			if(this.state.selectedAddress && this.state.selectedAddress.hasOwnProperty("uaid")){
+			if(this.state.renderAddress && this.state.selectedAddress && this.state.selectedAddress.hasOwnProperty("uaid")){
 				return(
 						<Address selectedAddress = {this.state.selectedAddress}
 										 goToAddressList = {this._goToAddressList}/>
@@ -276,7 +268,7 @@ class Confirm extends Component {
 			}else{
 				return(
 					<TouchableOpacity onPress={()=>{this._goToAddressList()}}>
-							<View style={{height:100,width:100,backgroundColor:"black"}} />
+							<View style={{height:100,width:100,}} />
 					</TouchableOpacity>
 				)
 			}

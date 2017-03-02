@@ -2,6 +2,8 @@ import AppConstants from '../Constants/AppConstants';
 import {dispatch, register} from '../Dispatchers/AppDispatcher';
 import {EventEmitter} from 'events';
 import RestaurantAction from '../Actions/RestaurantAction';
+import TabsAction from '../Actions/TabsAction';
+import TabsStore from './TabsStore';
 const CHANGE_EVENT = 'change';
 
 const  Realm = require('realm');
@@ -12,26 +14,29 @@ let restaurantData;
 let menuData;
 let loaded = false;
 let checkoutState;
+let restaurantState;
 
-// let addressList = realm.objects('Address');
-// let selectedAddress;
-// addressList.forEach((address)=>{
-// 	if(address.type == "S"){
-// 		selectedAddress = address;
-// 	}
-// })
-// let checkoutState = Object.assign({},{selectedAddress});;
-const _updateDataSource = () => {
-		// let addressList = realm.objects('Address');
-		// let selectedAddress;
-		// addressList.forEach((address)=>{
-		// 	if(address.type == "S"){
-		// 		selectedAddress = address;
-		// 	}
-		// })
-		// checkoutState = Object.assign({},checkoutState,{addressList},{selectedAddress});
-		// RestaurantStore.emitChange();
+const initState = ()=>{
+	restaurantState = {
+			open:[],
+			close:[],
+			isRefreshing:false,
+	}
+	checkoutState = {
+		checkoutSuccessful:false,
+		addressList:[],
+    dltype:1,
+    pretax:0,
+    code:'',
+    dltypeList:[
+      {dltype:-1,
+       description:'请先选择地址信息'
+      }],
+    isLoading: true,
+		showBanner:true,
+	}
 }
+initState();
 
 const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 	emitChange(){
@@ -39,16 +44,11 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 	},
 	addChangeListener(callback){
 			this.on(CHANGE_EVENT, callback)
-			// realm.addListener('change', () => {
-			// 		_updateDataSource();
-			// });
 	},
 	removeChangeListener(callback){
 			this.removeListener(CHANGE_EVENT, callback)
-			// realm.removeAllListeners();
 	},
 	getRestaurantSuccess(data){
-
 		restaurantData = Object.assign({},data,{isRefreshing: false})
 	},
   getRestaurantData(area){
@@ -167,27 +167,31 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 		const selectedAddress = realm.objects('Address').filtered('selected == true' )[0]
 		checkoutState = Object.assign({},checkoutState,
 										{dlexp,dltype,message,pretax,pretax_ori,result,total,dltypeList,isLoading,selectedAddress});
-										console.log(checkoutState)
 	},
 	checkout(data){
 		let checkoutSuccessful;
 		if(data.result == 0){
 			 checkoutSuccessful = true;
+			//  TabsAction.goToHistory();
 		}else{
 			checkoutSuccessful = false;
 		}
 		checkoutState = Object.assign({},checkoutState,{checkoutSuccessful});
-	},
-	getCheckoutSate(){
-		const selectedAddress = realm.objects('Address').filtered('selected == true' )[0]
-		 checkoutState = Object.assign({},checkoutState,{selectedAddress});;
-		return checkoutState;
+
 	},
 	getDltype(){
 		return checkoutState.dltype;
 	},
 	initCheckoutState(){
 		checkoutState ={}
+	},
+	getRestaurantState(){
+		return restaurantState;
+	},
+	getCheckoutSate(){
+		const selectedAddress = realm.objects('Address').filtered('selected == true' )[0]
+		 checkoutState = Object.assign({},checkoutState,{selectedAddress});;
+		return checkoutState;
 	},
 	dispatcherIndex: register(function(action) {
 	   switch(action.actionType){
@@ -212,7 +216,12 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 				break;
 				case AppConstants.CHECKOUT:
 								RestaurantStore.checkout(action.data);
-								RestaurantStore.emitChange();
+								setTimeout( () => {
+									RestaurantStore.emitChange();
+								}, 200);
+								setTimeout(()=>{
+									initState()
+								},10000)
 				break;
 
 

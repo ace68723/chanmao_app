@@ -23,6 +23,11 @@ const USERNAME_INPUTREF = 'Username_Input';
 const PASSWORD_INPUTREF = 'Password_Input';
 const SUBMIT_BUTTON = 'Submit_Button';
 
+var WeChat = require('react-native-wechat');
+const scope = 'snsapi_userinfo';
+const state = 'wechat_sdk_demos';
+const appid = 'wx20fd1aeb9b6fcf82';
+
 export default class LogoAnimationView extends Component {
   constructor(){
     super()
@@ -30,12 +35,18 @@ export default class LogoAnimationView extends Component {
     this._handleLogin 		= this._handleLogin.bind(this);
 		this._handleUsername 	= this._handleUsername.bind(this);
 	  this._handlePassword 	= this._handlePassword.bind(this);
+		this._handleWechatLogin = this._handleWechatLogin.bind(this);
 		this._handleLogin 		= this._handleLogin.bind(this);
 		this._onChange 				= this._onChange.bind(this);
   }
 	_viewOpacity =  new Animated.Value(1);
-	componentDidMount() {
+	async componentDidMount() {
+		const registerResult = await WeChat.registerApp(appid);
+		console.log(registerResult)
 		AuthStore.addChangeListener(this._onChange);
+	}
+	componentWillUnmount(){
+		AuthStore.removeChangeListener(this._onChange);
 	}
 	_onChange(){
       this.setState(AuthStore.loginState())
@@ -70,9 +81,25 @@ export default class LogoAnimationView extends Component {
 		}, 300);
 
   }
-	_handleWechatLogin(){
+	async _handleWechatLogin(event){
+		try {
+		 const version = await WeChat.getApiVersion();
+		 const result = await WeChat.sendAuthRequest(scope, state);
+		 const resCode = result.code;
+		 const deviceToken = this.state.deviceToken;
+		 const data = {resCode,deviceToken};
+		 AuthAction.doWechatAuth(data);
+		//  AuthService.doWechatAuth(data);
 
-	}
+	 } catch (e) {
+		 if(e == '-2'){
+			 console.log(e)
+		 }else{
+			 console.error(e);
+		 }
+
+	 }
+  }
   render(){
     return(
       <Animated.View style={[styles.container,{opacity:this._viewOpacity}]}>
@@ -97,7 +124,6 @@ export default class LogoAnimationView extends Component {
 												ir_SUBMIT_BUTTON = {SUBMIT_BUTTON}
 												if_handleUsername = {this._handleUsername}
 												if_handlePassword = {this._handlePassword}
-												if_handleLogin = {this._handleLogin}
 												if_handleWechatLogin = {this._handleWechatLogin}/>
 
       </Animated.View>

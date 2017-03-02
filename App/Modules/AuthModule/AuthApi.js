@@ -60,6 +60,8 @@ const AuthApi = {
         Cmuuid:userInfo.uuid,
         Cmversion:userInfo.version
       })
+      var d = new Date();
+      console.log("API AppDoWechatAuth",d.getTime())
       return fetch(url,options)
               .then((res) => res.json())
               .catch((error) => {throw ERROR_NETWORK})

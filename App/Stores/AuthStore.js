@@ -28,7 +28,6 @@ const AuthStore = Object.assign({},EventEmitter.prototype,{
 	loginState (){
 		return loginState
 	},
-
 	doLogin(login){
 
 		// login.setState({

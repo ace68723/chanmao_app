@@ -57,6 +57,9 @@ export default class MainTab extends Component {
     HomeAction.getHomeData();
     HomeStore.addChangeListener(this._onChange);
 	}
+	componentWillMount(){
+		HomeStore.removeChangeListener(this._onChange);
+	}
   _onChange(){
     const newState = HomeStore.getHomeState();
     this.setState(newState);
@@ -205,7 +208,7 @@ export default class MainTab extends Component {
 														tabBarUnderlineColor={'#ff8b00'}
 														tabBarTextStyle={{fontSize:18,fontFamily:'经典圆体简',}}
 														tabBarInactiveTextColor={'#666666'}
-														initialPage={1}
+														initialPage={0}
 														prerenderingSiblingsNumber={3}
 														renderTabBar={() =>
 																				<DefaultTabBar

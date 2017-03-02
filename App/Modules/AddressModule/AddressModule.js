@@ -148,7 +148,7 @@ const AddressModule = {
 				.then(res =>{
 					if(res.result == 0){
             let address = res.addr;
-
+              console.log(res)
               realm.write(() => {
                   const selectedAddress = realm.objects('Address').filtered('selected == true' );
                 	if(selectedAddress[0]){

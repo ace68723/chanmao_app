@@ -7,7 +7,7 @@ import React, {
 	Component,
 } from 'react';
 import {
-  AlertIOS,
+  Alert,
   Image,
   RefreshControl,
   StyleSheet,
@@ -24,23 +24,16 @@ import HistoryOrder from './HistoryOrder';
 import CurrentOrder from './CurrentOrder';
 import HistoryService from '../../Services/HistoryService';
 import HistoryStore from '../../Stores/HistoryStore';
-import RestaurantStore from '../../Stores/RestaurantStore';
 import Header from '../General/Header';
 import HistoryOrderDetail from './HistoryOrderDetail';
 
-const historyData = () => {
-  return HistoryStore.getHistoryData()
-}
+// const historyData = () => {
+//   return HistoryStore.getHistoryData()
+// }
 class HistoryTab extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-          historylist:[],
-          current:null,
-          unavailable:[],
-          isRefreshing:false,
-          showHistoryOrderDetail:false,
-        };
+        this.state = HistoryStore.getState();
         this._onChange = this._onChange.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
         this._doAutoRefresh = this._doAutoRefresh.bind(this);
@@ -53,27 +46,18 @@ class HistoryTab extends Component {
       const _doAutoRefresh = this._doAutoRefresh;
       HistoryStore.addChangeListener(this._onChange);
       this._doAutoRefresh();
-      const _addChangeListener = () => {
-        // HistoryStore.addChangeListener(this._onChange);
-      }
+			HistoryStore.autoRefresh();
       const currentRoutes = this.props.navigator.getCurrentRoutes();
-      // _addChangeListener()
-      setInterval(function () {
-          _doAutoRefresh()
-          // _addChangeListener()
-      }, 30000);
     }
     componentWillUnmount() {
          HistoryStore.removeChangeListener(this._onChange);
     }
     _onChange(){
-        if(historyData()){
-          this.setState(historyData())
-          // HistoryStore.removeChangeListener(this._onChange);
-        }
+        this.setState(HistoryStore.getState())
+				console.log(HistoryStore.getState())
         if(this.state.verifyPhoneResult === 'FAIL'){
           this._initVerifyPhoneResult();
-          AlertIOS.alert(
+          Alert.alert(
             '验证码错误',
             '请检查您输入的验证码',
             [
@@ -84,11 +68,9 @@ class HistoryTab extends Component {
             this._initVerifyPhoneResult();
             this._doAutoRefresh();
         }
-
-        if(RestaurantStore.getCheckoutSate().checkoutSuccessful){
-            this._doAutoRefresh(true);
-        }
-
+				if(this.state.doRefresh){
+					this._doAutoRefresh();
+				}
 
     }
     _initVerifyPhoneResult(){
@@ -108,7 +90,6 @@ class HistoryTab extends Component {
 
     }
     _onRefresh(){
-      HistoryStore.addChangeListener(this._onChange);
       this.setState({
         isRefreshing: true,
       })
@@ -129,12 +110,12 @@ class HistoryTab extends Component {
 
     }
     _reorder(reorderItems){
-      const restaurant = RestaurantStore.getRestaurantWithRid(this.state.rid);
-      this.props.navigator.push({
-        id: 'Menu',
-        restaurant: restaurant,
-        // reorderItems:reorderItems,
-      })
+      // const restaurant = RestaurantStore.getRestaurantWithRid(this.state.rid);
+      // this.props.navigator.push({
+      //   id: 'Menu',
+      //   restaurant: restaurant,
+      //   // reorderItems:reorderItems,
+      // })
     }
 
     render(){

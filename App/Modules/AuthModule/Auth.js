@@ -70,6 +70,7 @@ const AuthModule = {
     },
 
     AppDoWechatAuth(io_data){
+      var d = new Date();
       const deviceToken = io_data.deviceToken;
       const resCode     = io_data.resCode;
       return new Promise((resolve, reject) => {
@@ -106,6 +107,8 @@ const AuthModule = {
 }
 
 const loginResult = (res) => {
+        var d = new Date();
+        console.log('loginResult',res,d.getTime())
         if(res.result == FAIL){
             throw res
          }else{

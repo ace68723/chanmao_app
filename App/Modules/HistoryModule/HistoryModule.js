@@ -31,7 +31,6 @@ const  HistoryModule = {
           HistoryApi.getHistoryData(token)
             .then(data => {
               if(data.result == 0){
-                console.log(data)
                   if(data.current){
                       const cell              = data.current.cell;
                       const channel           = data.current.channel;

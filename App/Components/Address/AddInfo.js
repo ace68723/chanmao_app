@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {
   Animated,
-  AlertIOS,
+  Alert,
   Image,
   StyleSheet,
   ScrollView,
@@ -113,7 +113,7 @@ class AddInfo extends Component {
     _submitAddress(){
       const  phoneNumber = this.state.phoneNumber.toString().trim().replace(/[()-]/g , '');
       if(phoneNumber.length != 10){
-        AlertIOS.alert(
+        Alert.alert(
           '馋猫订餐提请您',
           '请输入10位电话号码'
         )

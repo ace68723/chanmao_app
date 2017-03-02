@@ -1,10 +1,10 @@
 'use strict';
 import {
-  AlertIOS
+  Alert
 } from 'react-native';
-const Alert = {
+const AlertModule = {
   errorAlert(message){
-    AlertIOS.alert(
+    Alert.alert(
       '馋猫订餐提醒您',
       message.toString(),
       [
@@ -14,4 +14,4 @@ const Alert = {
   }
 }
 
-module.exports = Alert;
+module.exports = AlertModule;

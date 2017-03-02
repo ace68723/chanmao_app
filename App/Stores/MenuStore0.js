@@ -53,11 +53,9 @@ const MenuStore = Object.assign({},EventEmitter.prototype,{
 	getCart(){
 		return CartAPI.la_cartItems;
 	},
-
 	getMenu(){
 			return CartAPI.getMenu();
 	},
-
 	getCartTotals(){
 			return CartAPI.cartTotals();
 	},

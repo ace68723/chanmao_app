@@ -76,7 +76,7 @@ export default {
         const data = await RestaurantModule.checkout(reqData);
         console.log(data)
         dispatch({
-            actionType: AppConstants.CHECKOUT, data
+            actionType: AppConstants.CHECKOUT, data,
         })
       }catch (e){
       }

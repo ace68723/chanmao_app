@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {
   Animated,
-  AlertIOS,
+  Alert,
   Dimensions,
   Image,
   ListView,
@@ -265,7 +265,7 @@ class Menu extends Component {
 						restaurant:this.state.restaurant,
 					})
 				}else{
-					AlertIOS.alert(
+					Alert.alert(
 						'馋猫订餐提醒您',
 						'不足'+this.state.restaurant.start_amount+'只能自取哦～',
 						[
@@ -326,7 +326,6 @@ class Menu extends Component {
 													start_time = {this.state.start_time}
 													end_time = {this.state.end_time}
 													showMenuAnimation = {this.state.showMenuAnimation}
-													restaurant = {this.state.restaurant}
 
 													animatedImage={this.props.restaurant.imgUrl}/>)
       }

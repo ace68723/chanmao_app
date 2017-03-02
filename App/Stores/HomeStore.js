@@ -8,6 +8,7 @@ let HomeState = {
 		currentTab:1,
 		bannerList:[],
 		areaList:[],
+		showAnimatedView:false,
 };
 const HomeStore = Object.assign({},EventEmitter.prototype,{
 	emitChange(){
@@ -25,6 +26,9 @@ const HomeStore = Object.assign({},EventEmitter.prototype,{
 		 const areaList = res.areaList;
 		 HomeState = Object.assign({},HomeState,{bannerList,advertisement,areaList})
   },
+	closeMenu(){
+		HomeState = Object.assign({},HomeState,{showAnimatedView:false})
+	},
   getHomeState(){
     return HomeState
   },
@@ -33,7 +37,13 @@ const HomeStore = Object.assign({},EventEmitter.prototype,{
 				case AppConstants.GET_HOME_DATA:
 					   HomeStore.saveHomeData(action.res)
              HomeStore.emitChange()
-					break;
+				break;
+				case AppConstants.CHECKOUT:
+								HomeStore.closeMenu();
+								setTimeout( () => {
+									HomeStore.emitChange();
+								}, 1000);
+				break;
 
 		  }
 

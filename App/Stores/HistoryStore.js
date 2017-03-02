@@ -4,7 +4,13 @@ import {EventEmitter} from 'events';
 const CHANGE_EVENT = 'change4422';
 
 const ERRROR_TITLE = AppConstants.ERRROR_TITLE;
-let historyData;
+let state = {
+          historylist:[],
+          current:null,
+          unavailable:[],
+          isRefreshing:false,
+          showHistoryOrderDetail:false,
+        };
 let HistoryDetailData;
 const HistoryStore = Object.assign({},EventEmitter.prototype,{
 	emitChange(){
@@ -16,13 +22,18 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 	removeChangeListener(callback){
 			this.removeListener(CHANGE_EVENT, callback)
 	},
-
+	autoRefresh(){
+		setInterval(()=>{
+			state = Object.assign({},state,{doRefresh:true})
+			HistoryStore.emitChange();
+		},30000)
+	},
 	getHistorySuccess(data){
 		data.isRefreshing = false;
-		historyData = Object.assign({},data)
+		state = Object.assign({},state,data,{doRefresh:false})
 	},
-  getHistoryData(){
-    return historyData
+  getState(){
+    return state
   },
 	saveHistoryDetail(data){
 		HistoryDetailData = Object.assign({},data);
@@ -30,14 +41,16 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 	getHistoryDetail(){
 		return HistoryDetailData
 		HistoryDetailData = {};
-
 	},
 	verifyPhone(data){
 		if(data.result === 0){
-				historyData.verifyPhoneResult = 'SUCCESS';
+				state.verifyPhoneResult = 'SUCCESS';
 		}else{
-			  historyData.verifyPhoneResult = 'FAIL';
+			  state.verifyPhoneResult = 'FAIL';
 		}
+	},
+	doRefresh(){
+		state = Object.assign({},state,{doRefresh:true})
 	},
 	dispatcherIndex: register(function(action) {
 	   switch(action.actionType){
@@ -49,12 +62,14 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 					    HistoryStore.verifyPhone(action.data)
 						 	HistoryStore.emitChange()
 				 break;
-				 case AppConstants. GET_HISTORY_DETAIL:
+				 case AppConstants.GET_HISTORY_DETAIL:
 						 HistoryStore.saveHistoryDetail(action.data)
 						 HistoryStore.emitChange()
-				break;
-
-
+				 break;
+				 case AppConstants.CHECKOUT:
+							HistoryStore.doRefresh()
+							HistoryStore.emitChange()
+			   break;
 
 		  }
 

@@ -36,7 +36,6 @@ export default class InputAnimation extends Component {
 			if_handleLogin : React.PropTypes.func.isRequired,
 			if_handleUsername : React.PropTypes.func.isRequired,
 			if_handlePassword : React.PropTypes.func.isRequired,
-			if_handleLogin : React.PropTypes.func.isRequired,
 			if_handleWechatLogin : React.PropTypes.func.isRequired,
 	  }
 	  constructor(){
@@ -262,7 +261,7 @@ export default class InputAnimation extends Component {
 								</View>
 								<TouchableOpacity
 									style={styles.wechatView}
-									onPress = { this.props._handleWechatLogin }>
+									onPress = { this.props.if_handleWechatLogin }>
 									<Image source={require('./Image/wechat.png')} style={styles.wechatButton} >
 										<Text style={styles.wechatButtonText}>
 											 {this.props.is_wechat}

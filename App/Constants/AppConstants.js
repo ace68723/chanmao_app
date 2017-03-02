@@ -17,6 +17,7 @@ module.exports ={
     WECHAT_SCOPE: 'snsapi_userinfo',
     WECHAT_STATE: 'wechat_sdk_test',
     WECHAT_APPID: 'wx20fd1aeb9b6fcf82',
+
     //auth
     SUCCESS: 1,
     FAIL: 0,
@@ -79,6 +80,9 @@ module.exports ={
 
     //Home
     GET_HOME_DATA:'GET_HOME_DATA',
+
+    //TabsStore
+    GO_TO_HISTORY:'GO_TO_HISTORY',
 
     CMVERSION:'2.2.4',
 }
