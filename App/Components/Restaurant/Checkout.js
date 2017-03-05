@@ -48,8 +48,8 @@ const EMPTY_CELL_HEIGHT = Dimensions.get('window').height > 600 ? 200 : 150;
 class Confirm extends Component {
     constructor(props) {
         super(props);
-        const cart = MenuStore.getCart()
-        const total = MenuStore.getCartTotals().total
+        const cart = MenuStore.getCart();
+        const total = MenuStore.getCartTotals().total;
         const state={ cart,
                       total,
 											rid:this.props.restaurant.rid,
@@ -93,11 +93,11 @@ class Confirm extends Component {
 			}
     }
     componentDidMount(){
-			const rid = this.state.rid;
-			const pretax = this.state.total;
-			const navigator = this.props.navigator;
-			const startAmount = this.state.startAmount;
 			setTimeout(()=>{
+				const rid = this.state.rid;
+				const pretax = MenuStore.getCartTotals().total;
+				const navigator = this.props.navigator;
+				const startAmount = this.state.startAmount;
 				RestaurantAction.beforCheckout(rid,pretax,navigator,startAmount);
 				this.setState({renderAddress:true})
 			}, 500);
@@ -108,12 +108,10 @@ class Confirm extends Component {
     }
     _onChange(){
         this.setState(RestaurantStore.getCheckoutSate());
-				console.log("Checkout State update",this.state);
 				if(this.state.checkoutSuccessful){
 					this._goToHistory();
 				}
     }
-
     _updateUaid(address){
 
       if(address && address.uaid){
