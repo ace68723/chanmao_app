@@ -21,6 +21,22 @@ export default class LoginButton extends Component {
   }
 	componentDidMount(){
 	}
+	_renderStartMount(){
+		if(Number(this.props.restaurant.start_amount)==0){
+			return(
+				<Animated.Text style={{textAlign:'center',
+															 marginTop:7,
+															 fontSize:13,
+															 color:'#3a3b47',
+															 opacity:this.props.MIV_MTime,
+															 marginBottom:15,
+															 fontFamily:'FZZhunYuan-M02S',
+														 }}>
+						最低起送价: {this.props.restaurant.start_amount}
+				</Animated.Text>
+			)
+		}
+	}
   render(){
     const translateY = this.props.offset.interpolate({
       inputRange: [-300, 350],
@@ -58,26 +74,31 @@ export default class LoginButton extends Component {
             <Animated.Text style={{color:'#363646',
                                     fontSize:15,
                                     fontWeight:'500',
+																		fontFamily:'FZZongYi-M05S',
                                     opacity:this.props.showMenuAnimation.interpolate({
                                         inputRange: [0, 1],
                                         outputRange: [1,0],
-                                      }),}}>
+                                      }),}}
+																			>
                 {this.props.restaurant.name}
             </Animated.Text>
             <Animated.Text style={{color:'#ababb0',
                                     fontSize:12,
                                     fontWeight:'400',
                                     marginTop:5,
+																		fontFamily:'FZZhunYuan-M02S',
                                     opacity:this.props.showMenuAnimation.interpolate({
                                         inputRange: [0, 1],
                                         outputRange: [1,0],
-                                      }),}}>
+                                      }),}}
+																			>
               {this.props.restaurant.desc}
             </Animated.Text>
 
             <Animated.Text style={{color:'#363646',
                                     fontSize:25,
                                     fontWeight:'500',
+																		fontFamily:'FZZongYi-M05S',
                                     marginTop:-20,
                                     textAlign:'center',
                                     opacity:this.props.showMenuAnimation.interpolate({
@@ -89,6 +110,7 @@ export default class LoginButton extends Component {
             <Animated.Text style={{color:'#ababb0',
                                     fontSize:13,
                                     fontWeight:'400',
+																		fontFamily:'FZZhunYuan-M02S',
                                     marginTop:10,
                                     textAlign:'center',
                                     opacity:this.props.showMenuAnimation.interpolate({
@@ -97,11 +119,9 @@ export default class LoginButton extends Component {
                                       }),}}>
               {this.props.restaurant.desc}
             </Animated.Text>
-            <Animated.Text style={{textAlign:'center',marginTop:7,fontSize:13,color:'#3a3b47',opacity:this.props.MIV_MTime,marginBottom:15,}}>
-                最低起送价: {this.props.restaurant.start_amount}
-            </Animated.Text>
+						{this._renderStartMount()}
         </Animated.View>
-        <Animated.Text style={{textAlign:'center',marginTop:7,color:'#84828d',opacity:this.props.MIV_MTime}}>
+        <Animated.Text style={{textAlign:'center',marginTop:7,color:'#84828d',fontFamily:'FZZhunYuan-M02S',opacity:this.props.MIV_MTime}}>
           {this.props.start_time} - {this.props.end_time}
         </Animated.Text>
 

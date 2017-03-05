@@ -29,10 +29,10 @@
 		ABC7C259984C4EDBB0F8A054 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36982E97E8D54E8B82734CB1 /* libCodePush.a */; };
 		B297E127E5C34BD8AC96EED9 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B23BFA8883F64819B84C01FF /* libRCTWeChat.a */; };
 		DF4CA1501E562ABC009DC126 /* fzzyjt.TTF in Resources */ = {isa = PBXBuildFile; fileRef = DF4CA14F1E562ABB009DC126 /* fzzyjt.TTF */; };
-		DF4CA16F1E562D80009DC126 /* Yuanti.TTF in Resources */ = {isa = PBXBuildFile; fileRef = DF4CA16E1E562D7A009DC126 /* Yuanti.TTF */; };
 		DF59782B1E60D52600EC930B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF59782A1E60D52600EC930B /* SystemConfiguration.framework */; };
 		DF59782D1E60D53000EC930B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF59782C1E60D53000EC930B /* CoreTelephony.framework */; };
 		DF59782F1E60D53900EC930B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DF59782E1E60D53900EC930B /* libsqlite3.0.tbd */; };
+		DF628D091E6A139500F81BA8 /* 方正准圆简体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = DF628D081E6A138500F81BA8 /* 方正准圆简体.TTF */; };
 		E6FDBC2C773E42FF95B71800 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DA69431E230842BC820EBFE6 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
@@ -284,10 +284,10 @@
 		D4934F1C7AF1429A97A1B05D /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		DA69431E230842BC820EBFE6 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		DF4CA14F1E562ABB009DC126 /* fzzyjt.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = fzzyjt.TTF; sourceTree = "<group>"; };
-		DF4CA16E1E562D7A009DC126 /* Yuanti.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yuanti.TTF; sourceTree = "<group>"; };
 		DF59782A1E60D52600EC930B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DF59782C1E60D53000EC930B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		DF59782E1E60D53900EC930B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		DF628D081E6A138500F81BA8 /* 方正准圆简体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "方正准圆简体.TTF"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -539,8 +539,8 @@
 		DF4CA14E1E562ABB009DC126 /* font */ = {
 			isa = PBXGroup;
 			children = (
+				DF628D081E6A138500F81BA8 /* 方正准圆简体.TTF */,
 				DF4CA14F1E562ABB009DC126 /* fzzyjt.TTF */,
-				DF4CA16E1E562D7A009DC126 /* Yuanti.TTF */,
 			);
 			name = font;
 			path = chanmao/font;
@@ -899,8 +899,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF4CA16F1E562D80009DC126 /* Yuanti.TTF in Resources */,
 				DF4CA1501E562ABC009DC126 /* fzzyjt.TTF in Resources */,
+				DF628D091E6A139500F81BA8 /* 方正准圆简体.TTF in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

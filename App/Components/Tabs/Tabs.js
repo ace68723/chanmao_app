@@ -76,7 +76,7 @@ export default class Tabs extends Component {
 														tabBarPosition={this.state.tabBarPosition}
 														tabBarBackgroundColor={'#fff'}
 														tabBarActiveTextColor={'#ff8b00'}
-														tabBarTextStyle={{fontSize:18,fontFamily:'经典圆体简',}}
+														tabBarTextStyle={{fontSize:18,fontFamily:'FZZhunYuan-M02S',}}
 														tabBarInactiveTextColor={'#666666'}
 														initialPage={0}
 														prerenderingSiblingsNumber={1}

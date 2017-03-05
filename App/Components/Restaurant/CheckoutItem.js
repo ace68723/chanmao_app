@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   itemTitle:{
     color:'#4d4d4d',
     fontSize:16,
+    fontFamily:'FZZhunYuan-M02S',
   },
   price:{
     marginTop:10,
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
   quantity:{
     color:'#4d4d4d',
     fontSize:16,
+    fontFamily:'FZZhunYuan-M02S',
   },
   decreaseButton:{
     width:50,

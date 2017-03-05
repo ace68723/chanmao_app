@@ -412,7 +412,7 @@ class Menu extends Component {
 														alignItems:"center",
 														justifyContent:"center",
 													}}>
-								<Text style={{color:"#ffffff",fontSize:16,margin:3}}>${this.state.cartTotals.total}</Text>
+								<Text style={{color:"#ffffff",fontSize:16,margin:3,fontFamily:'FZZongYi-M05S',}}>${this.state.cartTotals.total}</Text>
 								<View style={{margin:3,
 															borderRadius:15,
 															borderWidth:1,
@@ -421,7 +421,7 @@ class Menu extends Component {
 															paddingTop:2,
 															paddingBottom:2,
 															borderColor:"#ffffff"}}>
-									<Text  style={{color:"#ffffff",fontSize:13,}}>去结账</Text>
+									<Text  style={{color:"#ffffff",fontSize:13,fontFamily:'FZZongYi-M05S',}}>去结账</Text>
 								</View>
 
 							</TouchableOpacity>
@@ -461,6 +461,7 @@ class Menu extends Component {
                                                           outputRange: [200,Dimensions.get('window').height],
                                                         }),
                               overflow:'hidden',
+															backgroundColor:"#f4f4f4"
                             }}>
 					<Background
 							 minHeight={0}

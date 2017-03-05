@@ -62,7 +62,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Yuanti.TTF</string>
+		<string>方正准圆简体.TTF</string>
 		<string>fzzyjt.TTF</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

@@ -46,10 +46,12 @@ const styles = StyleSheet.create({
     marginLeft:10,
     fontSize:15,
     color:'#808080',
+    fontFamily:'FZZhunYuan-M02S',
   },
   value:{
     marginLeft:5,
     fontSize:15,
     color:'#ff8b00',
+    fontFamily:'FZZhunYuan-M02S',
   },
 })

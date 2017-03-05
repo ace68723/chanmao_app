@@ -47,10 +47,10 @@ class HistoryOrderDetail extends Component {
       let itemList = this.state.historyOrder.items.map( (item,index)=> {
         return (
           <View style={{flexDirection:'row',marginTop:5}} key={index}>
-            <Text style={{flex:1}}>
+            <Text style={{flex:1,fontFamily:'FZZhunYuan-M02S',}}>
               {item.name}  x  {item.qty}
             </Text>
-            <Text style={{flex:0.3,textAlign:"right"}}>
+            <Text style={{flex:0.3,textAlign:"right",fontFamily:'FZZhunYuan-M02S',}}>
               ${item.price}
             </Text>
           </View>
@@ -59,12 +59,12 @@ class HistoryOrderDetail extends Component {
       return(
         <Animated.View style={{backgroundColor:'#ffffff',marginTop:this.state.historyOrderMarginTop,marginBottom:height*0.2,marginLeft:30,marginRight:30,borderRadius:8,padding:10,}}>
 
-          <Text style={{textAlign:'center',color:"#666666",fontSize:17,marginBottom:5}}>
+          <Text style={{textAlign:'center',color:"#666666",fontSize:17,marginBottom:5,fontFamily:'FZZhunYuan-M02S',}}>
             #{this.state.historyOrder.oid}
           </Text>
           <TouchableWithoutFeedback onPress={()=>{this.props.HistoryOrderDetailVisible()}}>
             <View style={{position:"absolute",left:-10,top:-10,width:30,height:30,borderRadius:15,backgroundColor:"rgba(0,0,0,0.6)"}}>
-              <Text style={{fontSize:25,textAlign:"center",color:"#ffffff",marginTop:-2}}>
+              <Text style={{fontSize:25,textAlign:"center",color:"#ffffff",marginTop:-2,fontFamily:'FZZhunYuan-M02S',}}>
                 ×
               </Text>
             </View>
@@ -72,16 +72,16 @@ class HistoryOrderDetail extends Component {
           <View style={{flex:1,height:1,backgroundColor:"#b3b3b3"}}/>
           <View style={{padding:10}}>
           <View style={{flexDirection:"row",}}>
-            <Text style={{flex:1,textAlign:"left",fontSize:15,fontWeight:"600"}}>
+            <Text style={{flex:1,textAlign:"left",fontSize:15,fontWeight:"600",fontFamily:'FZZhunYuan-M02S',}}>
               {this.state.historyOrder.name}
             </Text>
-            <Text style={{flex:1,textAlign:"right", fontSize:11,marginTop:5}}>
+            <Text style={{flex:1,textAlign:"right", fontSize:11,marginTop:5,fontFamily:'FZZhunYuan-M02S',}}>
               {this.state.historyOrder.created}
             </Text>
           </View>
           <View style={{marginTop:10,}} showsVerticalScrollIndicator={true}>
             {itemList}
-            <Text style={{textAlign:"right",fontWeight:"500",marginTop:15,}}>
+            <Text style={{textAlign:"right",fontWeight:"500",marginTop:15,fontFamily:'FZZhunYuan-M02S',}}>
               Total: ${this.state.historyOrder.total}
             </Text>
           </View>

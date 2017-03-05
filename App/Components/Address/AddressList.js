@@ -138,7 +138,7 @@ export default class LoginButton extends Component {
 									<Image style={{width:30,height:29.2}}
 												source={require('./Image/icon_address_home.png')}/>
 							</TouchableWithoutFeedback>
-							<Text style={{fontSize:20,marginLeft:15}}>
+							<Text style={{fontSize:20,marginLeft:15,fontFamily:'FZZongYi-M05S',}}>
 								Home
 							</Text>
 						</View>
@@ -150,7 +150,7 @@ export default class LoginButton extends Component {
 									<Image style={{width:30,height:27.1}}
 												source={require('./Image/icon_address_work.png')}/>
 							</TouchableWithoutFeedback>
-							<Text style={{fontSize:20,marginLeft:15}}>
+							<Text style={{fontSize:20,marginLeft:15,fontFamily:'FZZongYi-M05S',}}>
 								Work
 							</Text>
 						</View>
@@ -163,7 +163,7 @@ export default class LoginButton extends Component {
 									<Image style={{width:22,height:30}}
 												source={require('./Image/icon_address_other.png')}/>
 							</TouchableWithoutFeedback>
-							<Text style={{fontSize:20,marginLeft:15}}>
+							<Text style={{fontSize:20,marginLeft:15,fontFamily:'FZZongYi-M05S',}}>
 								Other
 							</Text>
 						</View>
@@ -208,10 +208,10 @@ export default class LoginButton extends Component {
 							</TouchableWithoutFeedback>
 						</View>
 					</View>
-					<Text style={{fontSize:15}}>
+					<Text style={{fontSize:15,fontFamily:'FZZhunYuan-M02S',}}>
 						{address.name} {this._formatPhoneNumber(address.tel)}
 					</Text>
-					<Text>
+					<Text style={{fontFamily:'FZZhunYuan-M02S',}}>
 						{apt_no}{address.addr}
 					</Text>
 					{selectedIcon()}
@@ -330,5 +330,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: '#ea7b21',
     marginTop:5,
+		fontFamily:'FZZhunYuan-M02S',
   },
 });

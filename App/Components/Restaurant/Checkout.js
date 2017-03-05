@@ -226,7 +226,7 @@ class Confirm extends Component {
       }else{
         return(
           <View style={{alignItems:'center'}}>
-            <Text style={{color:'#9c9ea1',}}>请在上方选择配送地址</Text>
+            <Text style={{color:'#9c9ea1',fontFamily:'FZZhunYuan-M02S',}}>请在上方选择配送地址</Text>
           </View>
 
         )
@@ -240,6 +240,7 @@ class Confirm extends Component {
 												fontWeight:'500',
 												textAlign:'center',
 												marginTop:20,
+												fontFamily:'FZZongYi-M05S',
 											}}>
 				 		{this.props.restaurant.name}
 					</Text>
@@ -247,7 +248,8 @@ class Confirm extends Component {
 												fontSize:13,
 												fontWeight:'400',
 												marginTop:10,
-												textAlign:'center',}}>
+												textAlign:'center',
+												fontFamily:'FZZhunYuan-M02S',}}>
 						{this.props.restaurant.desc}
 					</Text>
 					<View style={{height:2,
@@ -328,7 +330,7 @@ class Confirm extends Component {
                             marginRight:5,
                             padding:5
                           }}>
-                <Text style={{color:deliverType.textColor}}>
+                <Text style={{color:deliverType.textColor,fontFamily:'FZZhunYuan-M02S',}}>
                   {deliverType.text}
                 </Text>
               </View>
@@ -506,6 +508,7 @@ let styles = StyleSheet.create({
     color: '#ffffff',
     marginBottom: 5,
     fontSize:20,
+		fontFamily:'FZZongYi-M05S',
   },
 
 

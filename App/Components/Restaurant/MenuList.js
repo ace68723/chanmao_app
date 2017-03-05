@@ -137,11 +137,11 @@ class Menu extends Component {
         return  (
               <View  style={{flex:1,backgroundColor:'#ffffff',overflow:"hidden"}}>
                 <View style={{alignSelf:'center',marginTop:30,marginBottom:10}}>
-                    <Text style={{fontSize:18,color:'#3a3b47'}}>
+                    <Text style={{fontSize:18,color:'#3a3b47',fontFamily:'FZZongYi-M05S',}}>
                       {item.category_name}
                     </Text>
                 </View>
-                <View style={{alignSelf:'center',height:2,width:40, backgroundColor:'#9d9da3'}}>
+                <View style={{alignSelf:'center',height:2,width:40, backgroundColor:'#3a3b47'}}>
                 </View>
               </View>
         )

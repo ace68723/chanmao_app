@@ -87,8 +87,14 @@ class DefaultTabBar extends Component {
       }
 
   render() {
+    // bdc8d9
     return (
-      <Animated.View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, top:this.state.top}, this.props.style, ]}>
+      <Animated.View style={[styles.tabs, {backgroundColor: this.props.backgroundColor,
+                                           top:this.state.top,
+                                           borderTopColor:"#bdc8d9",
+                                           borderTopWidth:StyleSheet.hairlineWidth,
+                                           },
+                                           this.props.style, ]}>
         {this.props.tabs.map((name, page) => {
           const isTabActive = this.props.activeTab === page;
           const renderTab = this.props.renderTab || this.renderTab;

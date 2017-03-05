@@ -42,12 +42,14 @@ class HistoryTab extends Component {
         this._reorder = this._reorder.bind(this);
     }
     componentDidMount(){
-
-      const _doAutoRefresh = this._doAutoRefresh;
-      HistoryStore.addChangeListener(this._onChange);
-      this._doAutoRefresh();
-			HistoryStore.autoRefresh();
-      const currentRoutes = this.props.navigator.getCurrentRoutes();
+      setTimeout( () =>{
+				console.log('history')
+				const _doAutoRefresh = this._doAutoRefresh;
+	      HistoryStore.addChangeListener(this._onChange);
+	      this._doAutoRefresh();
+				HistoryStore.autoRefresh();
+	      const currentRoutes = this.props.navigator.getCurrentRoutes();
+      }, 4000);
     }
     componentWillUnmount() {
          HistoryStore.removeChangeListener(this._onChange);
@@ -155,7 +157,7 @@ class HistoryTab extends Component {
                          }
                          ref='_scrollView'
                          >
-               <Text style={{alignSelf:'center',color:'#ff8b00'}}> 订单状态每30秒会自动刷新</Text>
+               <Text style={{alignSelf:'center',color:'#ff8b00',fontFamily:'FZZhunYuan-M02S',}}> 订单状态每30秒会自动刷新</Text>
                {current()}
                <View style={styles.orderContainer}>
 
@@ -209,7 +211,7 @@ let styles = StyleSheet.create({
   orderTitle:{
     color: "#fff",
     fontSize:20,
-
+		fontFamily:'FZZongYi-M05S',
   }
 
 });

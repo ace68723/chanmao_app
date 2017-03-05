@@ -194,7 +194,7 @@ class AddInfo extends Component {
                             marginRight:5,
                             padding:5
                           }}>
-                <Text style={{color:type.textColor}}>
+                <Text style={{color:type.textColor,fontFamily:'FZZhunYuan-M02S',}}>
                   {type.text}
                 </Text>
               </View>
@@ -307,7 +307,7 @@ class AddInfo extends Component {
                                                 height:28,
                                                 transform: [{rotate: interpolatedRotateAnimation}]}}/>
                         <Animated.View style={{flexDirection:"column",flex:1,marginTop:interpolatedMarginTop}}>
-                            <Text style={{marginLeft:10,marginTop:12}}>
+                            <Text style={{marginLeft:10,marginTop:12,fontFamily:'FZZhunYuan-M02S',}}>
                               设置为默认地址(选填)
                             </Text>
                             {this._renderChooseType()}
@@ -375,6 +375,7 @@ let styles = StyleSheet.create({
     fontSize:18,
     marginLeft:20,
     marginRight:10,
+		fontFamily:'FZZhunYuan-M02S',
   },
   fistInput:{
     // marginLeft:10,
@@ -383,7 +384,8 @@ let styles = StyleSheet.create({
     height:50,
     fontSize: 18,
     borderRadius: 8,
-    color: '#000'
+    color: '#000',
+		fontFamily:'FZZhunYuan-M02S',
   },
   secondInput:{
     marginLeft:10,
@@ -402,6 +404,7 @@ let styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: '#fff',
+		fontFamily:'FZZongYi-M05S',
   },
   button: {
     flex:1,

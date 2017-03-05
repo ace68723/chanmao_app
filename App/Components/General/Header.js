@@ -18,7 +18,7 @@ export default (props) =>{
   const leftButton = () => {
     if(props.goBack){
       return (
-        <TouchableOpacity style={{flex:1,}}
+        <TouchableOpacity style={{flex:0.2,}}
                           onPress={props.goBack}>
           <View style={styles.backButton}>
             <Text style={styles.backIcon}>
@@ -29,7 +29,7 @@ export default (props) =>{
       )
     }else{
       return(
-        <View style={{flex:1}}>
+        <View style={{flex:0.2}}>
         </View>
       )
 
@@ -38,7 +38,7 @@ export default (props) =>{
   const rightButton = () => {
     if(props.rightButton){
       return (
-          <TouchableOpacity style={{flex:1,}}
+          <TouchableOpacity style={{flex:0.2,}}
                             onPress={props.rightButton}>
             <View style={styles.rightButton}>
               <Text style={styles.rightButtonText}>
@@ -49,7 +49,7 @@ export default (props) =>{
       )
     }else{
       return(
-        <View style={{flex:1}}>
+        <View style={{flex:0.2}}>
         </View>
       )
 
@@ -78,11 +78,7 @@ const styles = StyleSheet.create({
     left:0,
     right:0,
     height:64,
-    // borderBottomWidth:2,
-    // borderBottomColor:'#f4f4f4',
     backgroundColor:'#f4f4f4',
-
-    // alignItems: 'center',
   },
   backButton:{
     marginLeft:10,
@@ -140,6 +136,6 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'bold',
     textAlign:'center',
-    fontFamily:'经典圆体简',
+    fontFamily:'FZZongYi-M05S',
   },
 })

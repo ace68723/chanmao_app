@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   text:{
     margin:10,
     fontSize:20,
+    fontFamily:'FZZhunYuan-M02S',
   },
   row:{
     flex:1,

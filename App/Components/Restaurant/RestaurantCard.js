@@ -83,7 +83,7 @@ class RestaurantCard extends Component {
 								source={require('./Image/icon_distance.png')}
 								style={[{height:12,width:8.7,top:-2}]}
 							/>
-              <Text style={{color:'#ababb0',fontSize:12,fontWeight:'400',marginLeft:3,textAlign:'right'}}>
+              <Text style={{color:'#ababb0',fontSize:12,fontWeight:'400',fontFamily:'FZZhunYuan-M02S',marginLeft:3,textAlign:'right'}}>
 
                   {(this.props.restaurant.distance/1000).toFixed(2)} km
               </Text>
@@ -106,6 +106,8 @@ class RestaurantCard extends Component {
                            height: 2,
                            width: 2
 												 },
+												 	marginLeft:7,
+												 	marginRight:7,
 													backgroundColor:'#ffffff',
 												 }}>
                 <View  style={{ height:200,
@@ -117,8 +119,7 @@ class RestaurantCard extends Component {
                                 borderTopWidth:StyleSheet.hairlineWidth,
                                 borderLeftWidth:StyleSheet.hairlineWidth,
                                 borderRightWidth:StyleSheet.hairlineWidth,
-                                marginLeft:7,
-                                marginRight:7}}
+                              }}
                           ref={this.state.ref} >
                     <Image
                       source={this.state.imgUrl}
@@ -134,18 +135,16 @@ class RestaurantCard extends Component {
 
                 <View style={{backgroundColor:'#ffffff',
                               padding:8,
-                              marginLeft:7,
-                              marginRight:7,
                               borderColor:"#e2e2e4",
                               borderBottomWidth: StyleSheet.hairlineWidth,
                               borderLeftWidth:StyleSheet.hairlineWidth,
                               borderRightWidth:StyleSheet.hairlineWidth,}}>
-                  <Text style={{color:'#363646',fontSize:15,fontWeight:'500'}}>
+                  <Text style={{color:'#363646',fontSize:15,fontWeight:'500',fontFamily:'FZZongYi-M05S',}}>
                       {this.props.restaurant.name}
                   </Text>
                   <View style={{flexDirection:"row"}}>
                     <View style={{flex:1,}}>
-                      <Text style={{color:'#ababb0',fontSize:12,fontWeight:'400',marginTop:5,}}>
+                      <Text style={{color:'#ababb0',fontSize:12,fontWeight:'200',marginTop:5,fontFamily:'FZZhunYuan-M02S'}}>
                           {this.props.restaurant.desc}
                       </Text>
                     </View>

@@ -42,43 +42,24 @@ export default class RestaurantTab extends Component {
       this._goBack = this._goBack.bind(this);
   }
   componentDidMount(){
-
+		setTimeout( () =>{
 			if(this.props.index == 1){
 				RestaurantAction.getRestaurant();
 				RestaurantStore.addChangeListener(this._onChange);
 			}
-				if(this.props.index !=1){
-					const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
-					const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
-					const state = Object.assign({},restaurantData,dataSource)
-					this.setState(state)
-				}
-			// setTimeout(() =>{
-			// 	const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
-			// 	const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
-			// 	const state = Object.assign({},restaurantData,dataSource)
-	    //   this.setState(state)
-			// }, 500);
-
-    //  AppState.addEventListener('change', this._handleAppStateChange);
-
+			if(this.props.index !=1){
+				const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
+				const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
+				const state = Object.assign({},restaurantData,dataSource)
+				this.setState(state)
+			}
 			 const index = this.props.index;
 			 const scrollView = this.refs._scrollVew;
 			 const scrollViewContent = this._scrollViewContent;
 			 const ref = Object.assign({},{index,scrollView,scrollViewContent})
 			 this.props.getScrollViewRefs(ref)
-
+		}, 2000);
   }
-	// componentWillReceiveProps(props){
-	// 	if(props.currentTab == this.state.index
-	// 			&& this.props.index != 1
-	// 		  && this.props.index != 2){
-	// 		const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
-	// 		const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
-	// 		const state = Object.assign({},restaurantData,dataSource)
-	// 		this.setState(state)
-	// 	}
-	// }
 
   componentWillUnmount() {
 		if(this.props.index == 1){
@@ -92,7 +73,6 @@ export default class RestaurantTab extends Component {
     }
   }
   _onChange(){
-
 			const restaurantData = RestaurantStore.getRestaurantData()
 			const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
 			const state = Object.assign({},restaurantData,dataSource)
@@ -173,9 +153,12 @@ export default class RestaurantTab extends Component {
 						 ref={(comp) => this._scrollViewContent = comp}/>
 	}
 	_renderRestaurant(restaurant){
-		    restaurant.imgUrl = {uri:restaurant.mob_banner};
-		    return <RestaurantCard restaurant={restaurant}
-		                           openMenu={this.props.openMenu}/>
+		if(restaurant){
+			restaurant.imgUrl = {uri:restaurant.mob_banner};
+			return <RestaurantCard restaurant={restaurant}
+														 openMenu={this.props.openMenu}/>
+		}
+
 	}
   render(){
       // let restaurantlist = this.state.open.map( (restaurant,id) => {

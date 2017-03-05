@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     buttonText: {
       fontSize: 20,
       color: '#fff',
+			fontFamily:'FZZhunYuan-M02S',
     },
     button: {
       flex:1,

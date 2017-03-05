@@ -16,13 +16,13 @@ export default (props) => {
               props.HistoryOrderDetailVisible()
         }}>
         <View style={styles.container}>
-          <Text style={[styles.order,{flex:0.2}]}>
+          <Text style={[styles.order,{flex:0.2,fontFamily:'FZZhunYuan-M02S',}]}>
             # {props.order.oid}
           </Text>
-          <Text style={[styles.order,{flex:0.5}]} numberOfLines={2}>
+          <Text style={[styles.order,{flex:0.5,fontFamily:'FZZhunYuan-M02S',}]} numberOfLines={2}>
             {props.order.rrname}
           </Text>
-          <Text style={[styles.time,{flex:0.3}]}>
+          <Text style={[styles.time,{flex:0.3,fontFamily:'FZZhunYuan-M02S',}]}>
             {props.order.created}
           </Text>
         </View>

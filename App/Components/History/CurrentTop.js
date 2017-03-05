@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     resturantName:{
       textAlign:"center",
       fontSize:17,
+      fontFamily:'FZZhunYuan-M02S',
     },
     resturantAddress:{
       textAlign:"center",
