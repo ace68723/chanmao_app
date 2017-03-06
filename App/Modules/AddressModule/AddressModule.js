@@ -85,7 +85,9 @@ realm.write(() => {
   realm.create('Address',Object.assign({},initAddress,{type:'O'}), true );
 
   let initCart = realm.objects('Cart');
+  let initRestaurant = realm.objects('Restaurant');
   realm.delete(initCart);
+  realm.delete(initRestaurant);
 })
 
 console.log(realm.path)

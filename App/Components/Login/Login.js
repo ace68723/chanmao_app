@@ -98,7 +98,7 @@ export default class LogoAnimationView extends Component {
 		 if(e == '-2'){
 			 console.log(e)
 		 }else{
-			 console.error(e);
+			 console.log(e);
 		 }
 
 	 }
@@ -119,7 +119,7 @@ export default class LogoAnimationView extends Component {
 												is_wechat = {AppString('wechat')}
 												ib_isWXAppInstalled = {this.state.isWXAppInstalled}
 												is_copyright = {AppString('copyright')}
-												is_version = {"2.3.1"}
+												is_version = {"2.3.0"}
 												ib_loginSuccess = {this.state.loginSuccess}
 												ib_showLoading = {this.state.showLoading}
 											  if_handleLogin = {this._handleLogin}

@@ -18,7 +18,7 @@ export default class LogoAnimationView extends Component {
   constructor() {
     super();
     this.state = {
-      firstTime:false,
+      firstTime:true,
       stage: 0,
       timeout:1500,
       viewOpacity:new Animated.Value(1),

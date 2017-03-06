@@ -73,7 +73,7 @@ class ActivityHeaderWithBanner extends Component {
 	    });
 			// opacity:imageOpacity,
 	    return (
-				<Animated.View style={[styles.header, {height: headerHeight,opacity:imageOpacity,backgroundColor:"blue"}]}>
+				<Animated.View style={[styles.header, {height: headerHeight,opacity:imageOpacity,}]}>
 					<StatusBar
 							barStyle="default"
 						/>

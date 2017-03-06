@@ -209,7 +209,7 @@ export default class MainTab extends Component {
 														tabBarTextStyle={{fontSize:18,fontFamily:'FZZhunYuan-M02S',}}
 														tabBarInactiveTextColor={'#666666'}
 														initialPage={0}
-														prerenderingSiblingsNumber={3}
+														prerenderingSiblingsNumber={2}
 														renderTabBar={() =>
 																				<DefaultTabBar
 																				scrollY = {this.state.scrollY}

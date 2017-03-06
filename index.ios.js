@@ -14,8 +14,7 @@ import {
 import LogoAnimationView from './App/Components/Logo/LogoAnimationView';
 import Router from './App/Components/Router';
 import CodePush from "react-native-code-push";
-const Realm               = require('realm');
-let realm = new Realm();
+
 export default class chanmao extends Component {
   constructor(){
     super()

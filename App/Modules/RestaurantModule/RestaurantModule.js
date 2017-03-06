@@ -204,7 +204,13 @@ const RestaurantModule = {
 
       try{
         const code= "";
-        let dltype = realm.objectForPrimaryKey('Cart','dltype').value;
+        let dltypeObj = realm.objectForPrimaryKey('Cart','dltype');
+        let dltype;
+        if(dltypeObj){
+          dltype = dltypeObj.value;
+        }else{
+          dltype = '1';
+        }
         const pretax= realm.objectForPrimaryKey('Cart','pretax').value;
         const rid = realm.objectForPrimaryKey('Cart','rid').value;
         const uaid = realm.objectForPrimaryKey('Cart','uaid').value;
@@ -219,7 +225,6 @@ const RestaurantModule = {
         reqData = Object.assign({},reqData,{code,dltype,pretax,rid,uaid})
         const res = await RestaurantApi.calculateDeliveryFee(reqData);
         if(res.result == 0){
-
           const dlexp = JSON.stringify(res.dlexp);
           const dltype = res.dltype;
           const message = res.message;

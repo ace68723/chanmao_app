@@ -9,8 +9,8 @@ let isAuthed = false;
 let errorMessage= ''
 
 const loginState = {
-			username:'ace68723',
-			password:'ace68723',
+			username:'',
+			password:'',
 			showLoading:false,
 			isAuthed:false,
 			isWXAppInstalled:true,
