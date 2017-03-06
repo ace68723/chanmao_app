@@ -13,6 +13,7 @@ const loginState = {
 			password:'ace68723',
 			showLoading:false,
 			isAuthed:false,
+			isWXAppInstalled:true,
 	}
 
 const AuthStore = Object.assign({},EventEmitter.prototype,{

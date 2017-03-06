@@ -58,7 +58,7 @@ export default class RestaurantTab extends Component {
 			 const scrollViewContent = this._scrollViewContent;
 			 const ref = Object.assign({},{index,scrollView,scrollViewContent})
 			 this.props.getScrollViewRefs(ref)
-		}, 2000);
+		}, 1000);
   }
 
   componentWillUnmount() {

@@ -53,8 +53,15 @@ const RestaurantScheam = {
       watermark:"int"
   }
 }
-
-let realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam]});
+const SystemScheam = {
+  name: 'System',
+  primaryKey: 'type',
+  properties: {
+    type:'string',
+    value:'string',
+  }
+}
+let realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam]});
 realm.write(() => {
   let initAddress = {
     addr:"",
@@ -76,6 +83,7 @@ realm.write(() => {
   realm.create('Address',Object.assign({},initAddress,{type:'H'}), true );
   realm.create('Address',Object.assign({},initAddress,{type:'W'}), true );
   realm.create('Address',Object.assign({},initAddress,{type:'O'}), true );
+
   let initCart = realm.objects('Cart');
   realm.delete(initCart);
 })

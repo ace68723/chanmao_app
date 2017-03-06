@@ -87,8 +87,7 @@ export default class InputAnimation extends Component {
 				}, 10)
 			}
 	  }
-
-    _keyboardWillShow(e) {
+		_keyboardWillShow(e) {
         // keyboard(e.endCoordinates.height): get keyboard height
         const keyboardHeight = e.endCoordinates.height;
 
@@ -213,6 +212,21 @@ export default class InputAnimation extends Component {
 				)
 
 		}
+		_renderWechat(){
+			if(this.props.ib_isWXAppInstalled){
+				return(
+					<TouchableOpacity
+						style={styles.wechatView}
+						onPress = { this.props.if_handleWechatLogin }>
+						<Image source={require('./Image/wechat.png')} style={styles.wechatButton} >
+							<Text style={styles.wechatButtonText}>
+								 {this.props.is_wechat}
+							</Text>
+						</Image>
+				 </TouchableOpacity>
+				)
+			}
+		}
 	  render(){
 
 	    return(
@@ -259,15 +273,7 @@ export default class InputAnimation extends Component {
 															 ib_showLoading = {this.props.ib_showLoading}
 															 />
 								</View>
-								<TouchableOpacity
-									style={styles.wechatView}
-									onPress = { this.props.if_handleWechatLogin }>
-									<Image source={require('./Image/wechat.png')} style={styles.wechatButton} >
-										<Text style={styles.wechatButtonText}>
-											 {this.props.is_wechat}
-										</Text>
-									</Image>
-							 </TouchableOpacity>
+								{this._renderWechat()}
 
 							 <View style={{position:'absolute',bottom:5,width:width,alignItems:'center',backgroundColor:"rgba(0,0,0,0)"}}>
 	                  <Text allowFontScaling={false} style={{color:"#ffffff",marginBottom:5}}>

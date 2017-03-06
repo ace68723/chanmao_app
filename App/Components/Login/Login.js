@@ -42,7 +42,10 @@ export default class LogoAnimationView extends Component {
 	_viewOpacity =  new Animated.Value(1);
 	async componentDidMount() {
 		const registerResult = await WeChat.registerApp(appid);
-		console.log(registerResult)
+		const  isWXAppInstalled = await WeChat.isWXAppInstalled()
+		this.setState({
+			isWXAppInstalled:isWXAppInstalled
+		})
 		AuthStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount(){
@@ -114,8 +117,9 @@ export default class LogoAnimationView extends Component {
 											  is_register = {AppString('register')}
 											  is_forgot = {AppString('forgot')}
 												is_wechat = {AppString('wechat')}
+												ib_isWXAppInstalled = {this.state.isWXAppInstalled}
 												is_copyright = {AppString('copyright')}
-												is_version = {"2.3.0"}
+												is_version = {"2.3.1"}
 												ib_loginSuccess = {this.state.loginSuccess}
 												ib_showLoading = {this.state.showLoading}
 											  if_handleLogin = {this._handleLogin}
