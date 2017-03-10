@@ -22,6 +22,7 @@ class SettingTab extends Component {
     constructor(props) {
         super(props);
         this._goToAddress = this._goToAddress.bind(this);
+				this._goToAboutUs = this._goToAboutUs.bind(this);
     }
     _goToAddress(){
       this.props.navigator.push({
@@ -34,19 +35,23 @@ class SettingTab extends Component {
       });
     }
     // onPress={this._goToAboutUs.bind(this)}
+
+
+    //   <SettingCate  title={'添加地址'}
+			// 							onPress={this._goToAddress.bind(this)}
+			// 							icon={require('./Image/setting.png')}/>
+
     render(){
       return(
         <View style={styles.mainContainer}>
             <Header title={'设置'}/>
             <ScrollView style={styles.scrollView}>
-              <SettingCate  title={'添加地址'}
-                            onPress={this._goToAddress.bind(this)}
-                            icon={require('./Images/setting.png')}/>
-              <SettingCate  title={'关于我们'}
-                            icon={require('./Images/information.png')}
-                            />
+							<SettingCate  title={'关于我们'}
+														icon={require('./Image/information.png')}
+														onPress={this._goToAboutUs}
+														/>
               <SettingCate  title={'退出登录'}
-                            icon={require('./Images/logout.png')}
+                            icon={require('./Image/logout.png')}
                             onPress={AuthAction.logout}/>
             </ScrollView>
         </View>

@@ -12,20 +12,33 @@ import {
 	ScrollView,
   StyleSheet,
 	StatusBar,
-	TouchableOpacity,
+	TouchableWithoutFeedback,
 } from 'react-native';
 
 import Swiper from 'react-native-swiper'
 
-const deviceWidth = Dimensions.get('window').width;
+const {width,height} = Dimensions.get('window');
 const HEADER_MAX_HEIGHT = 200;
 // const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 60 : 73;
 const HEADER_MIN_HEIGHT = 20;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class ActivityHeaderWithBanner extends Component {
 	  constructor(){
-	    super()
+	    super();
+			this._handleOnPress = this._handleOnPress.bind(this);
 	  }
+		_handleOnPress(banner){
+			if(banner.navitype == 2){
+				this.props.navigator.push({
+					id: 'AdView',
+					url:banner.naviparam.url,
+				})
+			}
+			if(banner.navitype == 3){
+			 		banner.restaurant = banner.naviparam;
+	        this.props.openMenu(height,banner.naviparam);
+			}
+		}
 		_renderBanner(){
 			const imageTranslate = this.props.scrollY.interpolate({
 				inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -34,15 +47,19 @@ class ActivityHeaderWithBanner extends Component {
 			});
 			if(this.props.bannerList ){
 				return  this.props.bannerList.map((banner,index)=>{
+
 						return(
+							<TouchableWithoutFeedback key={index}
+													onPress={this._handleOnPress.bind(null,banner)}>
 											<Animated.Image
-											 key={index}
+
 												style={[
 													styles.backgroundImage,
 													{ transform: [{translateY: imageTranslate}]},
 												]}
 												 source={{uri: banner.image}}
 											/>
+							</TouchableWithoutFeedback>
 						)
 					})
 			}
@@ -54,7 +71,8 @@ class ActivityHeaderWithBanner extends Component {
 										height={200}
 										autoplay={true}
 										autoplayTimeout={5}
-										loop={true}>
+										loop={true}
+										removeClippedSubviews={false}>
 										{this._renderBanner()}
 						</Swiper>
 				)

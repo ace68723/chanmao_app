@@ -20,20 +20,23 @@ class RestaurantCard extends Component {
           super();
           this.state={
             ref:props.restaurant.rid,
-            imgUrl:props.restaurant.imgUrl,
+            imgUrl:{uri:props.restaurant.mob_banner},
           }
           this._openMenu = this._openMenu.bind(this);
       }
-      close(){
-        if(this.props.restaurant.close){
+			componentDidMount(){
+
+			}
+      _renderCloseCover(){
+        if(this.props.restaurant.open == 0){
           return(
             <View style={{flex:1,
-                          backgroundColor:'rgba(0,0,0,0.2)'}}>
+                          backgroundColor:'rgba(0,0,0,0.5)',}}>
                 <Text style={{fontWeight:'700',
                               fontSize:20,
                               color:'#ffffff',
                               textAlign:'center',
-                              top:90}}>
+                              top:90,}}>
                   商家关门啦
                 </Text>
             </View>
@@ -92,7 +95,6 @@ class RestaurantCard extends Component {
         }
 
       }
-
       // {this.recommend()}
       render(){
         return(
@@ -128,7 +130,7 @@ class RestaurantCard extends Component {
                       resizeMode={'cover'}
                     >
                     {this.recommend()}
-                    {this.close()}
+                    {this._renderCloseCover()}
                     </Image>
 
                 </View>

@@ -119,25 +119,27 @@ export default class LoginButton extends Component {
       <View style={styles.container} ref={"LOGIN"}>
 						{this._renderLoginButton()}
           <View style={styles.registerView}>
-            <Text allowFontScaling={false} style={styles.registerText}>
-               {this.props.is_register}
-            </Text>
-            <Text allowFontScaling={false} style={styles.forgotText}>
-              {this.props.is_forgot}
-            </Text>
+						<TouchableWithoutFeedback onPress={()=>{this.props.if_openAdView('https://chanmao.ca/index.php?r=site/register')}}>
+							<View style={{flex:1}}>
+								<Text allowFontScaling={false} style={styles.registerText}>
+		               {this.props.is_register}
+		            </Text>
+							</View>
+						</TouchableWithoutFeedback>
+						<TouchableWithoutFeedback onPress={()=>{this.props.if_openAdView('https://chanmao.ca/index.php?r=site/recovery')}}>
+							<View style={{flex:1}}>
+								<Text allowFontScaling={false} style={styles.forgotText}>
+									{this.props.is_forgot}
+								</Text>
+							</View>
+						</TouchableWithoutFeedback>
+
           </View>
 
       </View>
     )
   }
 }
-// <Animated.View style={styles.loading}>
-//
-// 		<Animated.View style={styles.loadingCover}>
-//
-// 		</Animated.View>
-//
-// </Animated.View>
 
 const styles = StyleSheet.create({
   container: {
@@ -172,11 +174,11 @@ const styles = StyleSheet.create({
   registerView:{
     flexDirection:"row",
     width:width*0.6576,
+		height:50,
     marginTop:5,
     backgroundColor:"rgba(0,0,0,0)"
   },
   registerText:{
-    flex:1,
     fontSize:15,
     fontWeight:"500",
     color:"#ffffff",

@@ -64,6 +64,7 @@ class Menu extends Component {
 			this._handleScroll = this._handleScroll.bind(this);
     }
     componentDidMount(){
+			console.log(this.props)
       const timeCovert = () => {
         if(this.state.restaurant.end_time<'05:00'){
           this.state.end_time = this.state.restaurant.end_time +' AM'
@@ -467,7 +468,7 @@ class Menu extends Component {
 							 minHeight={0}
 							 maxHeight={230}
 							 offset={this.state.anim}
-							 backgroundImage={this.props.restaurant.imgUrl}
+							 backgroundImage={{uri:this.props.restaurant.mob_banner}}
 							 backgroundShift={0}
 							 backgroundColor={"rgba(0,0,0,0)"}>
 					 </Background>

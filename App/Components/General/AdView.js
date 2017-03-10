@@ -68,8 +68,8 @@ class ArticleDetail extends Component {
     }
     return (
       <View style={styles.container} >
-        <Header title={'推广'}
-                goBack={this._goBack}/>
+        <Header goBack={this._goBack}
+								leftButtonText={'x'}/>
         <View style={{flex:1,marginTop:64,}}>
           <AnimatedWebView style={[
                       styles.WebView,

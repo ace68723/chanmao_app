@@ -156,8 +156,6 @@ export default class MainTab extends Component {
       }
   }
 	_closeMenu(){
-
-
       Animated.timing(          // Uses easing functions
         this.state.restaurantCoverOpacity,    // The value to drive
         {toValue: 0,
@@ -170,7 +168,7 @@ export default class MainTab extends Component {
 				})
       },500)
 			setTimeout(()=>{
-				this.props.showTabBer();
+				this.props.showTabBar();
 			}, 700);
     }
 	_renderMenuView(){
@@ -185,7 +183,7 @@ export default class MainTab extends Component {
 	}
 
 	renderScrollableTabView(){
-		if(this.state.areaList.length>0){
+		if(this.state.areaList && this.state.areaList.length>0){
 			let restaurantTabs = this.state.areaList.map( (area,key) => {
 				return 	(<RestaurantTab
 													tabLabel={area.name}
@@ -198,7 +196,7 @@ export default class MainTab extends Component {
 													getScrollViewRefs={this._getScrollViewRefs}
 													refsCurrentScrollView= {this.refsCurrentScrollView}
 													hideTabBar = {this.props.hideTabBar}
-													showTabBer = {this.props.showTabBer}/>)
+													showTabBar = {this.props.showTabBar}/>)
 				});
 			return(
 				<ScrollableTabView  style={{}}
@@ -227,7 +225,8 @@ export default class MainTab extends Component {
 												refsCurrentScrollView= {this.refsCurrentScrollView}
 												advertisement={this.state.advertisement}
 												hideTabBar = {this.props.hideTabBar}
-												showTabBer = {this.props.showTabBer}/>
+												showTabBar = {this.props.showTabBar}
+												openMenu = {this._openMenu}/>
 
 
 							<RestaurantTab 	tabLabel='点餐'
@@ -237,7 +236,7 @@ export default class MainTab extends Component {
 															getScrollViewRefs={this._getScrollViewRefs}
 															refsCurrentScrollView= {this.refsCurrentScrollView}
 															hideTabBar = {this.props.hideTabBar}
-	 											 	 	 showTabBer = {this.props.showTabBer}/>
+	 											 	 	 showTabBar = {this.props.showTabBar}/>
 								{restaurantTabs}
 
 				</ScrollableTabView>
@@ -250,7 +249,9 @@ export default class MainTab extends Component {
 				{this.renderScrollableTabView()}
         <HeaderWithBanner
 						bannerList={this.state.bannerList}
-						scrollY = {this.state.scrollY}/>
+						scrollY = {this.state.scrollY}
+						openMenu = {this._openMenu}
+						navigator={this.props.navigator}/>
 				{this._renderRestaurantCover()}
 				{this._renderMenuView()}
      </View>

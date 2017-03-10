@@ -17,42 +17,42 @@ export default (props) => {
         case '0':
             statusColor = {color:'#b2b2b2'};
             statusMessage = '等待商家确认';
-            statusImageURL = require("./Images/normal.png");
+            statusImageURL = require("./Image/normal.png");
             break;
         case '10':
             statusColor = {color:'#33cd5f'};
             statusMessage = '商家已确认, 准备中';
-            statusImageURL = require("./Images/normal.png");
+            statusImageURL = require("./Image/normal.png");
             break;
         case '20':
             statusColor = {color:'#33cd5f'};
             statusMessage = '商家已确认, 准备中';
-            statusImageURL = require("./Images/normal.png");
+            statusImageURL = require("./Image/normal.png");
             break;
         case '30':
             statusColor = {color:'#9bc8df'};
             statusMessage = '送餐员已开始送餐';
-            statusImageURL = require("./Images/happy.png");
+            statusImageURL = require("./Image/happy.png");
             break;
         case '40':
             statusColor = {color:'#11c1f3'};
             statusMessage = '已送到, 满意吗？';
-            statusImageURL = require("./Images/happy.png");
+            statusImageURL = require("./Image/happy.png");
             break;
         case '55':
             statusColor = {color:'#886aea'};
             statusMessage = '新用户订单确认中';
-            statusImageURL = require("./Images/normal.png");
+            statusImageURL = require("./Image/normal.png");
             break;
         case '60':
             statusColor = {color:'#11c1f3'};
             statusMessage = '客服稍后联系您改运费 >_<';
-            statusImageURL = require("./Images/normal.png");
+            statusImageURL = require("./Image/normal.png");
             break;
         case '5':
             statusColor = {color:'#ef473a'};
             statusMessage = '糟糕, 有的菜没了 #_#';
-            statusImageURL = require("./Images/unhappy.png");
+            statusImageURL = require("./Image/unhappy.png");
             break;
     }
     const _phoneNumberVerify = () => {

@@ -7,6 +7,9 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
+import icoMoonConfig from '../../../fontConfig.json';
+const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 export default (props) =>{
 
   let backIcon;
@@ -21,9 +24,7 @@ export default (props) =>{
         <TouchableOpacity style={{flex:0.2,}}
                           onPress={props.goBack}>
           <View style={styles.backButton}>
-            <Text style={styles.backIcon}>
-                {backIcon}
-            </Text>
+            <Icon name="cm-close" size={30} color="#000000" />
           </View>
         </TouchableOpacity>
       )

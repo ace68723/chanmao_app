@@ -38,7 +38,6 @@ class AddInfo extends Component {
     constructor(props) {
         super(props);
         this.state={
-          // placeId: props.placeId,
           formattedAddress:props.formattedAddress,
           name:"",
           phoneNumber:"",
@@ -46,9 +45,8 @@ class AddInfo extends Component {
           buzzCode:"",
           isLoading: false,
           backToAddressList:false,
+					choosedType:'Home',
         }
-
-        // this._onChange = this._onChange.bind(this);
         this._submitAddress = this._submitAddress.bind(this);
         this._chooseType = this._chooseType.bind(this);
     }
@@ -56,29 +54,10 @@ class AddInfo extends Component {
       this._animatedChooseType = new Animated.Value(0);
     }
     componentDidMount(){
-      // if(this.props.placeId){
-        // const placeId = this.props.placeId
-        // AddressAction.formatAddress(placeId);
-        // AddressStore.addChangeListener(this._onChange);
-      // }
-
-
+			this._chooseType()
     }
     componentWillUnmount(){
-      // AddressStore.removeChangeListener(this._onChange);
     }
-    // _onChange(){
-    //     this.setState(_getSate);
-    //     // if(this.state.backToAddressList){
-    //     //   this.setState({
-    //     //     backToAddressList:false,
-    //     //   })
-    //     //
-    //     //   setTimeout(function () {
-    //     //       AddressAction.getAddress();
-    //     //   }, 500);
-    //     // }
-    // }
     showLoading(){
       if(this.state.isLoading)
         return(<Loading />)
@@ -207,8 +186,6 @@ class AddInfo extends Component {
         </View>
       )
     }
-    // value={this.state.phoneNumber}
-
     render(){
         const interpolatedRotateAnimation = this._animatedChooseType.interpolate({
            inputRange: [0, 100],
@@ -222,7 +199,7 @@ class AddInfo extends Component {
         return(
           <View style={styles.mainContainer}>
           <Header title={"地址"}
-	                goBack={this.props.goBack}
+	                goBack={AddressAction.closeAddInfo}
 	                leftButtonText={'×'}/>
             <ScrollView scrollEnabled={true}
                         keyboardShouldPersistTaps="always"
@@ -234,7 +211,24 @@ class AddInfo extends Component {
                         {this.state.formattedAddress.address}
                       </Text>
                     </View>
-                    <View style= {styles.separator}/>
+										<View style= {styles.separator}/>
+										<TouchableWithoutFeedback onPress={this._chooseType}>
+											<View style={[styles.inputBox,{overflow:"hidden",height:40}]}>
+												<Animated.Image source={require("./Image/button_enter.png")}
+																				style={{marginLeft:16,
+																								width:25,
+																								height:28,
+																								transform: [{rotate: interpolatedRotateAnimation}]}}/>
+												<Animated.View style={{flexDirection:"column",flex:1,marginTop:interpolatedMarginTop}}>
+														<Text style={{marginLeft:10,marginTop:12,fontFamily:'FZZhunYuan-M02S',}}>
+															设置为默认地址(选填)
+														</Text>
+														{this._renderChooseType()}
+
+												</Animated.View>
+											</View>
+										</TouchableWithoutFeedback>
+										<View style= {styles.separator}/>
                     <View style={styles.inputBox}>
                       <Text style={styles.inputText}>
                         联系人:
@@ -299,22 +293,7 @@ class AddInfo extends Component {
                       />
                     </View>
                     <View style= {styles.separator}/>
-                    <TouchableWithoutFeedback onPress={this._chooseType}>
-                      <View style={[styles.inputBox,{overflow:"hidden",height:40}]}>
-                        <Animated.Image source={require("./Image/button_enter.png")}
-                                        style={{marginLeft:16,
-                                                width:25,
-                                                height:28,
-                                                transform: [{rotate: interpolatedRotateAnimation}]}}/>
-                        <Animated.View style={{flexDirection:"column",flex:1,marginTop:interpolatedMarginTop}}>
-                            <Text style={{marginLeft:10,marginTop:12,fontFamily:'FZZhunYuan-M02S',}}>
-                              设置为默认地址(选填)
-                            </Text>
-                            {this._renderChooseType()}
 
-                        </Animated.View>
-                      </View>
-                    </TouchableWithoutFeedback>
 
 
 

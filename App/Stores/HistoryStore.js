@@ -9,7 +9,6 @@ let state = {
           current:null,
           unavailable:[],
           isRefreshing:false,
-          showHistoryOrderDetail:false,
         };
 let HistoryDetailData;
 const HistoryStore = Object.assign({},EventEmitter.prototype,{

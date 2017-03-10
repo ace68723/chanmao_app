@@ -1,177 +1,170 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-'use strict';
-import React, {
-	Component,
-} from 'react';
+'use strict'
+import React, { Component } from 'react';
 import {
-  Animated,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
   Dimensions,
   Image,
-  StyleSheet,
+  Alert,
+  Linking,
   ScrollView,
-  Text,
-  View,
-  TouchableOpacity,
+  Clipboard,
 } from 'react-native';
-import Header from '../General/Header';
 
-class Setting extends Component {
-    constructor(props) {
-        super(props);
-        this._goBack = this._goBack.bind(this);
-        this._joinUs = this._joinUs.bind(this);
-        this.state = {
-          imageWidth:(Dimensions.get('window').width-26)/3,
-          imageHeight:(Dimensions.get('window').width-26)/3,
-          theta: new Animated.Value(45),
-        }
-        this._animate = this._animate.bind(this);
+const {height, width} = Dimensions.get('window');
+const deviceWidth = width;
+const deviceHeight = height;
+import Header from '../General/Header';
+export default class InfoPage extends Component {
+  constructor(){
+    super();
+
+    this._goBack = this._goBack.bind(this);
+  }
+
+  contact(num,type){
+    if(type == "phone"){
+      Alert.alert("拨打号码",num,[{
+       text: 'OK',
+       onPress: () => {
+         return Linking.openURL('tel:'+num);
+       }
+     },
+      {
+       text: 'Cancel',
+       style: 'cancel',
+      }]);
     }
-    componentDidMount() {
-      this._animate();
+    else if(type == "email"){
+      Alert.alert("发送邮件",num,[{
+       text: 'OK',
+       onPress: () => {
+         return Linking.openURL('mailto:'+num);
+       }
+     },
+      {
+       text: 'Cancel',
+       style: 'cancel',
+      }]);
     }
-    _animate() {
-      //  this.state.theta.setValue(0);
-       Animated.timing(this.state.theta, {
-         toValue: 180,
-         duration: 5000,
-       }).start(this._animate);
-     }
-    _goBack(){
-      this.props.navigator.pop();
-    }
-    _joinUs(){
-      this.props.navigator.push({
-        id: 'JoinUs',
-        category:3,
-      })
-    }
-    render(){
-      return(
-        <View style={styles.mainContainer}>
-            <Header title={'关于我们'} goBack={this._goBack}/>
-            <ScrollView style={styles.scrollView}>
-              <Text style={styles.introduction}>
-                馋猫订餐，多伦多最大的网上订餐平台，为自己理想奋斗的热血团队，我们是专业不高冷，逗逼却又认真的馋猫小分队。
-              </Text>
-              <TouchableOpacity
-                 style={styles.button}
-                 activeOpacity={0.4}
-                 onPress={this._joinUs}>
-                  <Text style={styles.buttonText}>
-                    加入我们
-                  </Text>
-              </TouchableOpacity>
-                <View style={{height:1,marginLeft:30,marginRight:30,backgroundColor:'#b3b3b3'}}/>
-                  <View style={{flex:1,
-                                height:600,
-                                flexWrap:'wrap',
-                                flexDirection:'row',
-                                padding:10}}>
-                    <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                            source={require('./Image/kathy.jpg')}/>
-                    <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                            source={require('./Image/kathy.jpg')}/>
-                            <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                                    source={require('./Image/kathy.jpg')}/>
-                            <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                                    source={require('./Image/kathy.jpg')}/>
-                                    <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                                            source={require('./Image/kathy.jpg')}/>
-                                    <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                                            source={require('./Image/kathy.jpg')}/>
-                     <View >
-                          <Animated.View style={[
-                               styles.flipCard,
-                               { backfaceVisibility: 'hidden',
-                                 transform: [
-                                 {perspective: 850},
-                                 {rotateX: this.state.theta.interpolate({
-                                   inputRange: [0, 180],
-                                   outputRange: ['0deg', '180deg']
-                                 })},
-                               ]}]}>
-                               <Image style={[styles.image,{height: this.state.imageHeight,width:this.state.imageWidth,}]}
-                                       source={require('./Image/kathy.jpg')}/>
-                           </Animated.View>
-                          <Animated.View style={[styles.flipCard, {
-                               backfaceVisibility: 'hidden',
-                               position: 'absolute',
-                               top: 0,
-                               transform: [
-                                 {perspective: 850},
-                                 {rotateX: this.state.theta.interpolate({
-                                   inputRange: [0, 180],
-                                   outputRange: ['180deg', '360deg']
-                                 })},
-                               ]}]}>
-                               <View style={[styles.image,
-                                            {height: this.state.imageHeight,
-                                             width:this.state.imageWidth,
-                                             justifyContent:'center'}]}>
-                                         <Text style={{justifyContent:'center'}}>
-                                            爱工作爱生活的一只馋猫
-                                         </Text>
-                                </View>
-                          </Animated.View>
-                    </View>
-                    </View>
-            </ScrollView>
+  }
+  _goBack(){
+    this.props.navigator.pop();
+  }
+  render() {
+
+    // <Text style={styles.centerFont} onPress={()=>{
+    //   this.contact("647-515-6699","phone");
+    // }} allowFontScaling={false}>客服电话：647-515-6699</Text>
+    return (
+      <View style={styles.container}>
+        <Header title={'关于我们'} goBack={this._goBack}/>
+        <ScrollView style={{flex:1,  marginTop:64,paddingLeft:20,paddingRight:20}}>
+
+            <View style={styles.fontContainer}>
+                <Text style={styles.headerFont} allowFontScaling={false} >
+                  这是一个致力于打造多伦多最佳订餐平台，为自己理想奋斗的热血团队。我们愿真诚的接纳您的意见，也邀请志同道合的你加入我们。
+                </Text>
+            </View>
+                <View style={styles.centerContent}>
+                          <View style={styles.imgContainer} >
+                            <Image source={require('./Image/cmQRcode.jpeg')} style={{width: 140, height: 140}} />
+                          </View>
+                          <View style={styles.centerFontContainer}>
+                              <Text style={styles.centerFontWEIXIN}
+                                    selectable={true}
+                                    allowFontScaling={false}>
+                                    微信客服：chanmaoweixin
+                              </Text>
+                              <Text style={styles.centerFont} onPress={()=>{
+                                this.contact("647-205-6668","phone");
+                              }} allowFontScaling={false}>商务合作：647-205-6668</Text>
+                              <Text style={styles.centerFont} onPress={()=>{
+                                this.contact("info@chanmao.ca","email");
+                              }} allowFontScaling={false}>E-mail：info@chanmao.ca</Text>
+                          </View>
+                </View>
+        </ScrollView>
+        <View style={styles.footer}>
+            <Text style={styles.footerFont} allowFontScaling={false}>
+              Chanmao Inc. 版权所有
+            </Text>
+            <Text style={styles.footerFont} allowFontScaling={false}>
+
+            </Text>
+            <Text style={styles.footerFont} allowFontScaling={false}>
+              版本号：V 2.3
+            </Text>
         </View>
-      )
-    }
+
+      </View>
+    );
+  }
 }
 
-
-
-
-let styles = StyleSheet.create({
-  mainContainer: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#f2f2f2',
   },
-  scrollView:{
-    flex: 1,
-    marginTop:64,
-    backgroundColor:'white',
+  fontContainer:{
+    flex:1,
+    padding:20,
   },
-  introduction:{
-    color:'#666666',
-    marginLeft:40,
-    marginRight:40,
-    marginTop:30,
-    marginBottom:20,
-    fontWeight: '500',
-    lineHeight: 20,
+  headerFont: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight:20
   },
-  button: {
-      height: 30,
-      width:100,
-      backgroundColor: '#fff',
-      borderColor: '#ff8b00',
-      borderWidth: 1,
-      borderRadius: 8,
-      alignItems:'center',
-      alignSelf:'center',
-      justifyContent:'center',
-      marginBottom:10,
-  },
-  buttonText: {
-      fontSize: 17,
-      color:'#ff8b00',
-  },
-  image:{
-    margin:1,
-  },
-  flipCardContainer: {
-    marginVertical: 40,
+  centerContent:{
+    flex:1,
+    backgroundColor: '#ffffff',
 
+    justifyContent: 'center',
+    shadowColor:'#bfbfbf',
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    },
   },
-  flipCard: {
-    backfaceVisibility: 'hidden',
+  centerFontContainer:{
+    paddingTop:20,
+    paddingBottom:25,
+    alignItems: 'center',
   },
+  centerFont:{
+    paddingBottom:20,
+    fontSize:16
+  },
+  centerFontWEIXIN:{
+    paddingBottom:20,
+    fontSize:16,
+    color:'#0080ff'
+  },
+
+  footer:{
+    alignSelf:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding:10,
+    width: deviceWidth-50,
+    borderTopWidth: 1,
+    borderColor: '#d9d9d9',
+  },
+  footerFont:{
+    fontSize:15,
+  },
+  imgContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding:30
+
+  }
+
 });
-
-module.exports = Setting;

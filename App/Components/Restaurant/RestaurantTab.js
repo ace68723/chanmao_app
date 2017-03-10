@@ -32,9 +32,9 @@ export default class RestaurantTab extends Component {
 	        restaurantCoverOpacity: new Animated.Value(0), // init restaurant tab view opacity 0
 					index:props.index,
 	      };
-			this.state = Object.assign({},state,RestaurantStore.getRestaurantState())
+			this.state = Object.assign({},state,RestaurantStore.getRestaurantState());
       this._onChange = this._onChange.bind(this);
-      this._handleRestaurantPress = this._handleRestaurantPress.bind(this)
+      this._handleRestaurantPress = this._handleRestaurantPress.bind(this);
       this._onRefresh = this._onRefresh.bind(this);
       this._handleAppStateChange = this._handleAppStateChange.bind(this);
       // this._openMenu = this._openMenu.bind(this);
@@ -43,9 +43,10 @@ export default class RestaurantTab extends Component {
   }
   componentDidMount(){
 		setTimeout( () =>{
+			RestaurantStore.addChangeListener(this._onChange);
 			if(this.props.index == 1){
 				RestaurantAction.getRestaurant();
-				RestaurantStore.addChangeListener(this._onChange);
+				AppState.addEventListener('change', this._handleAppStateChange);
 			}
 			if(this.props.index !=1){
 				const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
@@ -64,19 +65,28 @@ export default class RestaurantTab extends Component {
   componentWillUnmount() {
 		if(this.props.index == 1){
      RestaurantStore.removeChangeListener(this._onChange);
+		 AppState.removeEventListener('change', this._handleAppStateChange);
 	 }
-  	//  AppState.removeEventListener('change', this._handleAppStateChange);
+
   }
   _handleAppStateChange(currentAppState) {
     if(currentAppState === 'active'){
-      // this._onRefresh();
+      RestaurantAction.getRestaurant();
     }
   }
   _onChange(){
+		if(this.props.index == 1){
 			const restaurantData = RestaurantStore.getRestaurantData()
 			const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
 			const state = Object.assign({},restaurantData,dataSource)
-      this.setState(state)
+			this.setState(state)
+		}
+		if(this.props.index !=1){
+			const restaurantData = RestaurantStore.getRestaurantData(this.props.area)
+			const dataSource = {dataSource:this.state.dataSource.cloneWithRows(restaurantData)}
+			const state = Object.assign({},restaurantData,dataSource)
+			this.setState(state)
+		}
   }
 
   _onRefresh(){

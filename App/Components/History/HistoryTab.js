@@ -26,6 +26,7 @@ import HistoryService from '../../Services/HistoryService';
 import HistoryStore from '../../Stores/HistoryStore';
 import Header from '../General/Header';
 import HistoryOrderDetail from './HistoryOrderDetail';
+import Modal from 'react-native-modalbox';
 
 // const historyData = () => {
 //   return HistoryStore.getHistoryData()
@@ -33,7 +34,7 @@ import HistoryOrderDetail from './HistoryOrderDetail';
 class HistoryTab extends Component {
     constructor(props) {
         super(props);
-        this.state = HistoryStore.getState();
+        this.state = Object.assign({},HistoryStore.getState(),{showHistoryOrderDetail:false});
         this._onChange = this._onChange.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
         this._doAutoRefresh = this._doAutoRefresh.bind(this);
@@ -43,7 +44,6 @@ class HistoryTab extends Component {
     }
     componentDidMount(){
       setTimeout( () =>{
-				console.log('history')
 				const _doAutoRefresh = this._doAutoRefresh;
 	      HistoryStore.addChangeListener(this._onChange);
 	      this._doAutoRefresh();
@@ -55,7 +55,8 @@ class HistoryTab extends Component {
          HistoryStore.removeChangeListener(this._onChange);
     }
     _onChange(){
-        this.setState(HistoryStore.getState())
+				const state = Object.assign({},this.state,HistoryStore.getState())
+        this.setState(state)
 				console.log(HistoryStore.getState())
         if(this.state.verifyPhoneResult === 'FAIL'){
           this._initVerifyPhoneResult();
@@ -80,9 +81,9 @@ class HistoryTab extends Component {
           verifyPhoneResult:''
         });
     }
-    _doAutoRefresh(checkoutSuccessful){
+    _doAutoRefresh(){
       const currentRoutes = this.props.navigator.getCurrentRoutes();
-      if(currentRoutes.length == 1 && currentRoutes[0].name == 'Home' || checkoutSuccessful){
+      if(currentRoutes.length == 1 && currentRoutes[0].name == 'Home'){
         this.setState({
           isRefreshing: true,
         })
@@ -98,15 +99,23 @@ class HistoryTab extends Component {
       HistoryService.getHistoryData()
     }
 
-    _HistoryOrderDetailVisible(){
-      this.setState({
-        showHistoryOrderDetail: !this.state.showHistoryOrderDetail,
-      })
+    _HistoryOrderDetailVisible(oid){
+				this.setState({
+					showHistoryOrderDetail: !this.state.showHistoryOrderDetail,
+					historyDetailOid:oid,
+				})
+				setTimeout( () =>{
+					if(this.state.showHistoryOrderDetail){
+						this.props.hideTabBar();
+					}else{
+						this.props.showTabBar();
+					}
+				}, 400);
     }
     _HistoryOrderDetail(){
       if(this.state.showHistoryOrderDetail){
         return(
-          <HistoryOrderDetail modalVisible={this.state.showHistoryOrderDetail} HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}/>
+          <HistoryOrderDetail historyDetailOid = {this.state.historyDetailOid}/>
         )
       }
 
@@ -169,7 +178,13 @@ class HistoryTab extends Component {
                    { historylist }
                </View>
              </ScrollView>
-             {this._HistoryOrderDetail()}
+						 <Modal style={styles.modal}
+						 				position={"center"}
+						 				isOpen={this.state.showHistoryOrderDetail}
+										onClosed={this._HistoryOrderDetailVisible}
+						 				swipeToClose={false}>
+						 			{this._HistoryOrderDetail()}
+						 </Modal>
          </View>
       )
 
@@ -212,7 +227,12 @@ let styles = StyleSheet.create({
     color: "#fff",
     fontSize:20,
 		fontFamily:'FZZongYi-M05S',
-  }
+  },
+	modal: {
+		justifyContent: 'center',
+		height: 400,
+		width: 300,
+	},
 
 });
 

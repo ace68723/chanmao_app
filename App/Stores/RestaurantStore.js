@@ -32,7 +32,6 @@ const initState = ()=>{
       {dltype:-1,
        description:'请先选择地址信息'
       }],
-    isLoading: true,
 		showBanner:true,
 	}
 }
@@ -53,11 +52,11 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 	},
   getRestaurantData(area){
 		if(area == undefined){
-			const restaurantDataAll = realm.objects('Restaurant').filtered('zone == 0 OR zone == 99').sorted([['rank',true],['distance',false]]);
+			const restaurantDataAll = realm.objects('Restaurant').filtered('zone == 0 OR zone == 99').sorted([['rank',true],['open',true],['distance',false]]);
 
 			return restaurantDataAll
 		}else{
-			const restaurantDataAll = realm.objects('Restaurant').filtered('area = '+area +' AND zone != 0').sorted([['rank',true],['distance',false]]);
+			const restaurantDataAll = realm.objects('Restaurant').filtered('area = '+area +' AND zone != 0').sorted([['rank',true],['open',true],['distance',false]]);
 			return restaurantDataAll
 		}
     // return restaurantData
@@ -137,7 +136,7 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 		const result = data.result;
 		const total = data.total;
 		const startAmount = data.startAmount;
-		const isLoading = false;
+		// const loading = false;
 		let dltypeList;
 		if(pretax<startAmount){
 				dltypeList=[
@@ -166,7 +165,7 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
 		}
 		const selectedAddress = realm.objects('Address').filtered('selected == true' )[0]
 		checkoutState = Object.assign({},checkoutState,
-										{dlexp,dltype,message,pretax,pretax_ori,result,total,dltypeList,isLoading,selectedAddress});
+										{dlexp,dltype,message,pretax,pretax_ori,result,total,dltypeList,selectedAddress});
 	},
 	checkout(data){
 		let checkoutSuccessful;

@@ -52,3 +52,12 @@ const styles = StyleSheet.create({
 // import icoMoonConfig from './fontConfig.json';
 // const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 // <Icon name="cm-location" size={30} color="#000000" />
+
+
+
+
+// fontFamily:'FZZongYi-M05S',
+//
+//
+//
+// fontFamily:'FZZhunYuan-M02S',

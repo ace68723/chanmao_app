@@ -270,6 +270,7 @@ export default class InputAnimation extends Component {
 															 is_register = {this.props.is_register}
 															 is_forgot = {this.props.is_forgot}
 															 if_handleLogin = {this._handleLogin}
+															 if_openAdView = {this.props.if_openAdView}
 															 ib_showLoading = {this.props.ib_showLoading}
 															 />
 								</View>

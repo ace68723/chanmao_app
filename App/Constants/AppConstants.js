@@ -84,5 +84,5 @@ module.exports ={
     //TabsStore
     GO_TO_HISTORY:'GO_TO_HISTORY',
 
-    CMVERSION:'2.3.0',
+    CMVERSION:'2.3.2',
 }

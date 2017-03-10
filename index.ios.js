@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AppState,
   StyleSheet,
   Text,
   View
@@ -23,6 +24,7 @@ export default class chanmao extends Component {
       isUpdate:false,
     }
     this.handleLogoUnmount = this.handleLogoUnmount.bind(this);
+    this._handleAppStateChange = this._handleAppStateChange.bind(this);
   }
 
   componentDidMount(){
@@ -31,6 +33,15 @@ export default class chanmao extends Component {
         isUpdate:false,
       })
     }, 5000);
+    AppState.addEventListener('change', this._handleAppStateChange);
+  }
+  _handleAppStateChange(currentAppState) {
+    if(currentAppState === 'active'){
+      this.setState({showCover:true})
+      setTimeout( () =>{
+        this.setState({showCover:false})
+      }, 1000);
+    }
   }
   codePushStatusDidChange(status) {
 
@@ -63,11 +74,13 @@ export default class chanmao extends Component {
   render() {
     let renderLogo = this.state.renderLogo ? <LogoAnimationView unmount={this.handleLogoUnmount}/> : null;
     let updateView = this.state.isUpdate ? <View style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#ffffff'}}/> : null;
+    let cover = this.state.showCover ?  <View style={{backgroundColor:'rgba(0,0,0,0)',position:'absolute',top:0,left:0,right:0,bottom:0}}/> : null;
     return (
       <View style={styles.container}>
         <Router/>
         {renderLogo}
         {updateView}
+        {cover}
       </View>
     );
   }

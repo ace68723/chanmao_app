@@ -92,6 +92,28 @@ const RestaurantModule = {
 
                         })
                     }
+                    console.log(data)
+                    if(data.close.length>0){
+                      data.close.forEach((restaurant, id)=>{
+                        id = data.open.length + id;
+                        const rid = Number(restaurant.rid);
+                        const area = Number(restaurant.area);
+                        const desc = restaurant.desc;
+                        const distance = Number(restaurant.distance);
+                        const end_time = restaurant.end_time;
+                        const mob_banner = restaurant.mob_banner;
+                        const name = restaurant.name;
+                        const open = Number(restaurant.open);
+                        const start_amount = restaurant.start_amount;
+                        const start_time = restaurant.start_time;
+                        const watermark = Number(restaurant.watermark);
+                        const zone = 99 ;
+                        const rank = 0;
+                        const restaurantDataClose = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
+                        realm.create('Restaurant',restaurantDataClose,true);
+
+                      })
+                    }
                     // if(data.close.length>0 ){
                     //     data.close.forEach((restaurant,id)=>{
                     //       const rid = Number(restaurant.rid);
@@ -255,7 +277,7 @@ const RestaurantModule = {
         const uaid    = realm.objectForPrimaryKey('Cart','uaid').value;
         const dlexp   = realm.objectForPrimaryKey('Cart','dlexp').value;
         let items   = MenuStore.getCart();
-        const comment = '';
+        const comment = io_data.comment;
         items.forEach((item)=>{
           item.amount = item.qty;
           item.ds_id = item.id;

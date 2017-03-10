@@ -16,6 +16,9 @@ import Tabs from './Tabs/Tabs';
 import Checkout from './Restaurant/Checkout';
 import MenuSearch from './Restaurant/MenuSearch';
 import AddressList from './Address/AddressList';
+import AdView from './General/AdView';
+import AboutUs from './Setting/AboutUs';
+
 export default class Router extends Component {
   constructor(){
     super()
@@ -24,6 +27,7 @@ export default class Router extends Component {
       showLogin:true,
     }
     this._goToHome = this._goToHome.bind(this);
+    this._renderLoginScene = this._renderLoginScene.bind(this);
 
   }
   _renderScene(route, navigator) {
@@ -108,7 +112,8 @@ export default class Router extends Component {
          route.id == 'Menu' ||
          route.id == 'Checkout'||
          route.id == 'MenuSearch' ||
-         route.id == 'AddressList'
+         route.id == 'AddressList' ||
+         route.id == 'AdView'
        ){
         return NoBackSwipe
       }else{
@@ -134,10 +139,30 @@ export default class Router extends Component {
       })
     }, 3500);
   }
+  _renderLoginScene(route, navigator) {
+      switch (route.id) {
+        case 'AdView':
+          return <AdView  navigator={navigator} url={route.url}/>;
+        default:
+          return (
+            <Login
+              goToHome = {this._goToHome}
+              navigator={navigator}
+            />
+          );
+      }
+  }
   _renderLogin(){
-    return(
-      <Login goToHome = {this._goToHome}/>
-    )
+    return (
+      <View style={{position:'absolute',top:0,left:0,bottom:0,right:0,}}>
+        <Navigator
+           initialRoute={{name: 'Home', index: 0}}
+           renderScene={this._renderLoginScene}
+           configureScene={this._transition}
+         />
+      </View>
+
+      );
   }
   render() {
     return (

@@ -21,6 +21,23 @@ export default {
         }, 1000);
       }
     },
+    async doAuth(){
+          try{
+            const res = await Auth.doAuth()
+            if(res.result == 0){
+              dispatch({
+                  actionType: AppConstants.LOGIN_SUCCESS, res
+              })
+            }else{
+              console.log(res)
+              const errorMessage = res.message  || '验证失效,未知错误'
+              throw errorMessage
+            }
+          }catch(error){
+            console.log(error)
+            // Alert.errorAlert(error.message || '验证失败'+JSON.stringify(error))
+          }
+    },
     async doWechatAuth(io_data){
       try{
         const deviceToken = io_data.deviceToken;

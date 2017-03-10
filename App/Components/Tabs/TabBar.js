@@ -9,6 +9,9 @@ import {
   Animated,
 } from 'react-native';
 import Button from './Button';
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
+import icoMoonConfig from '../../../fontConfig.json';
+const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 
 const {width,height} = Dimensions.get('window');
 
@@ -34,14 +37,14 @@ class DefaultTabBar extends Component {
           showTabBar:props.showTabBar,
       })
       if(props.showTabBar){
-        this._showTabBer()
+        this._showTabBar()
       }else{
         this._hideTabBar()
       }
     }
 
   }
-  _showTabBer(){
+  _showTabBar(){
     Animated.timing(
       this.state.top,
       {toValue: height-50,
@@ -67,7 +70,20 @@ class DefaultTabBar extends Component {
         const textColor = isTabActive ? activeTextColor : inactiveTextColor;
 
         const fontWeight = isTabActive ? 'bold' : 'normal';
+        let iconName;
+        switch (page) {
+          case 0:
+            iconName = 'cm-home_page';
+            break;
+          case 1:
+            iconName = 'cm-my_order';
+            break;
+          case 2:
+            iconName = 'cm-setting';
+            break;
+          default:
 
+        }
         return (
           <Button
               style={{flex: 1, }}
@@ -78,6 +94,7 @@ class DefaultTabBar extends Component {
               onPress={() => onPressHandler(page)}
             >
               <View style={[styles.tab, this.props.tabStyle, ]}>
+                <Icon style={{top:5}} name={iconName} size={30} color={textColor} />
                 <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
                   {name}
                 </Text>

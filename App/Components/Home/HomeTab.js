@@ -9,7 +9,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -19,61 +18,52 @@ import Swiper from 'react-native-swiper'
 
 
 const {width,height} = Dimensions.get('window');
-
+var cols = 2;
+var boxW = 100;
+// var vMargin = (width-cols*boxW)/(cols+1);
+// var hMargin = 25;
 
 export default class LoginButton extends Component {
 
   constructor(){
     super();
-		this.state = {
-
-		}
+		this._handleOnPress = this._handleOnPress.bind(this);
   }
 	componentDidMount(){
-
-
     const index = this.props.index;
 		const scrollView = this.refs._scrollVew;
 		const scrollViewContent = this.refs._scrollViewContent;
 		const ref = Object.assign({},{index,scrollView,scrollViewContent})
 		this.props.getScrollViewRefs(ref)
-
 	}
-
+	_handleOnPress(advertisement){
+		if(advertisement.navitype == 2){
+			this.props.navigator.push({
+				id: 'AdView',
+				url:advertisement.naviparam.url,
+			})
+		}
+		if(advertisement.navitype == 3){
+				advertisement.restaurant = advertisement.naviparam;
+				this.props.openMenu(height,advertisement.naviparam);
+		}
+	}
   _renderAdv(){
     if(this.props.advertisement && this.props.advertisement.length>0){
+				let Ad = this.props.advertisement.map((advertisement,index)=>{
+					return(
+						<TouchableWithoutFeedback key={index} onPress={this._handleOnPress.bind(null,advertisement)}>
+							<View style={styles.autoViewStyle}>
+								<Image source={{uri:advertisement.image}} style={styles.adLarger}/>
+							</View>
+						</TouchableWithoutFeedback>
+					)
+
+				})
       return(
         <View style={styles.container}>
-
-
-              <View style={{flexDirection:'row',marginLeft:2,marginRight:2,}}>
-                   <Image source={{uri:this.props.advertisement[0].image}} style={styles.adLarger}/>
-               <View style={{marginLeft:3,flexDirection:'column'}}>
-                    <Image source={{uri:this.props.advertisement[1].image}} style={styles.adLarger}/>
-
-               </View>
-             </View>
-             <View style={{flexDirection:'row',marginLeft:2,marginRight:2,marginTop:3}}>
-               <View style={{marginRight:3,flexDirection:'column'}}>
-                    <Image source={{uri:this.props.advertisement[2].image}} style={styles.adLarger}/>
-               </View>
-                    <Image source={{uri:this.props.advertisement[3].image}} style={styles.adLarger}/>
-             </View>
-             <View style={{flexDirection:'row',marginLeft:2,marginRight:2,marginTop:3}}>
-                  <Image source={{uri:this.props.advertisement[4].image}} style={styles.adLarger}/>
-              <View style={{marginLeft:3,flexDirection:'column'}}>
-                  <Image source={{uri:this.props.advertisement[5].image}} style={styles.adLarger}/>
-
-              </View>
-            </View>
-						<View style={{flexDirection:'row',marginLeft:2,marginRight:2,marginTop:3}}>
-								 <Image source={{uri:this.props.advertisement[4].image}} style={styles.adLarger}/>
-						 <View style={{marginLeft:3,flexDirection:'column'}}>
-								 <Image source={{uri:this.props.advertisement[5].image}} style={styles.adLarger}/>
-
-						 </View>
-					 </View>
-       </View>
+					{Ad}
+        </View>
 
       )
     }
@@ -83,12 +73,12 @@ export default class LoginButton extends Component {
     return(
         <ScrollView ref={'_scrollVew'}
                     scrollEventThrottle={16}
-				            onScroll={this.props.scrollEventBind()}>
+				            onScroll={this.props.scrollEventBind()}
+										showsVerticalScrollIndicator={false}>
 
              <View style={{marginTop:240,height:0}}
                    ref={'_scrollViewContent'}/>
 						 {this._renderAdv()}
-
         </ScrollView>
 
 
@@ -97,11 +87,20 @@ export default class LoginButton extends Component {
 }
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+	 flex: 1,
+	 flexDirection:'row',
+	 flexWrap:'wrap',
+	},
+	autoViewStyle:{
+		alignItems:'center',
+		width:(width-9)/2,
+		height:(width-9)/(2*1.157),
+		marginLeft:3,
+		marginTop:3,
 	},
   adLarger:{
-    width:(width-7)/2,
-    height:(width-7)/(2*1.157),
+    width:(width-9)/2,
+    height:(width-9)/(2*1.157),
   },
   adSmall:{
     width:(width-7)/2,

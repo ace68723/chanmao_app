@@ -32,10 +32,14 @@ import Loading from '../Helpers/Loading';
 import CheckoutItem from './CheckoutItem';
 import CheckoutComment from './CheckoutComment';
 import RestaurantService from '../../Services/RestaurantService';
+import CommentModal from 'react-native-modalbox';
+
 // import RestaurantStore from '../../Stores/RestaurantStore';
 import RestaurantStore from '../../Stores/RestaurantStore';
 import MenuStore from '../../Stores/MenuStore';
 import RestaurantAction from '../../Actions/RestaurantAction';
+import HistoryService from '../../Services/HistoryService';
+
 // device(size): get device height and width
 const {height, width} = Dimensions.get('window');
 const deviceHeight = height;
@@ -58,6 +62,7 @@ class Confirm extends Component {
 											anim: new Animated.Value(0), //for background image
 											AnimatedImage:props.restaurant.imgUrl,
 											renderAddress:false,
+											loading: true,
                     }
 				this.state = Object.assign({},state,RestaurantStore.getCheckoutSate())
         this._onChange = this._onChange.bind(this);
@@ -71,7 +76,6 @@ class Confirm extends Component {
         this._doCheckout = this._doCheckout.bind(this);
         this._handleCommentChange = this._handleCommentChange.bind(this);
         this._handleSubmitComment = this._handleSubmitComment.bind(this);
-
     }
     componentWillMount(){
 			this._gestureHandlers = {
@@ -107,13 +111,13 @@ class Confirm extends Component {
       RestaurantStore.removeChangeListener(this._onChange);
     }
     _onChange(){
-        this.setState(RestaurantStore.getCheckoutSate());
+				const state = Object.assign({},RestaurantStore.getCheckoutSate(),{loading:false})
+        this.setState(state);
 				if(this.state.checkoutSuccessful){
 					this._goToHistory();
 				}
     }
     _updateUaid(address){
-
       if(address && address.uaid){
         const uaid = address.uaid;
         this.setState({
@@ -123,20 +127,26 @@ class Confirm extends Component {
       }
     }
     _updateDltype(deliverType){
-			this.setState({dltype:deliverType.type})
-			const dltype = deliverType.type
-			RestaurantAction.updateDltype(dltype);
+			if(!this.state.loading){
+				this.setState({dltype:deliverType.type,loading:true,})
+				const dltype = deliverType.type
+				RestaurantAction.updateDltype(dltype);
+			}
     }
     _calculateDeliveryFee(){
-        RestaurantAction.calculateDeliveryFee()
+			this.setState({
+				loading:true,
+			})
+      RestaurantAction.calculateDeliveryFee()
     }
     _doCheckout(){
       this.setState({
-        isLoading:true,
+        loading:true,
       })
-      RestaurantAction.checkout();
+      RestaurantAction.checkout(this.state.comment);
     }
     _checkout(){
+
       let dldec;
       switch (this.state.dltype) {
         case 0:
@@ -154,20 +164,25 @@ class Confirm extends Component {
         dldec,
         '  税后总价: $' + this.state.total + '\n' +
         '确认就不可以修改了哟～' ,
-        [ {text:'取消',onPress:() => {}, style: 'cancel'},
+        [ {text:'取消',onPress:() => { }, style: 'cancel'},
           {text: '确认', onPress: () => this._doCheckout()},
         ],
       );
     }
     _goBack(){
-      this.props.navigator.pop();
+			if(!this.state.loading){
+	      this.props.navigator.pop();
+			}
     }
     _goToAddressList(){
-      this.props.navigator.push({
-        id: 'AddressList',
-      });
+			if(!this.state.loading){
+				this.props.navigator.push({
+					id: 'AddressList',
+				});
+			}
     }
     _goToHistory(){
+			HistoryService.getHistoryData();
       this.props.navigator.popToTop();
     }
     showLoading(){
@@ -191,6 +206,7 @@ class Confirm extends Component {
       }
     }
 		_goBack(){
+			if(this.state.loading)return
 			this.props.navigator.pop();
 		}
 		_handleScroll( e: any) {
@@ -208,22 +224,25 @@ class Confirm extends Component {
 			//
 			//
 			// </View>
-      if(this.state.selectedAddress && this.state.selectedAddress.hasOwnProperty("uaid")){
+      if(this.state.selectedAddress && this.state.selectedAddress.hasOwnProperty("uaid") && !this.state.loading){
         return(
-
             <TouchableOpacity style={styles.acceptButton}
                               activeOpacity={0.4}
                               onPress={this._checkout}>
-                <Text style={styles.acceptText}>
-                   结账
-                </Text>
+									<Text style={styles.acceptText}>
+										 结账
+									</Text>
             </TouchableOpacity>
-
-
         )
-      }else{
+      }else if(this.state.loading){
+				return(
+					<View style={styles.acceptButton}>
+							<Image source={require('./Image/Loading_dots_white.gif')}  style={{width:45,height:15}}/>
+					</View>
+				)
+			}else{
         return(
-          <View style={{alignItems:'center'}}>
+          <View style={styles.acceptButton}>
             <Text style={{color:'#9c9ea1',fontFamily:'FZZhunYuan-M02S',}}>请在上方选择配送地址</Text>
           </View>
 
@@ -341,6 +360,23 @@ class Confirm extends Component {
         </View>
       )
     }
+		_renderComment(){
+			return(
+				<CommentModal  style={styles.modal}
+											 position={"center"}
+											 isOpen={this.state.openEditComment}
+											 onClosed={()=>{this.setState({openEditComment:false})}}>
+					<TextInput style={styles.TextInput}
+										 placeholder="备注"
+										 selectionColor="#ff8b00"
+										 multiline={true}
+										 value={this.state.comment}
+										 onChangeText={(text) => {this.setState({comment:text})}}>
+					</TextInput>
+				</CommentModal>
+			)
+
+		}
     render(){
       let cartList = this.state.cart.map((item,index) => {
 
@@ -389,7 +425,15 @@ class Confirm extends Component {
 				outputRange: [10, 0],
 				extrapolate: 'clamp',
 			});
+			let commentText = ()=>{
+				if(this.state.comment){
+					return(	<Text>备注： {this.state.comment}</Text>)
+				}else{
+					return(<Text style={{color:'#ababb0'}}>添加备注（例如：忌口、过敏）</Text>)
+				}
+			}
       return(
+
         <View style={styles.mainContainer}>
 					<Background
 							 minHeight={0}
@@ -420,6 +464,16 @@ class Confirm extends Component {
 									{this._renderAddress()}
 									{cartList}
 									{this._renderDeliverType()}
+									<TouchableWithoutFeedback onPress={()=>{this.setState({openEditComment:true})}}>
+										<View style={{alignItems:'flex-start',
+																	marginTop:10,
+																	padding:20,
+																	borderColor:"#e2e2e4",
+																	borderBottomWidth: StyleSheet.hairlineWidth,
+																  borderTopWidth: StyleSheet.hairlineWidth,}}>
+												{commentText()}
+										</View>
+									</TouchableWithoutFeedback>
 									<CartItem icon={require('./Image/money-1.png')}
 														title={'税前价格'}
 														value={'$'+this.state.pretax}/>
@@ -451,6 +505,7 @@ class Confirm extends Component {
 							</Text>
 						</View>
 					</TouchableOpacity>
+					{this._renderComment()}
 
 
         </View>
@@ -500,6 +555,7 @@ let styles = StyleSheet.create({
     height:40,
     backgroundColor:'#ea7b21',
 		justifyContent:'center',
+		alignItems:'center',
   },
   acceptText: {
     textAlign: 'center',
@@ -508,6 +564,21 @@ let styles = StyleSheet.create({
     fontSize:20,
 		fontFamily:'FZZongYi-M05S',
   },
+	modal: {
+	 justifyContent: 'center',
+	 height: 350,
+	 width: 300,
+ 	},
+	TextInput:{
+		flex:1,
+		color:'#000000',
+		fontSize:16,
+		padding:3,
+		paddingLeft:6,
+		backgroundColor:'#ffffff',
+		borderRadius:6,
+		borderColor:'#b1b1b1',
+	},
 
 
 });

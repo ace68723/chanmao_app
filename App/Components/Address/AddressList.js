@@ -33,8 +33,8 @@ export default class LoginButton extends Component {
     super();
 		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		const AddressListState = AddressStore.getAddressListState()
-		console.log(AddressListState)
-		const state = {dataSource: this.ds.cloneWithRows(AddressListState.addressList)}
+		// console.log(AddressListState)
+		const state = {dataSource: this.ds.cloneWithRows([])}
 		this.state = Object.assign({},state,AddressListState);
     this._onChange = this._onChange.bind(this);
     this._goBack = this._goBack.bind(this);
@@ -45,6 +45,9 @@ export default class LoginButton extends Component {
   }
 	componentDidMount(){
 		AddressStore.addChangeListener(this._onChange);
+		const addressList = {dataSource: this.ds.cloneWithRows(this.state.addressList)}
+		const state = Object.assign({},this.state,addressList);
+		this.setState(state)
 	}
   componentWillUnmount() {
     AddressStore.removeChangeListener(this._onChange);
@@ -86,7 +89,6 @@ export default class LoginButton extends Component {
 	}
 	_selectAddress(address){
 		AddressAction.selectAddress(address)
-
 	}
   _handleSearchChange(text){
     this.setState({

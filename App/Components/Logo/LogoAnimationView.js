@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from 'react-native';
-
+import Auth from '../../Modules/AuthModule/Auth';
 const {width,height} = Dimensions.get('window');
 export default class LogoAnimationView extends Component {
   static propTypes = {
@@ -25,15 +25,21 @@ export default class LogoAnimationView extends Component {
     }
 
   }
-  componentDidMount(){
-    if (this.state.firstTime){
-      this._startLongAnimation();
-    }else{
-      this.setState({
-        stage:4
-      })
-      this._startShortAnimation();
-    }
+  async componentDidMount(){
+		try{
+				const token = await Auth.getToken()
+				if(token){
+					this.setState({
+						stage:4
+					})
+					this._startShortAnimation();
+				}else{
+					this._startLongAnimation();
+				}
+		}catch(e){
+			console.log(e)
+			this._startLongAnimation();
+		}
   }
   _startShortAnimation(){
     // fade out LogoAnimationView

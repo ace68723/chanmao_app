@@ -47,6 +47,7 @@ class Menu extends Component {
           name:'',
           dataSource: this.ds.cloneWithRows([]),
           startAmount:this.props.restaurant.start_amount,
+					loading:true,
         };
         this._onChange = this._onChange.bind(this);
         this._goToCinfirm = this._goToCinfirm.bind(this);
@@ -87,6 +88,7 @@ class Menu extends Component {
             menu:menu,
             dataSource:this.state.dataSource.cloneWithRows(menu),
             categoryList:menuState.categoryList,
+						loading:false,
           })
           this.props.changeCartTotals(cartTotals)
           this.props.checkOpen(menuState.open)
@@ -206,8 +208,11 @@ class Menu extends Component {
 			// 			showMenuAnimation = {this.props.showMenuAnimation}
 			// 			restaurant = {this.props.restaurant}/>
 			// )
+			let loading = this.state.loading ? <Image source={require('./Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>:null
 			return(
-				<View style={{marginTop:360,}}/>
+				<View style={{marginTop:360,alignItems:'center'}}>
+						{loading}
+				</View>
 			)
 		}
 		_handleScroll( e: any) {
@@ -216,6 +221,13 @@ class Menu extends Component {
 				const height = EMPTY_CELL_HEIGHT - this.state.stickyHeaderHeight;
 			}
 			this.props.handleScroll(e);
+		}
+		_renderLoading(){
+			return(
+				<View style={{height:15,top:350,alignItems:'center'}}>
+						<Image source={require('./Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>
+				</View>
+			)
 		}
     render(){
                   // {categoryList}
@@ -294,7 +306,6 @@ class Menu extends Component {
       return(
 
             <View style={{flex:1,overflow:'hidden',}}>
-
               <ListView
 									onScroll={this.props.handleScroll()}
 									removeClippedSubviews={true}
@@ -308,6 +319,7 @@ class Menu extends Component {
                   enableEmptySections={true}
                   style={{overflow:'hidden',backgroundColor:"rgba(0,0,0,0)"}}
                 />
+
 								<TouchableOpacity style={{paddingTop:22,
 		 																			paddingLeft:8,
 		 																			paddingRight:20,

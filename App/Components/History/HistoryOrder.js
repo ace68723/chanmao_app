@@ -6,15 +6,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import moment from 'moment';
-import HistoryAction from '../../Actions/HistoryAction';
 
 export default (props) => {
  // props.order.created = moment(props.order.created).format("MMM Do YYYY");
     return (
-      <TouchableOpacity onPress={() => {
-              HistoryAction.getHistoryDetail(props.order.oid)
-              props.HistoryOrderDetailVisible()
-        }}>
+      <TouchableOpacity onPress={props.HistoryOrderDetailVisible.bind(null,props.order.oid)}>
         <View style={styles.container}>
           <Text style={[styles.order,{flex:0.2,fontFamily:'FZZhunYuan-M02S',}]}>
             # {props.order.oid}

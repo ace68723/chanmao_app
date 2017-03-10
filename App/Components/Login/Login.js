@@ -38,11 +38,13 @@ export default class LogoAnimationView extends Component {
 		this._handleWechatLogin = this._handleWechatLogin.bind(this);
 		this._handleLogin 		= this._handleLogin.bind(this);
 		this._onChange 				= this._onChange.bind(this);
+		this._openAdView			= this._openAdView.bind(this);
   }
 	_viewOpacity =  new Animated.Value(1);
 	async componentDidMount() {
+		AuthAction.doAuth();
 		const registerResult = await WeChat.registerApp(appid);
-		const  isWXAppInstalled = await WeChat.isWXAppInstalled()
+		const isWXAppInstalled = await WeChat.isWXAppInstalled()
 		this.setState({
 			isWXAppInstalled:isWXAppInstalled
 		})
@@ -103,6 +105,14 @@ export default class LogoAnimationView extends Component {
 
 	 }
   }
+
+  _openAdView(url){
+		this.props.navigator.push({
+			id: 'AdView',
+			url:url,
+		})
+	}
+
   render(){
     return(
       <Animated.View style={[styles.container,{opacity:this._viewOpacity}]}>
@@ -119,7 +129,7 @@ export default class LogoAnimationView extends Component {
 												is_wechat = {AppString('wechat')}
 												ib_isWXAppInstalled = {this.state.isWXAppInstalled}
 												is_copyright = {AppString('copyright')}
-												is_version = {"2.3.0"}
+												is_version = {"2.3.2"}
 												ib_loginSuccess = {this.state.loginSuccess}
 												ib_showLoading = {this.state.showLoading}
 											  if_handleLogin = {this._handleLogin}
@@ -128,7 +138,8 @@ export default class LogoAnimationView extends Component {
 												ir_SUBMIT_BUTTON = {SUBMIT_BUTTON}
 												if_handleUsername = {this._handleUsername}
 												if_handlePassword = {this._handlePassword}
-												if_handleWechatLogin = {this._handleWechatLogin}/>
+												if_handleWechatLogin = {this._handleWechatLogin}
+												if_openAdView = {this._openAdView}/>
 
       </Animated.View>
     )

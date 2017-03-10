@@ -69,10 +69,10 @@ export default {
       }catch (e){
       }
     },
-    async checkout(){
+    async checkout(comment){
       try{
         const token = await AuthModule.getToken();
-        const reqData = {token};
+        const reqData = {token,comment};
         const data = await RestaurantModule.checkout(reqData);
         console.log(data)
         dispatch({
@@ -81,7 +81,7 @@ export default {
       }catch (e){
       }
     },
-     updateAdderss(){
+    updateAdderss(){
       dispatch({
           actionType: AppConstants.UPDATE_ADDRESS
       })

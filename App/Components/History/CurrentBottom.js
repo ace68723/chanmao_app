@@ -72,8 +72,7 @@ const createdTime = moment(props.created).format('h:mm:ss a');
                      style={styles.button}
                      activeOpacity={0.4}
                      onPress={() => {
-                        HistoryAction.getHistoryDetail(props.orderId);
-                        props.HistoryOrderDetailVisible()
+                        props.HistoryOrderDetailVisible(props.orderId)
                      }}>
                     <Text style={styles.buttonText}>
                         查看订单
