@@ -11,6 +11,7 @@ export default {
           const homeData = await HomeModule.getHomeData(token);
 
           const userloc = await LocationModule.getCurrentPosition();
+          console.log(userloc)
           const reqData = {token,userloc}
           const areaList = await HomeModule.getAreaList(reqData);
           const res = {homeData,areaList}

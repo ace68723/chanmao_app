@@ -36,10 +36,17 @@ export default class RestaurantTab extends Component {
 					restaurant.rank=0;
 				}
 			})
-			
-			this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.rank !== r2.rank});
+			const restaurantList = orderBy(props.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
+			this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {
+																																			r1.rank !== r2.rank
+																																			if(r1.rank !== r2.rank){
+																																				console.log(r1,r2)
+																																			}
+																																		}
+																					});
 	    const state = {
-					dataSource: this.ds.cloneWithRows(props.restaurantList),
+					restaurantList:restaurantList,
+					dataSource: this.ds.cloneWithRows(restaurantList),
 	        restaurantCoverOpacity: new Animated.Value(0), // init restaurant tab view opacity 0
 					index:props.index,
 	      };
@@ -72,15 +79,33 @@ export default class RestaurantTab extends Component {
 			//  this.props.getScrollViewRefs(ref)
 		// }, 1000);
   }
+	// shouldComponentUpdate(nextState,nextProps){
+	// 	console.log('nextState,nextProps',nextState,nextProps);
+	// 	return true
+	// }
 	componentWillReceiveProps(nextProps){
 		if(nextProps.restaurantList != this.props.restaurantList){
-			// InteractionManager.runAfterInteractions(() => {
-
-				// let restaurantList = orderBy(nextProps.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
-				// console.log('nextProps.restaurantList',nextProps.restaurantList)
-				// console.log(restaurantList)
-				this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.restaurantList)})
-			// })
+			// const state1 = Object.assign({},this.state,{dataSource: this.state.dataSource.cloneWithRows([]),});
+			// this.setState(state1)
+				nextProps.restaurantList.map((restaurant)=>{
+					if(!restaurant.rank){
+						restaurant.rank=0;
+					}
+					if(restaurant.rid == 76 ){
+						restaurant.rank = 1
+						console.log(restaurant)
+					}
+				})
+			// setTimeout(()=> {
+			InteractionManager.runAfterInteractions(() => {
+				// const testData = JSON.parse(JSON.stringify(nextProps.restaurantList))
+				let restaurantList = orderBy(nextProps.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
+				const state = Object.assign({},this.state,{
+									restaurantList:restaurantList,
+									dataSource: this.state.dataSource.cloneWithRows(this.state.restaurantList),});
+				this.setState(state)
+			})
+			// }, 0);
 
 		}
 	}

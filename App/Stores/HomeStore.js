@@ -24,7 +24,8 @@ const HomeStore = Object.assign({},EventEmitter.prototype,{
 		 const bannerList = res.homeData.zone1;
 		 const advertisement = res.homeData.zone2;
 		 const areaList = res.areaList;
-		 HomeState = Object.assign({},HomeState,{bannerList,advertisement,areaList})
+		 const restaurantlist = res.restaurantlist;
+		 HomeState = Object.assign({},HomeState,{bannerList,advertisement,areaList,restaurantlist})
   },
 	closeMenu(){
 		HomeState = Object.assign({},HomeState,{showAnimatedView:false})

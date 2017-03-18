@@ -11,6 +11,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  InteractionManager,
   ListView,
   StyleSheet,
   ScrollView,
@@ -29,228 +30,93 @@ const {width,height} = Dimensions.get('window');
 const EMPTY_CELL_HEIGHT = Dimensions.get('window').height > 600 ? 200 : 150;
 class Menu extends Component {
     constructor(props){
-      super();
+      super()
       this.state = {
-				anim: new Animated.Value(0), //for background image
+        anim: new Animated.Value(0), //for background image
         showMenuAnimation: new Animated.Value(0),
-        left: new Animated.Value(7),
-        right: new Animated.Value(7),
-        height: new Animated.Value(200),
-        MIV_Left: new Animated.Value(0),
-        MIV_Right: new Animated.Value(0),
-        MIV_RText: new Animated.Value(1),//restaurant info text init opactiy 1
-        MIV_MText: new Animated.Value(0),//menu info text init opactiy 0
-        MIV_MTime: new Animated.Value(0),//menu info time init opactiy 0
         menuListCoverOpacity:new Animated.Value(1),
-        menuListLoading: new Animated.Value(0),
         HV_Top:new Animated.Value(-120),
-        restaurantViewOpacity: new Animated.Value(1), // init opacity 0
+        restaurantViewOpacity: new Animated.Value(0), // init opacity 0
+        restaurantCardTop:new Animated.Value(props.py),
+        restaurantCardMargin:new Animated.Value(7),
         top:props.py,
-        restaurantCardTop:props.py,
         restaurant:props.restaurant,
-        renderMenuList:false,
-        showMenuList:false,
+        renderMenuList:true,
         showHeader:false,
-        scrollEnabled:false,
+        renderCloseBtn:false,
         cartTotals:'',
       };
-      this._openMenuAnimation()
-      this.showMenuInfoTime = this.showMenuInfoTime.bind(this);
       this._closeMenuAnimation = this._closeMenuAnimation.bind(this);
-			this._goToMenuSearch = this._goToMenuSearch.bind(this);
-      this._changeCartTotals = this._changeCartTotals.bind(this);
-      this._goToCheckout = this._goToCheckout.bind(this);
-      this._checkOpen = this._checkOpen.bind(this);
-			this._handleScroll = this._handleScroll.bind(this);
+      this._handleScroll = this._handleScroll.bind(this);
     }
+
     componentDidMount(){
-			console.log(this.props)
-      const timeCovert = () => {
-        if(this.state.restaurant.end_time<'05:00'){
-          this.state.end_time = this.state.restaurant.end_time +' AM'
-        }else{
-          this.state.end_time = this.state.restaurant.end_time +' PM'
-        }
-        if(this.state.restaurant.start_time >= '12:00'){
-          this.state.start_time = this.state.restaurant.start_time + ' PM'
-        }else{
-          this.state.start_time = this.state.restaurant.start_time + ' AM'
-        }
-      }
-      timeCovert()
-      const renderMenuList = () => {
+      setTimeout( () =>{
+        this._openMenuAnimation()
         this.setState({
-          renderMenuList:true,
+          renderCloseBtn:true,
         })
-      }
-      setTimeout(function () {
-        renderMenuList()
-      }, 600);
+      }, 100);
 
-      const menuListLoading = () => {
-        Animated.timing(this.state.menuListLoading, {
-          toValue: 0.8,
-          duration: 600,
-        }).start();
-      }
-      setTimeout(function () {
-        menuListLoading()
-      }, 800);
-      const scrollEnable = () => {
-        this.setState({
-          scrollEnabled:true
-        })
-      }
-      setTimeout(function () {
-        scrollEnable()
-      }, 1500);
-
-      const menuListCoverOpacity = () => {
-        Animated.timing(this.state.menuListCoverOpacity, {
-          toValue: 0,
-          duration: 400,
-        }).start();
-      }
-      setTimeout(function () {
-        menuListCoverOpacity()
-      }, 1500);
-
-      const showMenuList = () => {
-        this.setState({
-          showMenuList:true
-        })
-      }
-      setTimeout(function () {
-        showMenuList()
-      }, 1900);
     }
     _openMenuAnimation(){
-      this.startAnimation = this.startAnimation.bind(this)
-      const startAnimation = this.startAnimation;
-
-      const hideRestaurantView = ()=>{
-        Animated.timing(
-          this.state.restaurantViewOpacity,
-          {toValue: 0,
-           duration: 400,
-          }
-        ).start();
-      }
-      const hideAnimatedView = ()=>{
-        this.setState({
-          showAnimatedView:false
+      	InteractionManager.runAfterInteractions(() => {
+          Animated.parallel([
+            Animated.timing(this.state.restaurantCardTop, {
+              toValue: 0,
+              duration: 400,
+            }),
+            Animated.timing(this.state.restaurantViewOpacity, {
+              toValue:1,
+              duration: 400,
+            }),
+            Animated.timing(this.state.restaurantCardMargin, {
+              toValue:0,
+              duration: 400,
+            }),
+            Animated.timing(this.state.showMenuAnimation, {
+              toValue:1,
+              duration: 400,
+            })
+          ]).start()
+          setTimeout(()=>{
+            this.setState({
+              renderCloseBtn:true,
+            })
+          }, 400);
         })
-      }
-      const showMenu = () =>{
-        this.setState({
-          showMenu:true
-        })
-      };
-      setTimeout(function () {
-        hideRestaurantView()
-      }, 200);
-      setTimeout(function () {
-        // requestAnimationFrame(startAnimation)
-        startAnimation()
-      }, 200);
-      setTimeout(function () {
-        showMenu()
-      },600)
     }
-    startAnimation(){
-      Animated.timing(this.state.showMenuAnimation, {
-        toValue: 1,
-        duration: 300,
-      }).start();
-      const showMenuInfoTime = this.showMenuInfoTime
-      setTimeout(function () {
-        showMenuInfoTime()
-      }, 300);
-      // Animated.timing(this.state.top, {
-      //   toValue: 0,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.left, {
-      //   toValue: 0,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.right, {
-      //   toValue: 0,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.height, {
-      //   toValue: Dimensions.get('window').height,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.MIV_Left, {
-      //   toValue: 20,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.MIV_Right, {
-      //   toValue: 20,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.MIV_RText, {
-      //   toValue: 0,
-      //   duration: 300,
-      // }).start();
-      // Animated.timing(this.state.MIV_MText, {
-      //   toValue: 1,
-      //   duration: 300,
-      // }).start();
 
-    }
-    showMenuInfoTime(){
-      Animated.timing(this.state.MIV_MTime, {
-        toValue: 1,
-        duration: 200,
-      }).start();
-    }
     _closeMenuAnimation(){
-      if(this.props.message == 'FromHome'){
+      this.setState({renderMenuList:false,renderCloseBtn:false,})
+      InteractionManager.runAfterInteractions(() => {
+        Animated.parallel([
+          Animated.timing(this.state.restaurantCardTop, {
+            toValue: this.state.top,
+            duration: 400,
+          }),
+          Animated.timing(this.state.restaurantViewOpacity, {
+            toValue: 0,
+            duration: 400,
+          }),
+          Animated.timing(this.state.restaurantCardMargin, {
+            toValue:7,
+            duration: 400,
+          }),
+          Animated.timing(this.state.showMenuAnimation, {
+            toValue:0,
+            duration: 400,
+          })
+        ]).start()
+        this.MenuHeader.close();
+        setTimeout( ()=> {
           this.props.navigator.pop();
-      }else{
-        this.setState({
-          renderMenuList:false,
-        })
-        Animated.timing(this.state.showMenuAnimation, {
-          toValue: 0,
-          duration: 300,
-        }).start();
-        // Animated.timing(this.state.top, {
-        //   toValue: this.state.restaurantCardTop,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.left, {
-        //   toValue: 7,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.right, {
-        //   toValue: 7,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.height, {
-        //   toValue: 200,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.MIV_Left, {
-        //   toValue: 0,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.MIV_Right, {
-        //   toValue: 0,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.MIV_RText, {
-        //   toValue: 1,
-        //   duration: 400,
-        // }).start();
-        // Animated.timing(this.state.MIV_MText, {
-        //   toValue: 0,
-        //   duration: 400,
-        // }).start();
-        this.props.closeMenu();
-      }
+        }, 500);
+      })
+
+
+
+
     }
 		_goToMenuSearch(){
 			this.props.navigator.push({
@@ -290,31 +156,11 @@ class Menu extends Component {
 	          [{nativeEvent: {contentOffset: {y: this.state.anim}}}]
 	        )
 	    )
-			// if(e.nativeEvent.contentOffset.y < 300){
-			// 	this.state.anim.setValue(e.nativeEvent.contentOffset.y);
-			// 	const height = EMPTY_CELL_HEIGHT - this.state.stickyHeaderHeight;
-			// }
-      // if(!this.state.showHeader && e.nativeEvent.contentOffset.y > 300){
-      //   this.setState({
-      //     showHeader:true
-      //   })
-      //   Animated.timing(this.state.HV_Top, {
-      //     toValue: 0,
-      //     duration: 200,
-      //   }).start();
-      // }else if(this.state.showHeader && this.state.cartTotals.total==0 && e.nativeEvent.contentOffset.y < 300){
-      //   this.setState({
-      //     showHeader:false
-      //   })
-      //   Animated.timing(this.state.HV_Top, {
-      //     toValue: -70,
-      //     duration: 200,
-      //   }).start();
-      // }
-      // y = Math.min(e.nativeEvent.contentOffset.y, height);
+
     }
 
-    menuList(){
+    _renderMenuList(){
+      // console.log(this.state)
       if(this.state.renderMenuList){
         return(<MenuList  restaurant={this.state.restaurant}
                           changeCartTotals={this._changeCartTotals}
@@ -322,37 +168,10 @@ class Menu extends Component {
 													handleScroll={this._handleScroll}
 													closeMenuAnimation = {this._closeMenuAnimation}
 													goToMenuSearch = {this._goToMenuSearch}
-
-													MIV_MTime = {this.state.MIV_MTime}
-													start_time = {this.state.start_time}
-													end_time = {this.state.end_time}
-													showMenuAnimation = {this.state.showMenuAnimation}
-
-													animatedImage={this.props.restaurant.imgUrl}/>)
+													showMenuAnimation = {this.state.showMenuAnimation}/>)
       }
     }
-    menuListCover(){
-      if(!this.state.showMenuList){
-        return(<Animated.View style={{backgroundColor:'#f4f4f7',
-                              left:0,
-                              right:0,
-                              bottom:0,
-                              top:0,
-                              flex:1,
-                              opacity:this.state.menuListCoverOpacity,
-                              position:'absolute',}}>
-                              <Animated.View style={{alignItems: 'center',
-                                            top:30,
-                                            opacity:this.state.menuListLoading}}>
-                  						  <Image
-                  							style={{  height: 40,width:44,}}
-                  							source = { require('./Image/chanmao_logo.gif') }
-                  						  />
-                  						  <Text style={{fontSize:11}}>快到碗里来 </Text>
-                  					  </Animated.View>
-                </Animated.View>)
-      }
-    }
+
     _changeCartTotals(cartTotals){
       this.setState({
         cartTotals:cartTotals
@@ -386,7 +205,6 @@ class Menu extends Component {
         })
       }
     }
-
     _header(){
 
         if(!this.state.close){
@@ -441,52 +259,107 @@ class Menu extends Component {
         }
 
     }
+    _renderClose(){
+      if(this.state.renderCloseBtn){
+        return(
+          <TouchableOpacity style={{paddingTop:22,
+                                    paddingLeft:8,
+                                    paddingRight:20,
+                                    paddingBottom:20,
+                                    position:'absolute',
+                                    top:0,
+                                    left:0,}}
+                            onPress={this._closeMenuAnimation}>
+            <View style={{width:30,height:30,borderRadius:15,backgroundColor:"rgba(0,0,0,0.4)"}}>
+              <Text style={{fontSize:25,textAlign:"center",color:"#ffffff",marginTop:-2}}>
+                ×
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+        )
+      }
+    }
+    _renderSearch(){
+      if(this.state.renderCloseBtn){
+        return(
+          <TouchableOpacity style={{paddingTop:22,
+                                      paddingRight:20,
+                                      paddingBottom:20,
+                                      position:'absolute',
+                                      top:0,
+                                      right:0,}}
+                              onPress={this.props.goToMenuSearch}>
+              <Image style={{  height: 40,width:44,}}
+                   source = { require('./Image/button_search.png') }/>
+          </TouchableOpacity>
+        )
+      }
+    }
+    _renderRestaurantImage(){
+      // return (
+      // )
+    }
     render(){
-      // Dimensions.get('window').height
+
+
+      // Dimensions.get('window').height   style={{flex:1,backgroundColor:'rgba(0, 0, 0,0)'}}
+      //    <Header title={this.state.restaurant.name}
+                //  goBack={this._closeMenuAnimation}
+                //  leftButtonText={'×'}/>
+                // <MenuHeader
+                //    offset={this.state.anim}
+                //    MIV_MTime = {this.state.MIV_MTime}
+                //    start_time = {this.state.start_time}
+                //    end_time = {this.state.end_time}
+                //    showMenuAnimation = {this.state.showMenuAnimation}
+                //    restaurant = {this.state.restaurant}/>
       return(
-        <Animated.View style={{top:this.state.showMenuAnimation.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [this.state.top,0],
-                                  }),
-                              position:'absolute',left:0,right:0,
-                              marginLeft:this.state.showMenuAnimation.interpolate({
-                                                          inputRange: [0, 1],
-                                                          outputRange: [7,0],
-                                                        }),
-                              marginRight:this.state.showMenuAnimation.interpolate({
-                                                          inputRange: [0, 1],
-                                                          outputRange: [7,0],
-                                                        }),
-                              height:this.state.showMenuAnimation.interpolate({
-                                                          inputRange: [0, 1],
-                                                          outputRange: [200,Dimensions.get('window').height],
-                                                        }),
-                              overflow:'hidden',
-															backgroundColor:"#f4f4f4"
-                            }}>
-					<Background
-							 minHeight={0}
-							 maxHeight={230}
-							 offset={this.state.anim}
-							 backgroundImage={{uri:this.props.restaurant.mob_banner}}
-							 backgroundShift={0}
-							 backgroundColor={"rgba(0,0,0,0)"}>
-					 </Background>
+        <View style={{flex:1,backgroundColor:'rgba(0, 0,0,0)'}}>
+          <Animated.View style={{position:'absolute',
+                                 backgroundColor:"#ffffff",
+                                 left:0,top:0,right:0,bottom:0,
+                                 opacity:this.state.restaurantViewOpacity
+                               }}>
+          </Animated.View>
+          <View style={{position:'absolute',
+                                 backgroundColor:"#ffffff",
+                                 left:0,top:this.state.top,right:0,height:254,
+                               }}>
+          </View>
+          <Animated.View style={{top:this.state.restaurantCardTop,
+                                 marginLeft:this.state.restaurantCardMargin,
+                                 marginRight:this.state.restaurantCardMargin,
+                               }}>
+            <Background
+                 minHeight={0}
+                 maxHeight={230}
+                 offset={this.state.anim}
+                 backgroundImage={{uri:this.props.restaurant.mob_banner}}
+                 backgroundShift={0}
+                 backgroundColor={"rgba(0,0,0,0)"}>
+             </Background>
+             <MenuHeader
+                ref={(MenuHeader) => { this.MenuHeader = MenuHeader; }}
+                minHeight={0}
+                maxHeight={230}
+                offset={this.state.anim}
+                restaurant = {this.state.restaurant}
+                py={this.props.py}
+                start_time = {this.props.restaurant.start_time}
+                end_time = {this.props.restaurant.end_time}
+                />
+          </Animated.View>
+          <View style={{position:'absolute',left:0,top:0,right:0,bottom:0,}}>
+            {this._renderMenuList()}
+          </View>
 
-					 <MenuHeader
-					 		offset={this.state.anim}
-	 						MIV_MTime = {this.state.MIV_MTime}
-	 						start_time = {this.state.start_time}
-	 						end_time = {this.state.end_time}
-	 						showMenuAnimation = {this.state.showMenuAnimation}
-	 						restaurant = {this.state.restaurant}/>
-
-					 {this.menuList()}
-
-					 {this._header()}
+          {this._header()}
+          {this._renderClose()}
+          {this._renderSearch()}
 
 
-        </Animated.View>
+        </View>
       )
     }
 }

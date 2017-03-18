@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   Animated,
+	AppState,
   Dimensions,
   Image,
   Platform,
@@ -26,6 +27,7 @@ import RestaurantTab from '../Restaurant/RestaurantTab'
 import Menu from '../Restaurant/Menu';
 
 import HomeAction from '../../Actions/HomeAction';
+import RestaurantAction from '../../Actions/RestaurantAction';
 import HomeStore from '../../Stores/HomeStore';
 
 const UIManager = require('NativeModules').UIManager;
@@ -51,20 +53,38 @@ export default class MainTab extends Component {
 		this._openMenu = this._openMenu.bind(this);
 		this._closeMenu = this._closeMenu.bind(this);
 		this._onChangeTab = this._onChangeTab.bind(this);
+		this._handleAppStateChange = this._handleAppStateChange.bind(this);
 		this.showBanner = true;
   }
 	componentDidMount(){
     HomeAction.getHomeData();
+		RestaurantAction.getRestaurant();
     HomeStore.addChangeListener(this._onChange);
+		AppState.addEventListener('change', this._handleAppStateChange);
 	}
 	componentWillMount(){
 		HomeStore.removeChangeListener(this._onChange);
+		AppState.removeEventListener('change', this._handleAppStateChange);
 	}
+	// shouldComponentUpdate(nextProps, nextState){
+	// 	// console.log(nextProps != this.props)
+	// 	if( nextState != this.state){
+	// 		console.log(nextState,this.state)
+	// 		return true
+	// 	}else{
+	// 		return false
+	// 	}
+	// }
   _onChange(){
     const newState = HomeStore.getHomeState();
+		console.log(newState)
     this.setState(newState);
   }
-
+	_handleAppStateChange(currentAppState) {
+		if(currentAppState === 'active'){
+			HomeAction.getHomeData();
+		}
+	}
   // ui methond
   _scrollEventBind(){
     // console.log(ref,this.refsCurrentScrollView)
@@ -123,37 +143,40 @@ export default class MainTab extends Component {
 			})
 	}
 	_openMenu(py,restaurant){
-		this.props.hideTabBar();
-		setTimeout(() =>{
-			this.setState({
-				restaurant:restaurant,
-				py:py,
-				showAnimatedView:true,
-			})
-		}, 200);
 
-		setTimeout( () => {
-			Animated.timing(          // Uses easing functions
-				this.state.restaurantCoverOpacity,    // The value to drive
-				{toValue: 1,
-				 duration: 400,
-				}            // Configuration
-			).start();
-		}, 400);
+		// this.setState({
+		// 	restaurant:restaurant,
+		// 	py:py,
+		// 	showAnimatedView:true,
+		// })
+		// Animated.timing(          // Uses easing functions
+		// 	this.state.restaurantCoverOpacity,    // The value to drive
+		// 	{toValue: 1,
+		// 	 duration: 400,
+		// 	}            // Configuration
+		// ).start();
+		// setTimeout(() =>{
+		//
+		// }, 200);
+
+		// setTimeout( () => {
+		//
+		// 	this.props.hideTabBar();
+		// }, 400);
 	}
 	_renderRestaurantCover(){
-      if(this.state.showAnimatedView){
-        return(
-          <Animated.View style={{position:'absolute',
-                                 top:0,
-                                 left:0,
-                                 right:0,
-                                 bottom:0,
-                                 backgroundColor:'#ffffff',
-                                 opacity:this.state.restaurantCoverOpacity}}>
-          </Animated.View>
-        )
-      }
+      // if(this.state.showAnimatedView){
+      //   return(
+      //     <Animated.View style={{position:'absolute',
+      //                            top:0,
+      //                            left:0,
+      //                            right:0,
+      //                            bottom:0,
+      //                            backgroundColor:'#ffffff',
+      //                            opacity:this.state.restaurantCoverOpacity}}>
+      //     </Animated.View>
+      //   )
+      // }
   }
 	_closeMenu(){
       Animated.timing(          // Uses easing functions
@@ -181,7 +204,19 @@ export default class MainTab extends Component {
 			)
 		}
 	}
-
+	// <RestaurantTab 	tabLabel='点餐'
+	// 								index={1}
+	// 								restaurantList={this.state.areaList[0].restaurantList}
+	// 								openMenu={this._openMenu}
+	// 								scrollEventBind={this._scrollEventBind}
+	// 								getScrollViewRefs={this._getScrollViewRefs}
+	// 								refsCurrentScrollView= {this.refsCurrentScrollView}
+	// 								hideTabBar = {this.props.hideTabBar}
+	// 								showTabBar = {this.props.showTabBar}
+	// 								navigator={this.props.navigator}/>
+	// findIndex(area){
+	// 	return area.area ==
+	// }
 	renderScrollableTabView(){
 		if(this.state.areaList && this.state.areaList.length>0){
 			let restaurantTabs = this.state.areaList.map( (area,key) => {
@@ -189,8 +224,10 @@ export default class MainTab extends Component {
 													tabLabel={area.name}
 													key={key+2}
 													index={key+2}
+													restaurantList={area.restaurantList}
 													currentTab={this.state.currentTab}
 													area={area.area}
+													navigator={this.props.navigator}
 													openMenu={this._openMenu}
 													scrollEventBind={this._scrollEventBind}
 													getScrollViewRefs={this._getScrollViewRefs}
@@ -206,7 +243,7 @@ export default class MainTab extends Component {
 														tabBarUnderlineColor={'#ff8b00'}
 														tabBarTextStyle={{fontSize:18,fontFamily:'FZZhunYuan-M02S',}}
 														tabBarInactiveTextColor={'#666666'}
-														initialPage={0}
+														initialPage={1}
 														prerenderingSiblingsNumber={2}
 														renderTabBar={() =>
 																				<DefaultTabBar
@@ -229,14 +266,7 @@ export default class MainTab extends Component {
 												openMenu = {this._openMenu}/>
 
 
-							<RestaurantTab 	tabLabel='点餐'
-															index={1}
-															openMenu={this._openMenu}
-															scrollEventBind={this._scrollEventBind}
-															getScrollViewRefs={this._getScrollViewRefs}
-															refsCurrentScrollView= {this.refsCurrentScrollView}
-															hideTabBar = {this.props.hideTabBar}
-	 											 	 	 showTabBar = {this.props.showTabBar}/>
+
 								{restaurantTabs}
 
 				</ScrollableTabView>

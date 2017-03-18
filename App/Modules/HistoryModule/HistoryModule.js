@@ -30,6 +30,7 @@ const  HistoryModule = {
         return new Promise((resolve, reject) => {
           HistoryApi.getHistoryData(token)
             .then(data => {
+              console.log(data)
               if(data.result == 0){
                   if(data.current){
                       const cell              = data.current.cell;
@@ -97,6 +98,7 @@ const  HistoryModule = {
       const iv_oid = io_data.oid;
       const reqData = {token,iv_oid};
       const res = await HistoryApi.getHistoryDetail(reqData)
+      console.log(res)
       if(res.result == 0){
         return res
       }else{
@@ -123,7 +125,6 @@ const  HistoryModule = {
       Alert.errorAlert(res.message)
     }
     return getVerifyCodeResult
-
   },
   async verifyPhone(io_data){
     const token = io_data.token;

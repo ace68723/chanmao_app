@@ -12,13 +12,15 @@ import {
   View,
   PixelRatio,
 } from 'react-native';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
+const  Realm = require('realm');
+let realm = new Realm();
+const {width,height} = Dimensions.get('window');
 class RestaurantCard extends Component {
       constructor(props) {
           super();
+					const rid = Number(props.restaurant.rid);
           this.state={
+						restaurant:realm.objectForPrimaryKey('Restaurant',rid),
             ref:props.restaurant.rid,
             imgUrl:{uri:props.restaurant.mob_banner},
           }
@@ -27,10 +29,25 @@ class RestaurantCard extends Component {
 			componentDidMount(){
 
 			}
+			componentWillReceiveProps(nextProps){
+				const rid = Number(nextProps.restaurant.rid);
+				this.state={
+					restaurant:realm.objectForPrimaryKey('Restaurant',rid),
+					ref:nextProps.restaurant.rid,
+					imgUrl:{uri:nextProps.restaurant.mob_banner},
+				}
+			}
       _renderCloseCover(){
+				if(this.props.restaurant.rid==76){
+					// console.log(this.props.restaurant.rid,this.props.restaurant.open)
+				}
         if(this.props.restaurant.open == 0){
+					// if(this.props.restaurant.rid==76){
+					// 	console.log('return')
+					// }
           return(
-            <View style={{flex:1,
+            <View style={{position:'absolute',
+													top:0,left:0,bottom:0,right:0,
                           backgroundColor:'rgba(0,0,0,0.5)',}}>
                 <Text style={{fontWeight:'700',
                               fontSize:20,
@@ -70,9 +87,12 @@ class RestaurantCard extends Component {
       }
       _openMenu(){
         this.refs[this.state.ref].measure( (fx, fy, width, height, px, py) => {
-            this.props.openMenu(py,this.props.restaurant);
+           	this.props.navigator.push({
+							 id: 'Menu',
+							 py:py,
+							 restaurant:this.props.restaurant,
+						 })
         })
-        // this.openMenuAnimation(imageUrl)
       }
       _renderDistance(){
         if(this.props.restaurant.distance > 0){
@@ -97,11 +117,15 @@ class RestaurantCard extends Component {
       }
       // {this.recommend()}
       render(){
+				// if(this.props.restaurant.rid==76){
+				// 	console.log(this.props.restaurant)
+				// }
         return(
           <TouchableWithoutFeedback
             onPress={this._openMenu}
             >
-            <View style={{marginBottom:10,
+            <View style={{marginTop:5,
+													marginBottom:5,
 													shadowColor: "#e2e2e4",
                           shadowOpacity: 1,
                           shadowOffset: {
@@ -124,14 +148,12 @@ class RestaurantCard extends Component {
                               }}
                           ref={this.state.ref} >
                     <Image
-                      source={this.state.imgUrl}
-                      style={[{height:SCREEN_WIDTH/1.25,
+                      source={{uri:this.state.restaurant.mob_banner}}
+                      style={[{height:width/1.25,
                                width:null,}]}
-                      resizeMode={'cover'}
-                    >
-                    {this.recommend()}
-                    {this._renderCloseCover()}
-                    </Image>
+                    />
+										{this.recommend()}
+										{this._renderCloseCover()}
 
                 </View>
 
@@ -142,12 +164,12 @@ class RestaurantCard extends Component {
                               borderLeftWidth:StyleSheet.hairlineWidth,
                               borderRightWidth:StyleSheet.hairlineWidth,}}>
                   <Text style={{color:'#363646',fontSize:15,fontWeight:'500',fontFamily:'FZZongYi-M05S',}}>
-                      {this.props.restaurant.name}
+                      {this.state.restaurant.name}
                   </Text>
                   <View style={{flexDirection:"row"}}>
                     <View style={{flex:1,}}>
                       <Text style={{color:'#ababb0',fontSize:12,fontWeight:'200',marginTop:5,fontFamily:'FZZhunYuan-M02S'}}>
-                          {this.props.restaurant.desc}
+                          {this.state.restaurant.desc}
                       </Text>
                     </View>
                     {this._renderDistance()}

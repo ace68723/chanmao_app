@@ -8,7 +8,7 @@ const AppConstants ={
     API_LOGIN:Server + 'MobLogin10/login',
     API_AUTH: Server + 'MobLogin10/loginwc',
 
-    API_AREALIST: Server + 'MobOrder10/RrArea',
+    API_AREALIST: Server + 'MobOrder10/RrAreaNew',
     API_RESTAURANTLIST: Server + 'MobOrder10/Rrlist',
     API_MENU: Server + 'MobOrder10/Rrmenu',
     API_HISTORYLIST: Server + 'MobOrder10/historylist',

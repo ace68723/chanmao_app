@@ -23,9 +23,11 @@ export default class LogoAnimationView extends Component {
       timeout:1500,
       viewOpacity:new Animated.Value(1),
     }
+		this._getAd = this._getAd.bind(this);
 
   }
   async componentDidMount(){
+		this._getAd();
 		try{
 				const token = await Auth.getToken()
 				if(token){
@@ -128,6 +130,47 @@ export default class LogoAnimationView extends Component {
 
       }
     }
+	_getAd(){
+		const url = "https://chanmao.ca/index.php?r=MobAd10/AdLaunch";
+		let options = {
+				method: 'GET',
+				mode:'cors',
+				headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+				}
+		}
+		fetch(url,options)
+			.then((res) => res.json())
+			.then((res)=>{
+				console.log(res)
+				if(res.result == 0 ){
+					// res.image = '';
+
+					if(res.image){
+						this.setState({
+							AdImage: res.image,
+							AdUrl: res.navigation,
+							showAd:true,
+						})
+						const _closeAd = this._closeAd;
+						setTimeout(function () {
+							// _closeAd()
+						}, 3500);
+					}else{
+						this.setState({
+							showAd:false,
+						})
+					}
+				}else{
+					this.setState({
+						showAd:false,
+					})
+					// AuthService.doAuth()
+				}
+			})
+			.catch((error) => {throw error})
+	}
   render(){
       return(
         <Animated.View style={{ position:'absolute',

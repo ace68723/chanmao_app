@@ -47,7 +47,7 @@ class Menu extends Component {
           name:'',
           dataSource: this.ds.cloneWithRows([]),
           startAmount:this.props.restaurant.start_amount,
-					loading:true,
+					loading:false,
         };
         this._onChange = this._onChange.bind(this);
         this._goToCinfirm = this._goToCinfirm.bind(this);
@@ -59,9 +59,13 @@ class Menu extends Component {
 				this._renderHeader = this._renderHeader.bind(this);
     }
     componentDidMount(){
-      MenuStore.addChangeListener(this._onChange);
-      const rid = this.props.restaurant.rid
-      RestaurantAction.getMenu(rid);
+			setTimeout( () => {
+				this.setState({loading:true})
+				MenuStore.addChangeListener(this._onChange);
+				const rid = this.props.restaurant.rid
+				RestaurantAction.getMenu(rid);
+			}, 500);
+
 
       // ===========================================
       //          reorder test
@@ -210,7 +214,7 @@ class Menu extends Component {
 			// )
 			let loading = this.state.loading ? <Image source={require('./Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>:null
 			return(
-				<View style={{marginTop:360,alignItems:'center'}}>
+				<View style={{marginTop:320,alignItems:'center'}}>
 						{loading}
 				</View>
 			)
@@ -224,7 +228,7 @@ class Menu extends Component {
 		}
 		_renderLoading(){
 			return(
-				<View style={{height:15,top:350,alignItems:'center'}}>
+				<View style={{height:15,alignItems:'center'}}>
 						<Image source={require('./Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>
 				</View>
 			)
@@ -293,19 +297,8 @@ class Menu extends Component {
           )
         }
       }
-        // style={{opacity:this.state.opacity}}
-				// <Background
-				// 		 minHeight={0}
-				// 		 maxHeight={230}
-				// 		 offset={this.state.anim}
-				// 		 backgroundImage={this.props.animatedImage}
-				// 		 backgroundShift={0}
-				// 		 backgroundColor={"rgba(0,0,0,0)"}>
-				//  </Background>
-
       return(
 
-            <View style={{flex:1,overflow:'hidden',}}>
               <ListView
 									onScroll={this.props.handleScroll()}
 									removeClippedSubviews={true}
@@ -320,36 +313,10 @@ class Menu extends Component {
                   style={{overflow:'hidden',backgroundColor:"rgba(0,0,0,0)"}}
                 />
 
-								<TouchableOpacity style={{paddingTop:22,
-		 																			paddingLeft:8,
-		 																			paddingRight:20,
-		 																			paddingBottom:20,
-		 																			position:'absolute',
-		 																			top:0,
-		 																			left:0,}}
-		 															onPress={this.props.closeMenuAnimation}>
-		 							<View style={{width:30,height:30,borderRadius:15,backgroundColor:"rgba(0,0,0,0.4)"}}>
-		 								<Text style={{fontSize:25,textAlign:"center",color:"#ffffff",marginTop:-2}}>
-		 									×
-		 								</Text>
-		 							</View>
-		 						</TouchableOpacity>
-		 						<TouchableOpacity style={{paddingTop:22,
-		  																			paddingRight:20,
-		  																			paddingBottom:20,
-		  																			position:'absolute',
-		  																			top:0,
-		  																			right:0,}}
-		  															onPress={this.props.goToMenuSearch}>
-		  							<Image style={{  height: 40,width:44,}}
-		 										 source = { require('./Image/button_search.png') }/>
-		  						</TouchableOpacity>
 
 
-                <View style={{flexDirection:'row'}}>
-                  {this._renderCategoryList}
-                </View>
-            </View>
+
+
 
       )
 

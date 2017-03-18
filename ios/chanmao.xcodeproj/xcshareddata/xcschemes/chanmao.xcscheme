@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "chanmao.app"
+               BuildableName = "&#x998b;&#x732b;&#x8ba2;&#x9910;.app"
                BlueprintName = "chanmao"
                ReferencedContainer = "container:chanmao.xcodeproj">
             </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "chanmao.app"
+            BuildableName = "&#x998b;&#x732b;&#x8ba2;&#x9910;.app"
             BlueprintName = "chanmao"
             ReferencedContainer = "container:chanmao.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "chanmao.app"
+            BuildableName = "&#x998b;&#x732b;&#x8ba2;&#x9910;.app"
             BlueprintName = "chanmao"
             ReferencedContainer = "container:chanmao.xcodeproj">
          </BuildableReference>
@@ -113,7 +113,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "chanmao.app"
+            BuildableName = "&#x998b;&#x732b;&#x8ba2;&#x9910;.app"
             BlueprintName = "chanmao"
             ReferencedContainer = "container:chanmao.xcodeproj">
          </BuildableReference>

@@ -18,7 +18,7 @@ const RestaurantModule = {
               setTimeout( () =>{
                 realm.write(() => {
                   let allRestaurants = realm.objects('Restaurant');
-                    realm.delete(allRestaurants);
+                    // realm.delete(allRestaurants);
                     if(data.open.length>0 ){
                         data.open.forEach((restaurant,id)=>{
                           /**
@@ -40,126 +40,31 @@ const RestaurantModule = {
                           const rid = Number(restaurant.rid);
                           const area = Number(restaurant.area);
                           const desc = restaurant.desc;
-                          const distance = Number(restaurant.distance);
                           const end_time = restaurant.end_time;
                           const mob_banner = restaurant.mob_banner;
                           const name = restaurant.name;
-                          const open = Number(restaurant.open);
                           const start_amount = restaurant.start_amount;
                           const start_time = restaurant.start_time;
-                          const watermark = Number(restaurant.watermark);
-                          let zone ;
-                          let rank ;
-                          if(data.ads.length>0 ){
-                              data.ads.forEach((ad,index)=>{
-                                if(ad.rid == rid){
-                                  zone = Number(ad.zone);
-                                  rank = Number(ad.rank);
-                                  id = Number('10'+rid+zone)
-
-                                  const restaurantData = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
-                                  realm.create('Restaurant',restaurantData,true);
-
-                                  if(zone != 0){
-                                    zone = 99;
-                                    rank = 0;
-                                    id = Number('10'+rid+zone)
-                                    const restaurantDataZ = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
-                                    realm.create('Restaurant',restaurantDataZ,true);
-                                  }
-                                }
-                              })
-                          }
-                          if(zone == undefined ){
-                            zone = 99;
-                            rank = 0
-                            const restaurantData = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
-                            realm.create('Restaurant',restaurantData,true);
-                          }
-
-                          // console.log(zone)
-                            // if(data.ads.length>0 ){
-                            //     data.ads.forEach((ad,index)=>{
-                            //       if(ad.rid == rid){
-                            //         const id = Number(index);
-                            //         const zone = Number(ad.zone);
-                            //         const rank = Number(ad.rank);
-                            //         const RestaurantAdData = {id,zone,rank,rid,restaurantData};
-                            //         realm.create('RestaurantAd',RestaurantAdData,true);
-                            //       }
-                            //     })
-                            // }
-
+                          const restaurantData = {rid,area,desc,end_time,mob_banner,name,start_amount,start_time}
+                          realm.create('Restaurant',restaurantData,true);
                         })
                     }
-                    console.log(data)
+                    // console.log(data)
                     if(data.close.length>0){
                       data.close.forEach((restaurant, id)=>{
-                        id = data.open.length + id;
                         const rid = Number(restaurant.rid);
                         const area = Number(restaurant.area);
                         const desc = restaurant.desc;
-                        const distance = Number(restaurant.distance);
                         const end_time = restaurant.end_time;
                         const mob_banner = restaurant.mob_banner;
                         const name = restaurant.name;
-                        const open = Number(restaurant.open);
                         const start_amount = restaurant.start_amount;
                         const start_time = restaurant.start_time;
-                        const watermark = Number(restaurant.watermark);
-                        const zone = 99 ;
-                        const rank = 0;
-                        const restaurantDataClose = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
-                        realm.create('Restaurant',restaurantDataClose,true);
-
+                        const restaurantData = {rid,area,desc,end_time,mob_banner,name,start_amount,start_time}
+                        realm.create('Restaurant',restaurantData,true);
                       })
                     }
-                    // if(data.close.length>0 ){
-                    //     data.close.forEach((restaurant,id)=>{
-                    //       const rid = Number(restaurant.rid);
-                    //       const area = Number(restaurant.area);
-                    //       const desc = restaurant.desc;
-                    //       const distance = Number(restaurant.distance);
-                    //       const end_time = restaurant.end_time;
-                    //       const mob_banner = restaurant.mob_banner;
-                    //       const name = restaurant.name;
-                    //       const open = Number(restaurant.open);
-                    //       const start_amount = restaurant.start_amount;
-                    //       const start_time = restaurant.start_time;
-                    //       const watermark = Number(restaurant.watermark);
-                    //       let zone;
-                    //       let rank;
-                    //       if(data.ads.length>0 ){
-                    //           data.ads.forEach((ad,index)=>{
-                    //             if(ad.rid == rid){
-                    //               zone = Number(ad.zone);
-                    //               rank = Number(ad.rank);
-                    //             }
-                    //           })
-                    //       }
-                    //       if(zone == undefined){
-                    //         zone = 0
-                    //       }
-                    //       if(rank == undefined){
-                    //         rank = 0
-                    //       }
                     //
-                    //         // if(data.ads.length>0 ){
-                    //         //     data.ads.forEach((ad,index)=>{
-                    //         //       if(ad.rid == rid){
-                    //         //         const id = Number(index);
-                    //         //         const zone = Number(ad.zone);
-                    //         //         const rank = Number(ad.rank);
-                    //         //         const RestaurantAdData = {id,zone,rank,rid,restaurantData};
-                    //         //         realm.create('RestaurantAd',RestaurantAdData,true);
-                    //         //       }
-                    //         //     })
-                    //         // }
-                    //         const restaurantData = {id,rid,area,desc,distance,end_time,mob_banner,name,open,start_amount,start_time,watermark,zone,rank}
-                    //
-                    //         realm.create('Restaurant',restaurantData,true);
-                    //     })
-                    // }
 
                 });
               }, 10);

@@ -18,7 +18,8 @@ import MenuSearch from './Restaurant/MenuSearch';
 import AddressList from './Address/AddressList';
 import AdView from './General/AdView';
 import AboutUs from './Setting/AboutUs';
-
+import Menu from './Restaurant/Menu';
+import buildStyleInterpolator from 'buildStyleInterpolator';
 export default class Router extends Component {
   constructor(){
     super()
@@ -42,6 +43,7 @@ export default class Router extends Component {
           case 'Menu':
             route.restaurant.imgUrl = {uri:route.restaurant.mob_banner}
             return <Menu navigator={navigator}
+                         py={route.py}
                          restaurant={route.restaurant}
                          reorderItems={route.reorderItems}
                          message={route.message}/>;
@@ -101,21 +103,64 @@ export default class Router extends Component {
       }
 
   _transition(route,routeStack){
-    const NoBackSwipe ={
-        ...Navigator.SceneConfigs.FloatFromBottom,
-          gestures: {
-            pop: {},
-          },
+      const NoBackSwipe ={
+          ...Navigator.SceneConfigs.FloatFromBottom,
+            gestures: {
+              pop: {},
+            },
+      };
+      const NoTransition1 = {
+        opacity: {
+          // value:1,
+          // type:'constant',
+          from: 0,
+          to: 1,
+          min: 0.3,
+          max: 1,
+          type: 'linear',
+          extrapolate: false,
+          round: 100,
+        },
+      };
+      const NoTransition2 = {
+        opacity: {
+          // value:1,
+          // type:'constant',
+          from: 1,
+          to: 0,
+          min: 0.5,
+          max: 1,
+          type: 'linear',
+          extrapolate: false,
+          round: 100,
+        },
+      };
+      const NoTransition3 = {
+        opacity: {
+          value:1,
+          type:'constant',
+
+        },
       };
       if(route.id =='Confirm' ||
          route.id == 'RestaurantTab' ||
-         route.id == 'Menu' ||
          route.id == 'Checkout'||
          route.id == 'MenuSearch' ||
          route.id == 'AddressList' ||
          route.id == 'AdView'
        ){
         return NoBackSwipe
+      }else if(route.id == 'Menu'){
+        route.isPreViewStatic=true;
+        return  {
+             ...Navigator.SceneConfigs.FloatFromLeft,
+             gestures: null,
+             defaultTransitionVelocity: 100,
+             animationInterpolators: {
+               into: buildStyleInterpolator(NoTransition3),
+               out: buildStyleInterpolator(NoTransition3),
+             },
+         }
       }else{
         return Navigator.SceneConfigs.PushFromRight
       }

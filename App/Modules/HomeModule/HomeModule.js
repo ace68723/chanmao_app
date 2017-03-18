@@ -1,5 +1,6 @@
 'use strict';
 const   HomeApi        = require( './HomeApi');
+import orderBy from 'lodash/orderBy';
 const  HomeMoule = {
 
 // ===================================================
@@ -53,9 +54,15 @@ const  HomeMoule = {
       try {
         const res = await HomeApi.getAreaList(reqData)
         console.log(res)
-        let areaList;
+        let areaList={};
         if(res.result == 0){
           areaList = res.area;
+          areaList.map(area=>{
+            let newRestaurantList;
+            
+            newRestaurantList = orderBy(area.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
+            console.log(newRestaurantList)
+          })
         }
         return areaList
       } catch (e) {

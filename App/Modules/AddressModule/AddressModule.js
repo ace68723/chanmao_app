@@ -35,22 +35,16 @@ const CartSchema = {
 };
 const RestaurantScheam = {
   name: 'Restaurant',
-  primaryKey: 'id',
+  primaryKey: 'rid',
   properties: {
-      id:"int",
       rid:"int",
-      zone:"int",
-      rank:"int",
       area:"int",
       desc:"string",
-      distance:"int",
       end_time:"string",
       mob_banner:"string",
       name:"string",
-      open:"int",
       start_amount:"string",
-      start_time:"string",
-      watermark:"int"
+      start_time:"string"
   }
 }
 const SystemScheam = {
@@ -61,7 +55,29 @@ const SystemScheam = {
     value:'string',
   }
 }
-let realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam]});
+let currentVersion = Realm.schemaVersion(Realm.defaultPath);
+if(currentVersion<1){
+  let realm = new Realm();
+  realm.write(() => {
+    let allRestaurants = realm.objects('Restaurant');
+    realm.delete(allRestaurants);
+  })
+}
+let realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],
+                       schemaVersion: 5
+  });
+  // ,
+  // migration: function(oldRealm, newRealm) {
+  //   if (oldRealm.schemaVersion < 1) {
+  //     var oldObjects = oldRealm.objects('Restaurant');
+  //     var newObjects = newRealm.objects('Restaurant');
+  //     for (var i = 0; i < oldObjects.length; i++) {
+  //      if(oldObjects[i].rid != undefined){
+  //        newObjects[i].rid = oldObjects[i].rid;
+  //      }
+  //
+  //    }
+  //   }
 realm.write(() => {
   let initAddress = {
     addr:"",
@@ -85,9 +101,9 @@ realm.write(() => {
   realm.create('Address',Object.assign({},initAddress,{type:'O'}), true );
 
   let initCart = realm.objects('Cart');
-  let initRestaurant = realm.objects('Restaurant');
+  // let initRestaurant = realm.objects('Restaurant');
   realm.delete(initCart);
-  realm.delete(initRestaurant);
+  // realm.delete(initRestaurant);
 })
 
 console.log(realm.path)
