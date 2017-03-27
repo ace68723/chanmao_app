@@ -7,6 +7,7 @@ import {
   Dimensions,
 	Easing,
   Image,
+	InteractionManager,
 	Keyboard,
   StyleSheet,
   Text,
@@ -79,12 +80,13 @@ export default class InputAnimation extends Component {
       // Event(Keybaord): remove keybaord event
       this._keyboardWillShowSubscription.remove();
       this._keyboardWillHideSubscription.remove();
+			AuthStore.removeChangeListener(this._onChange);
     }
 		_onChange(){
 			if(AuthStore.loginState().loginSuccess){
-				setTimeout( () => {
+				// InteractionManager.runAfterInteractions(() => {
 					this._transition()
-				}, 10)
+				// })
 			}
 	  }
 		_keyboardWillShow(e) {

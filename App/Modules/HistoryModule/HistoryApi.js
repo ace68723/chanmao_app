@@ -14,23 +14,23 @@ let getOptiopns = {
 }
 
 const HistoryApi = {
-    getHistoryData(token){
-      const url = AuthConstants.API_HISTORYLIST
-      let options = {
-          method: 'POST',
-          mode:'cors',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          }
-      }
-      options.headers.authortoken = token;
-      // options.body = JSON.stringify({channel:1});
-      options.body = JSON.stringify({channel: 1})
-      return fetch(url,options)
-              .then((res) => res.json())
-              .catch((error) => {throw error})
-    },
+  getOrderData(token){
+    const url = AuthConstants.API_HISTORYORDER
+    let options = {
+        method: 'POST',
+        mode:'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+    options.headers.authortoken = token;
+    // options.body = JSON.stringify({channel:1});
+    options.body = JSON.stringify({channel: 1})
+    return fetch(url,options)
+            .then((res) => res.json())
+            .catch((error) => {throw error})
+  },
     getHistoryDetail(reqData){
       const url = AuthConstants.API_GETHISTORYDETAIL
       let options = {
@@ -79,6 +79,23 @@ const HistoryApi = {
       const iv_oid = reqData.iv_oid;
       const iv_code = reqData.iv_code;
       options.body =  JSON.stringify({iv_oid,iv_code});
+      return fetch(url,options)
+              .then((res) => res.json())
+              .catch((error) => {throw error})
+    },
+    getHistoryData(token){
+      const url = AuthConstants.API_HISTORYLIST
+      let options = {
+          method: 'POST',
+          mode:'cors',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          }
+      }
+      options.headers.authortoken = token;
+      // options.body = JSON.stringify({channel:1});
+      options.body = JSON.stringify({channel: 1})
       return fetch(url,options)
               .then((res) => res.json())
               .catch((error) => {throw error})

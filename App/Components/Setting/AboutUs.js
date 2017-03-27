@@ -12,7 +12,7 @@ import {
   ScrollView,
   Clipboard,
 } from 'react-native';
-
+import AppConstants from '../../Constants/AppConstants';
 const {height, width} = Dimensions.get('window');
 const deviceWidth = width;
 const deviceHeight = height;
@@ -79,11 +79,8 @@ export default class InfoPage extends Component {
                                     微信客服：chanmaoweixin
                               </Text>
                               <Text style={styles.centerFont} onPress={()=>{
-                                this.contact("647-205-6668","phone");
-                              }} allowFontScaling={false}>商务合作：647-205-6668</Text>
-                              <Text style={styles.centerFont} onPress={()=>{
-                                this.contact("info@chanmao.ca","email");
-                              }} allowFontScaling={false}>E-mail：info@chanmao.ca</Text>
+                                this.contact("marketing@chanmao.ca","email");
+                              }} allowFontScaling={false}>商务合作：marketing@chanmao.ca</Text>
                           </View>
                 </View>
         </ScrollView>
@@ -95,7 +92,7 @@ export default class InfoPage extends Component {
 
             </Text>
             <Text style={styles.footerFont} allowFontScaling={false}>
-              版本号：V 2.3
+              版本号：V {AppConstants.CM_VERSION}
             </Text>
         </View>
 

@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import {
   Navigator,
+  Image,
   StyleSheet,
   Text,
   View
@@ -20,16 +21,60 @@ import AdView from './General/AdView';
 import AboutUs from './Setting/AboutUs';
 import Menu from './Restaurant/Menu';
 import buildStyleInterpolator from 'buildStyleInterpolator';
+import LogoAnimationView from './Logo/LogoAnimationView';
+
+import AuthAction from '../Actions/AuthAction';
+import Auth from '../Modules/AuthModule/Auth';
+import AuthStore from '../Stores/AuthStore';
+
 export default class Router extends Component {
   constructor(){
     super()
     this.state={
       isAuthed:false,
-      showLogin:true,
+      renderCover:true,
+      renderTabs:false,
+      renderLogin:false,
+      renderLogo:false,
+      shortLogo:true,
     }
     this._goToHome = this._goToHome.bind(this);
     this._renderLoginScene = this._renderLoginScene.bind(this);
+    this._renderLogoScene = this._renderLogoScene.bind(this);
+    this._handleLogoUnmount = this._handleLogoUnmount.bind(this);
+    this._onChange = this._onChange.bind(this);
+  }
+  async componentDidMount(){
+    const token = await Auth.getToken()
+    if(token){
+      // this.setState({renderLogo:true});
+      AuthAction.doAuth();
+    }else{
+      this.setState({shortLogo:false,
+                    renderLogo:true,
+                    renderLogin:true,
+                    renderCover:false,});
+    }
 
+    AuthStore.addChangeListener(this._onChange);
+    setTimeout( ()=> {
+      this._removeListener()
+    }, 5000);
+  }
+  _onChange(){
+      //!Importment for the logout  AuthStore.removeChangeListener( this._onChange )
+      console.log('router onchange')
+			if(AuthStore.loginState().loginSuccess){
+         this.setState({isAuthed:true,renderTabs:true})
+         setTimeout( ()=> {
+            this.setState({renderLogo:true,renderCover:false,})
+         }, 1000);
+			}else{
+          this.setState({renderLogin:true,renderCover:false,})
+      }
+  }
+  _removeListener(){
+    AuthStore.removeChangeListener(this._onChange);
   }
   _renderScene(route, navigator) {
 
@@ -145,12 +190,12 @@ export default class Router extends Component {
       if(route.id =='Confirm' ||
          route.id == 'RestaurantTab' ||
          route.id == 'Checkout'||
-         route.id == 'MenuSearch' ||
          route.id == 'AddressList' ||
          route.id == 'AdView'
        ){
         return NoBackSwipe
-      }else if(route.id == 'Menu'){
+      }else if(route.id == 'Menu'||
+               route.id == 'MenuSearch' ){
         route.isPreViewStatic=true;
         return  {
              ...Navigator.SceneConfigs.FloatFromLeft,
@@ -177,12 +222,18 @@ export default class Router extends Component {
   _goToHome(){
     this.setState({
       isAuthed:true,
+      renderTabs:true,
     })
     setTimeout(()=> {
       this.setState({
-        showLogin:false,
+        renderLogin:false,
       })
     }, 3500);
+  }
+  _handleLogoUnmount(){
+    this.setState({
+      renderLogo:false,
+    })
   }
   _renderLoginScene(route, navigator) {
       switch (route.id) {
@@ -209,13 +260,42 @@ export default class Router extends Component {
 
       );
   }
+  _renderLogoScene(route, navigator) {
+      switch (route.id) {
+        case 'AdView':
+          return <AdView  navigator={navigator} url={route.url} unmount={this._handleLogoUnmount}/>;
+        default:
+          return (
+          <LogoAnimationView unmount={this._handleLogoUnmount} shortLogo={this.state.shortLogo} navigator={navigator}/>
+          );
+      }
+  }
+  _renderLogo(){
+    return (
+      <View style={{position:'absolute',top:0,left:0,bottom:0,right:0,}}>
+        <Navigator
+           initialRoute={{name: 'Logo', index: 0}}
+           renderScene={this._renderLogoScene}
+           configureScene={this._transition}
+         />
+      </View>
+
+      );
+  }
+  _renderCover(){
+    return(
+      <View style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#ffffff',alignItems:'center',justifyContent:'center',}}>
+        <Image source={require('./Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>
+      </View>
+    )
+  }
   render() {
     return (
       <View style={styles.container}>
-        {this.state.isAuthed? this._renderTabs():null}
-        {this.state.showLogin? this._renderLogin():null}
-
-
+        {this.state.renderTabs? this._renderTabs():null}
+        {this.state.renderLogin? this._renderLogin():null}
+        {this.state.renderLogo ? this._renderLogo(): null}
+        {this.state.renderCover ? this._renderCover(): null}
       </View>
     );
   }

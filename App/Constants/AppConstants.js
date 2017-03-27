@@ -34,6 +34,7 @@ module.exports ={
     // History
     GET_HISTORY_SUCCESS:'GET_HISTORY_SUCCESS',
     GET_HISTORY_DETAIL:'GET_HISTORY_DETAIL',
+    GET_ORDERS:'GET_ORDERS',
 
     //Restaurant
     GET_RESTAURANT_SUCCESS: 'GET_RESTAURANT_SUCCESS',
@@ -84,5 +85,7 @@ module.exports ={
     //TabsStore
     GO_TO_HISTORY:'GO_TO_HISTORY',
 
-    CMVERSION:'2.3.2',
+    //api key
+    GOOGLE_API_KEY:'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8',
+    CM_VERSION:'2.3.3',
 }

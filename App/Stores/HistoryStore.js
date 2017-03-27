@@ -6,6 +6,7 @@ const CHANGE_EVENT = 'change4422';
 const ERRROR_TITLE = AppConstants.ERRROR_TITLE;
 let state = {
           historylist:[],
+          orderData:[],
           current:null,
           unavailable:[],
           isRefreshing:false,
@@ -22,15 +23,18 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 			this.removeListener(CHANGE_EVENT, callback)
 	},
 	autoRefresh(){
-		setInterval(()=>{
-			state = Object.assign({},state,{doRefresh:true})
-			HistoryStore.emitChange();
-		},30000)
+		// setInterval(()=>{
+		// 	state = Object.assign({},state,{doRefresh:true})
+		// 	HistoryStore.emitChange();
+		// },30000)
 	},
 	getHistorySuccess(data){
 		data.isRefreshing = false;
 		state = Object.assign({},state,data,{doRefresh:false})
 	},
+  getOrders(orderData){
+    state = Object.assign({},state,{orderData},{doRefresh:false})
+  },
   getState(){
     return state
   },
@@ -53,10 +57,11 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 	},
 	dispatcherIndex: register(function(action) {
 	   switch(action.actionType){
-				 case AppConstants.GET_HISTORY_SUCCESS:
-					    HistoryStore.getHistorySuccess(action.data)
-						 	HistoryStore.emitChange()
-				 break;
+         case AppConstants.GET_ORDERS:
+              HistoryStore.getOrders(action.orderData)
+              HistoryStore.emitChange()
+         break;
+
 				 case AppConstants.VERIFY_PHONE:
 					    HistoryStore.verifyPhone(action.data)
 						 	HistoryStore.emitChange()
@@ -69,6 +74,10 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 							HistoryStore.doRefresh()
 							HistoryStore.emitChange()
 			   break;
+         case AppConstants.GET_HISTORY_SUCCESS:
+             HistoryStore.getHistorySuccess(action.data)
+             HistoryStore.emitChange()
+        break;
 
 		  }
 

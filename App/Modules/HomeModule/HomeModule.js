@@ -59,9 +59,9 @@ const  HomeMoule = {
           areaList = res.area;
           areaList.map(area=>{
             let newRestaurantList;
-            
-            newRestaurantList = orderBy(area.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
-            console.log(newRestaurantList)
+
+            area.restaurantList = orderBy(area.restaurantList, ['open', 'rank', 'distance'], ['desc', 'desc', 'asc']);
+            // console.log(newRestaurantList)
           })
         }
         return areaList

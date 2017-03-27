@@ -6,11 +6,13 @@ import {
   Animated,
   Dimensions,
   Image,
+	InteractionManager,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 
+import AppConstants from '../../Constants/AppConstants';
 import AppString from '../../Constants/AppString';
 import AuthAction from '../../Actions/AuthAction';
 import AuthStore from '../../Stores/AuthStore';
@@ -42,20 +44,21 @@ export default class LogoAnimationView extends Component {
   }
 	_viewOpacity =  new Animated.Value(1);
 	async componentDidMount() {
-		AuthAction.doAuth();
+			// AuthAction.doAuth();
+			AuthStore.addChangeListener(this._onChange);
 		const registerResult = await WeChat.registerApp(appid);
 		const isWXAppInstalled = await WeChat.isWXAppInstalled()
 		this.setState({
 			isWXAppInstalled:isWXAppInstalled
 		})
-		AuthStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount(){
 		AuthStore.removeChangeListener(this._onChange);
 	}
 	_onChange(){
-      this.setState(AuthStore.loginState())
-      //!Importment for the logout  AuthStore.removeChangeListener( this._onChange )
+		InteractionManager.runAfterInteractions(() => {
+			this.setState(AuthStore.loginState())
+			//!Importment for the logout  AuthStore.removeChangeListener( this._onChange )
 			if(this.state.loginSuccess){
 				Animated.timing(this._viewOpacity, {
 						toValue: 0,
@@ -64,6 +67,7 @@ export default class LogoAnimationView extends Component {
 				}).start()
 				this.props.goToHome();
 			}
+		})
   }
 	_handleUsername(username){
   	this.setState({
@@ -129,7 +133,7 @@ export default class LogoAnimationView extends Component {
 												is_wechat = {AppString('wechat')}
 												ib_isWXAppInstalled = {this.state.isWXAppInstalled}
 												is_copyright = {AppString('copyright')}
-												is_version = {"2.3.2"}
+												is_version = {AppConstants.CM_VERSION}
 												ib_loginSuccess = {this.state.loginSuccess}
 												ib_showLoading = {this.state.showLoading}
 											  if_handleLogin = {this._handleLogin}

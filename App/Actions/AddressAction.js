@@ -32,39 +32,39 @@ export default {
           actionType: AppConstants.PREDICTIONS_SUCCESS, autocompleteData
       })
     },
-    getPredictions(text){
-      const url = "https://maps.googleapis.com/maps/api/place/autocomplete/" +
-      "json?input="+ text +
-      "&language=en" +
-      "&types=address" +
-      "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
-      let options = {
-          method: 'GET',
-          mode:'cors',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          }
-      }
-      fetch(url,options)
-        .then((res) => res.json())
-        .then((res)=>{
-            if(res.status == "ok"){
-              const autocompleteData = res
-              dispatch({
-                  actionType: AppConstants.PREDICTIONS_SUCCESS, autocompleteData
-              })
-            }else{
-              throw error
-            }
-        })
-        .catch((error) => {throw error})
-
-    },
+    // getPredictions(text){
+    //   const url = "https://maps.googleapis.com/maps/api/place/autocomplete/" +
+    //   "json?input="+ text +
+    //   "&language=en" +
+    //   "&types=address" +
+    //   "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
+    //   let options = {
+    //       method: 'GET',
+    //       mode:'cors',
+    //       headers: {
+    //           'Accept': 'application/json',
+    //           'Content-Type': 'application/json'
+    //       }
+    //   }
+    //   fetch(url,options)
+    //     .then((res) => res.json())
+    //     .then((res)=>{
+    //         if(res.status == "ok"){
+    //           const autocompleteData = res
+    //           dispatch({
+    //               actionType: AppConstants.PREDICTIONS_SUCCESS, autocompleteData
+    //           })
+    //         }else{
+    //           throw error
+    //         }
+    //     })
+    //     .catch((error) => {throw error})
+    //
+    // },
     formatAddress(placeId){
         const url = "https://maps.googleapis.com/maps/api/place/details/" +
         "json?placeid="+ placeId +
-        "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
+        "&key="+AppConstants.GOOGLE_API_KEY
         let options = {
             method: 'GET',
             mode:'cors',

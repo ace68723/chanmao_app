@@ -10,9 +10,9 @@ import {
   AppState,
   StyleSheet,
   Text,
+  Image,
   View
 } from 'react-native';
-import LogoAnimationView from './App/Components/Logo/LogoAnimationView';
 import Router from './App/Components/Router';
 import CodePush from "react-native-code-push";
 
@@ -20,10 +20,8 @@ export default class chanmao extends Component {
   constructor(){
     super()
     this.state = {
-      renderLogo:true,
       isUpdate:false,
     }
-    this.handleLogoUnmount = this.handleLogoUnmount.bind(this);
     this._handleAppStateChange = this._handleAppStateChange.bind(this);
   }
 
@@ -66,21 +64,21 @@ export default class chanmao extends Component {
                 break;
         }
     }
-  handleLogoUnmount(){
-    this.setState({
-      renderLogo:false,
-    })
+  _renderUpdateView(){
+    return(
+      <View style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#ffffff',alignItems:'center',justifyContent:'center',}}>
+        <Image source={require('./App/Components/Image/Loading_dots_orange.gif')}  style={{width:45,height:15}}/>
+      </View>
+    )
   }
   render() {
-    let renderLogo = this.state.renderLogo ? <LogoAnimationView unmount={this.handleLogoUnmount}/> : null;
-    let updateView = this.state.isUpdate ? <View style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#ffffff'}}/> : null;
     let cover = this.state.showCover ?  <View style={{backgroundColor:'rgba(0,0,0,0)',position:'absolute',top:0,left:0,right:0,bottom:0}}/> : null;
+    // {cover}
     return (
       <View style={styles.container}>
         <Router/>
-        {renderLogo}
-        {updateView}
-        {cover}
+        {this.state.isUpdate? this._renderUpdateView():null}
+
       </View>
     );
   }

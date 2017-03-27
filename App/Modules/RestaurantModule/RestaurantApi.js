@@ -1,7 +1,7 @@
 'use strict';
 
 const AuthConstants = require( '../AuthModule/AuthConstants');
-
+import AppConstants from '../../Constants/AppConstants';
 const ERROR_NETWORK   = AuthConstants.ERROR_NETWORK;
 
 let getOptiopns = {
@@ -111,7 +111,7 @@ const RestaurantApi = {
       const dlexp   = reqData.dlexp;
       const items   = reqData.items;
       const comment = reqData.comment;
-      const version = '2.3.2';
+      const version = AppConstants.CM_VERSION;
       const channel = '1';
       const POST_DATA = {dltype,pretax,rid,uaid,dlexp,items,version,channel,comment}
       options.headers.authortoken = reqData.token;

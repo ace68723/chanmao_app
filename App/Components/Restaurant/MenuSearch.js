@@ -29,14 +29,14 @@ export default class LoginButton extends Component {
   constructor(props){
     super(props);
 		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-		const menuState = MenuStore.menuState()
-		const cartTotals = MenuStore.menuState().cartTotals;
-		cartTotals.total = cartTotals.total.toFixed(2);
+
+		// cartTotals.total = cartTotals.total.toFixed(2);
 		this.state = {
-			menu:menuState.menu,
-			cartTotals:cartTotals,
+			// menu:menuState.menu,
+			// cartTotals:cartTotals,
 			dataSource: this.ds.cloneWithRows([]),
 			restaurant:props.restaurant,
+			cartTotals:'',
 		}
 		this._setSearchText = this._setSearchText.bind(this);
 		this._onChange = this._onChange.bind(this);
@@ -45,12 +45,19 @@ export default class LoginButton extends Component {
 
   }
 	componentDidMount(){
+		const menuState = MenuStore.menuState()
+		const cartTotals = MenuStore.menuState().cartTotals;
+		this.setState({
+			menu:menuState.menu,
+			cartTotals:cartTotals,
+		})
 		MenuStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {
 		MenuStore.removeChangeListener(this._onChange);
 	}
 	_onChange(){
+		console.log('menuSearch onchange')
 			const cartTotals = MenuStore.menuState().cartTotals;
 			cartTotals.total = cartTotals.total.toFixed(2);
 			const filteredMenu = MenuStore.getFilteredMenu(this.state.filteredMenu)
@@ -123,10 +130,10 @@ export default class LoginButton extends Component {
 									addToOrder= {this.props.addToOrder}/>
 			)
 	}
-
+	// <Text style={{color:"#ffffff",fontSize:16,margin:3}}>${this.state.cartTotals.total}</Text>
   render(){
-    return(
-      <View >
+		return(
+      <View style={{flex:1,backgroundColor:"#ffffff"}}>
 			<Header title={this.props.restaurant.name}
 							goBack={this._goBack}
 							leftButtonText={'×'}/>

@@ -9,7 +9,18 @@ export default {
           actionType: AppConstants.GET_HISTORY_SUCCESS, data
       })
     },
-     async getVerifyCode(oid){
+    async getOrderData(){
+      try{
+        const token = await AuthService.getToken();
+        const orderData = await HistoryModule.getOrderData(token);
+        dispatch({
+            actionType: AppConstants.GET_ORDERS, orderData
+        })
+      }catch (e){
+        console.log(e);
+      }
+    },
+    async getVerifyCode(oid){
       try{
         const token = await AuthService.getToken();
         const data = {oid,token};

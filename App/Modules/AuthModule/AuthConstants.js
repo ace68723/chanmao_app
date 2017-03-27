@@ -12,6 +12,7 @@ const AppConstants ={
     API_RESTAURANTLIST: Server + 'MobOrder10/Rrlist',
     API_MENU: Server + 'MobOrder10/Rrmenu',
     API_HISTORYLIST: Server + 'MobOrder10/historylist',
+    API_HISTORYORDER: Server + 'MobOrder10/HistoryOrder',
     API_GETHISTORYDETAIL : Server + 'MobOrder10/OrderHistory',
 
 

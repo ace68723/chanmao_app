@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 
 
+import AppConstants from '../../Constants/AppConstants';
 
 import Header from '../General/Header';
 import PredictionCard from './PredictionCard';
@@ -99,7 +100,7 @@ export default class LoginButton extends Component {
     "&language=en" +
     "&components=country:ca"+
     "&types=address" +
-    "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
+    "&key="+AppConstants.GOOGLE_API_KEY
     let options = {
         method: 'GET',
         mode:'cors',

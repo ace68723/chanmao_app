@@ -31,24 +31,24 @@ const AddressApi = {
               .then((res) => res.json())
               .catch((error) => {throw error})
     },
-    searchAddress(input){
-      const url = "https://maps.googleapis.com/maps/api/place/autocomplete/" +
-      "json?input="+ input +
-      "&language=en" +
-      "&types=address" +
-      "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
-      let options = {
-          method: 'GET',
-          mode:'cors',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          }
-      }
-      return fetch(url,options)
-              .then((res) => res.json())
-              .catch((error) => {throw error})
-    },
+    // searchAddress(input){
+    //   const url = "https://maps.googleapis.com/maps/api/place/autocomplete/" +
+    //   "json?input="+ input +
+    //   "&language=en" +
+    //   "&types=address" +
+    //   "&key=AIzaSyA-DNIURR8yEk2wbSKYZ_44qzzCNhLWhVA"
+    //   let options = {
+    //       method: 'GET',
+    //       mode:'cors',
+    //       headers: {
+    //           'Accept': 'application/json',
+    //           'Content-Type': 'application/json'
+    //       }
+    //   }
+    //   return fetch(url,options)
+    //           .then((res) => res.json())
+    //           .catch((error) => {throw error})
+    // },
     submitAddress(userInfo,token){
       const url = AuthConstants.API_CREATE_ADDRESS
       const options = Object.assign({},{

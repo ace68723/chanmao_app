@@ -43,6 +43,12 @@ class ArticleDetail extends Component {
 
   _goBack(){
     this.props.navigator.pop();
+		//for hide launch ad View
+		if(this.props.unmount){
+			setTimeout( ()=> {
+				this.props.unmount()
+			}, 500);
+		}
   }
   render() {
     let loading = () =>{

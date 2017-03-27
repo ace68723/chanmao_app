@@ -38,7 +38,7 @@ import CommentModal from 'react-native-modalbox';
 import RestaurantStore from '../../Stores/RestaurantStore';
 import MenuStore from '../../Stores/MenuStore';
 import RestaurantAction from '../../Actions/RestaurantAction';
-import HistoryService from '../../Services/HistoryService';
+import HistoryAction from '../../Actions/HistoryAction';
 
 // device(size): get device height and width
 const {height, width} = Dimensions.get('window');
@@ -182,7 +182,7 @@ class Confirm extends Component {
 			}
     }
     _goToHistory(){
-			HistoryService.getHistoryData();
+			HistoryAction.getOrderData()
       this.props.navigator.popToTop();
     }
     showLoading(){

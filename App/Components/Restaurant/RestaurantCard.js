@@ -20,7 +20,8 @@ class RestaurantCard extends Component {
           super();
 					const rid = Number(props.restaurant.rid);
           this.state={
-						restaurant:realm.objectForPrimaryKey('Restaurant',rid),
+						restaurantData:realm.objectForPrimaryKey('Restaurant',rid),
+						restaurant:props.restaurant,
             ref:props.restaurant.rid,
             imgUrl:{uri:props.restaurant.mob_banner},
           }
@@ -31,20 +32,17 @@ class RestaurantCard extends Component {
 			}
 			componentWillReceiveProps(nextProps){
 				const rid = Number(nextProps.restaurant.rid);
-				this.state={
-					restaurant:realm.objectForPrimaryKey('Restaurant',rid),
+				this.setState({
+					restaurantData:realm.objectForPrimaryKey('Restaurant',rid),
+					restaurant:nextProps.restaurant,
 					ref:nextProps.restaurant.rid,
 					imgUrl:{uri:nextProps.restaurant.mob_banner},
-				}
+				})
 			}
       _renderCloseCover(){
-				if(this.props.restaurant.rid==76){
-					// console.log(this.props.restaurant.rid,this.props.restaurant.open)
-				}
-        if(this.props.restaurant.open == 0){
-					// if(this.props.restaurant.rid==76){
-					// 	console.log('return')
-					// }
+
+
+        if(this.state.restaurant.open == 0){
           return(
             <View style={{position:'absolute',
 													top:0,left:0,bottom:0,right:0,
@@ -76,7 +74,7 @@ class RestaurantCard extends Component {
         //  }
       }
       recommend(){
-        if(this.props.restaurant.rank > 0){
+        if(this.state.restaurant.rank > 0){
           return(
             <Image
               source={require('./Image/recommend.png')}
@@ -90,12 +88,12 @@ class RestaurantCard extends Component {
            	this.props.navigator.push({
 							 id: 'Menu',
 							 py:py,
-							 restaurant:this.props.restaurant,
+							 restaurant:this.state.restaurant,
 						 })
         })
       }
       _renderDistance(){
-        if(this.props.restaurant.distance > 0){
+        if(this.state.restaurant.distance > 0){
           return(
             <View style={{flex:1,
 													flexDirection:"row",
@@ -108,18 +106,14 @@ class RestaurantCard extends Component {
 							/>
               <Text style={{color:'#ababb0',fontSize:12,fontWeight:'400',fontFamily:'FZZhunYuan-M02S',marginLeft:3,textAlign:'right'}}>
 
-                  {(this.props.restaurant.distance/1000).toFixed(2)} km
+                  {(this.state.restaurant.distance/1000).toFixed(2)} km
               </Text>
             </View>
           )
         }
 
       }
-      // {this.recommend()}
       render(){
-				// if(this.props.restaurant.rid==76){
-				// 	console.log(this.props.restaurant)
-				// }
         return(
           <TouchableWithoutFeedback
             onPress={this._openMenu}
@@ -148,7 +142,7 @@ class RestaurantCard extends Component {
                               }}
                           ref={this.state.ref} >
                     <Image
-                      source={{uri:this.state.restaurant.mob_banner}}
+                      source={{uri:this.state.restaurantData.mob_banner}}
                       style={[{height:width/1.25,
                                width:null,}]}
                     />
@@ -164,12 +158,12 @@ class RestaurantCard extends Component {
                               borderLeftWidth:StyleSheet.hairlineWidth,
                               borderRightWidth:StyleSheet.hairlineWidth,}}>
                   <Text style={{color:'#363646',fontSize:15,fontWeight:'500',fontFamily:'FZZongYi-M05S',}}>
-                      {this.state.restaurant.name}
+                      {this.state.restaurantData.name}
                   </Text>
                   <View style={{flexDirection:"row"}}>
                     <View style={{flex:1,}}>
                       <Text style={{color:'#ababb0',fontSize:12,fontWeight:'200',marginTop:5,fontFamily:'FZZhunYuan-M02S'}}>
-                          {this.state.restaurant.desc}
+                          {this.state.restaurantData.desc}
                       </Text>
                     </View>
                     {this._renderDistance()}

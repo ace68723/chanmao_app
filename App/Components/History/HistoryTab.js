@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {
   Alert,
+	AppState,
   Image,
   RefreshControl,
   StyleSheet,
@@ -20,9 +21,8 @@ import {
 
 } from 'react-native';
 
-import HistoryOrder from './HistoryOrder';
-import CurrentOrder from './CurrentOrder';
-import HistoryService from '../../Services/HistoryService';
+import Order from './Order';
+import HistoryAction from '../../Actions/HistoryAction';
 import HistoryStore from '../../Stores/HistoryStore';
 import Header from '../General/Header';
 import HistoryOrderDetail from './HistoryOrderDetail';
@@ -41,6 +41,7 @@ class HistoryTab extends Component {
         this._initVerifyPhoneResult = this._initVerifyPhoneResult.bind(this);
         this._HistoryOrderDetailVisible = this._HistoryOrderDetailVisible.bind(this);
         this._reorder = this._reorder.bind(this);
+				this._handleAppStateChange = this._handleAppStateChange.bind(this);
     }
     componentDidMount(){
       setTimeout( () =>{
@@ -49,10 +50,12 @@ class HistoryTab extends Component {
 	      this._doAutoRefresh();
 				HistoryStore.autoRefresh();
 	      const currentRoutes = this.props.navigator.getCurrentRoutes();
+				AppState.addEventListener('change', this._handleAppStateChange);
       }, 4000);
     }
     componentWillUnmount() {
          HistoryStore.removeChangeListener(this._onChange);
+				 AppState.removeEventListener('change', this._handleAppStateChange);
     }
     _onChange(){
 				const state = Object.assign({},this.state,HistoryStore.getState())
@@ -76,6 +79,11 @@ class HistoryTab extends Component {
 				}
 
     }
+		_handleAppStateChange(currentAppState) {
+			if(currentAppState === 'active'){
+				HistoryAction.getOrderData()
+			}
+		}
     _initVerifyPhoneResult(){
         this.setState({
           verifyPhoneResult:''
@@ -87,7 +95,7 @@ class HistoryTab extends Component {
         this.setState({
           isRefreshing: true,
         })
-        HistoryService.getHistoryData()
+        HistoryAction.getOrderData()
       }
 
 
@@ -96,9 +104,8 @@ class HistoryTab extends Component {
       this.setState({
         isRefreshing: true,
       })
-      HistoryService.getHistoryData()
+      HistoryAction.getOrderData()
     }
-
     _HistoryOrderDetailVisible(oid){
 				this.setState({
 					showHistoryOrderDetail: !this.state.showHistoryOrderDetail,
@@ -128,29 +135,11 @@ class HistoryTab extends Component {
       //   // reorderItems:reorderItems,
       // })
     }
-
+ // <Text style={{alignSelf:'center',color:'#ff8b00',fontFamily:'FZZhunYuan-M02S',}}> 订单状态每30秒会自动刷新</Text>
     render(){
-
-      let historylist = this.state.historylist.map( order => {
-        return <HistoryOrder key={ order.oid } order={order} HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}/>
-      });
-      let current = ()=>{
-        if(this.state.current){
-          return(
-            <View style={styles.orderContainer}>
-                <View style={styles.orderTitleContainer}>
-                      <Text style={styles.orderTitle}>
-                        ORDER PASS
-                      </Text>
-                </View>
-                <CurrentOrder current={this.state.current}
-                              unavailable={this.state.unavailable}
-                              reorder={this._reorder}
-                              HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}/>
-            </View>
-          )
-        }
-      }
+			let orderList = this.state.orderData.map( order => {
+				return <Order key={ order.oid } order={order} HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}/>
+			});
       return(
          <View style={styles.mainContainer}>
              <Header title={'我的订单'} />
@@ -166,17 +155,9 @@ class HistoryTab extends Component {
                          }
                          ref='_scrollView'
                          >
-               <Text style={{alignSelf:'center',color:'#ff8b00',fontFamily:'FZZhunYuan-M02S',}}> 订单状态每30秒会自动刷新</Text>
-               {current()}
-               <View style={styles.orderContainer}>
 
-                   <View style={styles.orderTitleContainer}>
-                         <Text style={styles.orderTitle}>
-                           历史订单
-                         </Text>
-                   </View>
-                   { historylist }
-               </View>
+
+               { orderList }
              </ScrollView>
 						 <Modal style={styles.modal}
 						 				position={"center"}
@@ -205,16 +186,7 @@ let styles = StyleSheet.create({
     flex: 1,
     marginTop: 64,
   },
-  orderContainer:{
-    margin:10,
-    backgroundColor:"#fff",
-    shadowColor: "#000000",
-    shadowOpacity: 0.2,
-    shadowOffset: {
-       height: 1,
-       width: 1,
-    },
-  },
+
   orderTitleContainer:{
     height:40,
     backgroundColor: '#ff8b00',

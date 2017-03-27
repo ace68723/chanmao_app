@@ -47,6 +47,26 @@ const RestaurantScheam = {
       start_time:"string"
   }
 }
+// const RestaurantScheam = {
+//   name: 'Restaurant',
+//   primaryKey: 'id',
+//   properties: {
+//       id:"int",
+//       rid:"int",
+//       zone:"int",
+//       rank:"int",
+//       area:"int",
+//       desc:"string",
+//       distance:"int",
+//       end_time:"string",
+//       mob_banner:"string",
+//       name:"string",
+//       open:"int",
+//       start_amount:"string",
+//       start_time:"string",
+//       watermark:"int"
+//   }
+// }
 const SystemScheam = {
   name: 'System',
   primaryKey: 'type',
@@ -55,17 +75,54 @@ const SystemScheam = {
     value:'string',
   }
 }
-let currentVersion = Realm.schemaVersion(Realm.defaultPath);
-if(currentVersion<1){
-  let realm = new Realm();
-  realm.write(() => {
-    let allRestaurants = realm.objects('Restaurant');
-    realm.delete(allRestaurants);
-  })
-}
-let realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],
-                       schemaVersion: 5
-  });
+// let realm =new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],})
+
+let realm =new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],
+                      schemaVersion: 1,
+                      migration: function(oldRealm, newRealm) {
+                        if (oldRealm.schemaVersion < 1) {
+                          var oldObjects = oldRealm.objects('Restaurant');
+                          var newObjects = newRealm.objects('Restaurant');
+                          for (var i = 0; i < oldObjects.length; i++) {
+                            // newObjects[i].rid = oldObjects[i].id
+                            // console.log(oldObjects[i])
+                            if(newObjects[i] && oldObjects[i]){
+                              newObjects[i].rid = oldObjects[i].id
+                              // newObjects[i].rid = i;
+                              // newObjects[i].area = oldObjects[i].rid;
+                            }
+                          }
+                        }
+                      }
+});
+// let currentVersion = Realm.schemaVersion(Realm.defaultPath);
+  //  realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],
+                      // schemaVersion: 1,
+                      // migration: function(oldRealm, newRealm) {
+                      //   if (oldRealm.schemaVersion < 1) {
+                      //     var oldObjects = oldRealm.objects('Restaurant');
+                      //     var newObjects = newRealm.objects('Restaurant');
+                      //     for (var i = 0; i < oldObjects.length; i++) {
+                      //      if(oldObjects[i].rid != undefined){
+                      //        newObjects[i].rid = oldObjects[i].rid;
+                      //      }
+                      //
+                      //    }
+                      //   }
+  //  });
+// if(currentVersion != -1 && currentVersion<1 ){
+//     realm = new Realm();
+//     realm.write(() => {
+//       let allRestaurants = realm.objects('Restaurant');
+//       realm.delete(allRestaurants);
+//     })
+// }else{
+//    realm = new Realm({schema: [AddressSchema,CartSchema,RestaurantScheam,SystemScheam],
+//                        schemaVersion: 1
+//    });
+// }
+
+
   // ,
   // migration: function(oldRealm, newRealm) {
   //   if (oldRealm.schemaVersion < 1) {
@@ -104,6 +161,23 @@ realm.write(() => {
   // let initRestaurant = realm.objects('Restaurant');
   realm.delete(initCart);
   // realm.delete(initRestaurant);
+  // let testRestaurant = {
+  //   id:1,
+  //   rid:32,
+  //   zone:4,
+  //   rank:2,
+  //   area:3,
+  //   desc:"sdsee",
+  //   distance:1,
+  //   end_time:"sss",
+  //   mob_banner:"wsxx",
+  //   name:"sadds",
+  //   open:2,
+  //   start_amount:"123123",
+  //   start_time:"123123",
+  //   watermark:1
+  // }
+  // realm.create('Restaurant',testRestaurant, true );
 })
 
 console.log(realm.path)

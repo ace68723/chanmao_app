@@ -43,24 +43,33 @@ class Menu extends Component {
         restaurant:props.restaurant,
         renderMenuList:true,
         showHeader:false,
-        renderCloseBtn:false,
+        renderHeader:false,
+				renderBackgroundCover:false,
         cartTotals:'',
       };
-      this._closeMenuAnimation = this._closeMenuAnimation.bind(this);
-      this._handleScroll = this._handleScroll.bind(this);
+			this._goToCheckout = this._goToCheckout.bind(this);
+
+			//for menuList
+			this._changeCartTotals = this._changeCartTotals.bind(this);
+			this._checkOpen = this._checkOpen.bind(this);
+			this._handleScroll = this._handleScroll.bind(this);
+			this._closeMenuAnimation = this._closeMenuAnimation.bind(this);
+			this._goToMenuSearch = this._goToMenuSearch.bind(this);
     }
 
     componentDidMount(){
       setTimeout( () =>{
         this._openMenuAnimation()
         this.setState({
-          renderCloseBtn:true,
+          renderHeader:true,
+					renderBackgroundCover:true,
         })
       }, 100);
 
     }
     _openMenuAnimation(){
       	InteractionManager.runAfterInteractions(() => {
+
           Animated.parallel([
             Animated.timing(this.state.restaurantCardTop, {
               toValue: 0,
@@ -81,14 +90,15 @@ class Menu extends Component {
           ]).start()
           setTimeout(()=>{
             this.setState({
-              renderCloseBtn:true,
+              renderHeader:true,
             })
           }, 400);
         })
     }
 
     _closeMenuAnimation(){
-      this.setState({renderMenuList:false,renderCloseBtn:false,})
+			this.state.anim.setValue(0);
+      this.setState({renderMenuList:false,renderHeader:false,})
       InteractionManager.runAfterInteractions(() => {
         Animated.parallel([
           Animated.timing(this.state.restaurantCardTop, {
@@ -207,7 +217,7 @@ class Menu extends Component {
     }
     _header(){
 
-        if(!this.state.close){
+        if(!this.state.close && this.state.renderHeader){
           const _rightButtonText = '$'+this.state.cartTotals.total+'结账';
           return(
             <Animated.View style={{top:this.state.HV_Top,
@@ -231,7 +241,9 @@ class Menu extends Component {
 														alignItems:"center",
 														justifyContent:"center",
 													}}>
-								<Text style={{color:"#ffffff",fontSize:16,margin:3,fontFamily:'FZZongYi-M05S',}}>${this.state.cartTotals.total}</Text>
+								<Text style={{color:"#ffffff",fontSize:16,margin:3,fontFamily:'FZZongYi-M05S',}}>
+										${this.state.cartTotals.total}
+								</Text>
 								<View style={{margin:3,
 															borderRadius:15,
 															borderWidth:1,
@@ -247,7 +259,7 @@ class Menu extends Component {
 
             </Animated.View>
           )
-        }else{
+        }else if(this.state.renderHeader){
           const _rightButtonText = '商家休息了';
           return(
             <Header title={this.state.restaurant.name}
@@ -260,7 +272,7 @@ class Menu extends Component {
 
     }
     _renderClose(){
-      if(this.state.renderCloseBtn){
+      if(this.state.renderHeader && !this.state.showHeader){
         return(
           <TouchableOpacity style={{paddingTop:22,
                                     paddingLeft:8,
@@ -281,7 +293,7 @@ class Menu extends Component {
       }
     }
     _renderSearch(){
-      if(this.state.renderCloseBtn){
+      if(this.state.renderHeader && !this.state.showHeader){
         return(
           <TouchableOpacity style={{paddingTop:22,
                                       paddingRight:20,
@@ -289,7 +301,7 @@ class Menu extends Component {
                                       position:'absolute',
                                       top:0,
                                       right:0,}}
-                              onPress={this.props.goToMenuSearch}>
+                              onPress={this._goToMenuSearch}>
               <Image style={{  height: 40,width:44,}}
                    source = { require('./Image/button_search.png') }/>
           </TouchableOpacity>
@@ -300,6 +312,18 @@ class Menu extends Component {
       // return (
       // )
     }
+		_renderBackgroundCover(){
+			if(this.state.renderBackgroundCover){
+				return(
+					<View style={{position:'absolute',
+																 backgroundColor:"#ffffff",
+																 left:0,top:this.state.top,right:0,height:254,
+															 }}>
+					</View>
+				)
+			}
+
+		}
     render(){
 
 
@@ -322,11 +346,7 @@ class Menu extends Component {
                                  opacity:this.state.restaurantViewOpacity
                                }}>
           </Animated.View>
-          <View style={{position:'absolute',
-                                 backgroundColor:"#ffffff",
-                                 left:0,top:this.state.top,right:0,height:254,
-                               }}>
-          </View>
+					{this._renderBackgroundCover()}
           <Animated.View style={{top:this.state.restaurantCardTop,
                                  marginLeft:this.state.restaurantCardMargin,
                                  marginRight:this.state.restaurantCardMargin,

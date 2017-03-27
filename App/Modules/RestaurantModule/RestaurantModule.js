@@ -18,7 +18,7 @@ const RestaurantModule = {
               setTimeout( () =>{
                 realm.write(() => {
                   let allRestaurants = realm.objects('Restaurant');
-                    // realm.delete(allRestaurants);
+                    realm.delete(allRestaurants);
                     if(data.open.length>0 ){
                         data.open.forEach((restaurant,id)=>{
                           /**
@@ -110,7 +110,7 @@ const RestaurantModule = {
             const total = data.total;
             const eo_data ={pretax,pretax_ori,promoted,total}
             const startAmount = reqData.startAmount;
-            const rid = JSON.stringify(reqData.rid);
+            const rid = reqData.rid;
             realm.write(() => {
                 realm.create('Cart',{type:"pretax",value:pretax}, true );
                 realm.create('Cart',{type:"total",value:total}, true );
@@ -150,7 +150,9 @@ const RestaurantModule = {
         }
 
         reqData = Object.assign({},reqData,{code,dltype,pretax,rid,uaid})
+        console.log(reqData)
         const res = await RestaurantApi.calculateDeliveryFee(reqData);
+        console.log(res)
         if(res.result == 0){
           const dlexp = JSON.stringify(res.dlexp);
           const dltype = res.dltype;

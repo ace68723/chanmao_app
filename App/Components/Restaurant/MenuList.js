@@ -81,21 +81,21 @@ class Menu extends Component {
       MenuStore.removeChangeListener(this._onChange);
     }
     _onChange(){
-          const menuState = MenuStore.menuState()
-          const menu = menuState.menu;
-          const cartTotals = menuState.cartTotals;
-          cartTotals.total = cartTotals.total.toFixed(2);
-          const name = menuState.name;
-          this.setState({
-            name:name,
-            cartTotals:cartTotals,
-            menu:menu,
-            dataSource:this.state.dataSource.cloneWithRows(menu),
-            categoryList:menuState.categoryList,
-						loading:false,
-          })
-          this.props.changeCartTotals(cartTotals)
-          this.props.checkOpen(menuState.open)
+      const menuState = MenuStore.menuState()
+      const menu = menuState.menu;
+      const cartTotals = menuState.cartTotals;
+      cartTotals.total = cartTotals.total.toFixed(2);
+      const name = menuState.name;
+      this.setState({
+        name:name,
+        cartTotals:cartTotals,
+        menu:menu,
+        dataSource:this.state.dataSource.cloneWithRows(menu),
+        categoryList:menuState.categoryList,
+				loading:false,
+      })
+      this.props.changeCartTotals(cartTotals)
+      this.props.checkOpen(menuState.open)
     }
 
     renderMenuList(category,categoryIndex){
