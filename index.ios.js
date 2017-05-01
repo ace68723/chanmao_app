@@ -14,6 +14,7 @@ import {
   View
 } from 'react-native';
 import Router from './App/Components/Router';
+import AdView from './App/Components/General/AdView';
 import CodePush from "react-native-code-push";
 
 export default class chanmao extends Component {
@@ -94,3 +95,4 @@ let  codePushOptions = {checkFrequency: CodePush.CheckFrequency.ON_APP_START,
                         installMode: CodePush.InstallMode.IMMEDIATE};
 chanmao = CodePush(codePushOptions)(chanmao);
 AppRegistry.registerComponent('chanmao', () => chanmao);
+AppRegistry.registerComponent('AdView', () => AdView);

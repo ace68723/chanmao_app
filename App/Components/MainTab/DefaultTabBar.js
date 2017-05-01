@@ -3,6 +3,7 @@ import ReactNative from 'react-native';
 import {
   Dimensions,
   Image,
+  InteractionManager,
   StyleSheet,
   ScrollView,
   Text,
@@ -10,6 +11,9 @@ import {
   Animated,
 } from 'react-native';
 import Button from './Button';
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
+import icoMoonConfig from '../../../fontConfig.json';
+const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -19,7 +23,9 @@ class DefaultTabBar extends Component {
   constructor(props) {
     super(props);
     this.renderTab = this.renderTab.bind(this);
-
+    this.state= {
+      homeIconTop: new Animated.Value(50),
+    }
   }
   componentWillReceiveProps(props){
     const page = props.activeTab
@@ -44,25 +50,68 @@ class DefaultTabBar extends Component {
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
 
-
-    // this.scrollViewRefs[ref.index].scrollView.scrollTo({y: 200,animated:false});
-    return (
-        <View key={name} ref={"tabBtn"+page}>
-
-          <Button
-              style={{flex: 1, marginLeft:25 }}
-              accessible={true}
-              accessibilityLabel={name}
-              accessibilityTraits='button'
-              onPress={() => onPressHandler(page)}>
-            <View style={[styles.tab, this.props.tabStyle, ]}>
-              <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+    if(page == 0){
+      const iconName = 'cm-home_page';
+      // if(!isTabActive && this.state.homeIconTop._value == 50){
+      //   InteractionManager.runAfterInteractions(() => {
+      //     Animated.timing(          // Uses easing functions
+      //       this.state.homeIconTop,    // The value to drive
+      //       {toValue: -2,
+      //        duration: 600,
+      //       }            // Configuration
+      //     ).start();
+      //   });
+      //
+      // }else if(isTabActive && this.state.homeIconTop._value == -2){
+      //   InteractionManager.runAfterInteractions(() => {
+      //     Animated.timing(          // Uses easing functions
+      //       this.state.homeIconTop,    // The value to drive
+      //       {toValue: 50,
+      //        duration: 600,
+      //       }            // Configuration
+      //     ).start();
+      //   });
+      // }
+      //   <Animated.View style={{top:this.state.homeIconTop}}>
+      //  </Animated.View>
+      return (
+        <Button
+            style={{flex: 1, marginLeft:10 }}
+            key={name}
+            accessible={true}
+            accessibilityLabel={name}
+            accessibilityTraits='button'
+            onPress={() => onPressHandler(page)}
+          >
+            <View style={[styles.tab, this.props.tabStyle,{flexDirection:'row',alignItems:'center'} ]}>
+                <Icon style={{top:-2}} name={iconName} size={25} color={textColor} />
+              <Text style={[{color: textColor, fontWeight, }, textStyle,]}>
                 {name}
               </Text>
             </View>
-          </Button>
-          </View>
-        )
+        </Button>
+      );
+    }else{
+      return (
+          <View key={name} ref={"tabBtn"+page}>
+
+            <Button
+                style={{flex: 1, marginLeft:25 }}
+                accessible={true}
+                accessibilityLabel={name}
+                accessibilityTraits='button'
+                onPress={() => onPressHandler(page)}>
+              <View style={[styles.tab, this.props.tabStyle, ]}>
+                <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+                  {name}
+                </Text>
+              </View>
+            </Button>
+            </View>
+          )
+    }
+    // this.scrollViewRefs[ref.index].scrollView.scrollTo({y: 200,animated:false});
+
   }
 
   render() {
@@ -100,7 +149,7 @@ class DefaultTabBar extends Component {
 
 
     return (
-        <Animated.View style={{height:40,width:deviceWidth,position:"absolute",top: tabTop,}}>
+        <Animated.View style={{height:50,width:deviceWidth,position:"absolute",top: tabTop,}}>
 
         <ScrollView style={[styles.tabs,
                                     {backgroundColor: this.props.backgroundColor,

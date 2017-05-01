@@ -11,6 +11,7 @@ import {
 	Animated,
 	Dimensions,
   Image,
+	InteractionManager,
   ListView,
   StyleSheet,
   ScrollView,
@@ -24,11 +25,13 @@ import Background from '../General/Background';
 import MenuCard from './MenuCard';
 import Header from '../General/Header';
 import MenuHeader from './MenuHeader';
+import Category from './Category';
 
 import MenuStore from '../../Stores/MenuStore';
 
 import RestaurantAction from '../../Actions/RestaurantAction';
 
+import findIndex from 'lodash/findIndex';
 
 
 
@@ -54,9 +57,14 @@ class Menu extends Component {
         this._handleScroll = this._handleScroll.bind(this);
         this._header = this._header.bind(this);
         this._goBack = this._goBack.bind(this);
+				this._handleCategoryPress = this._handleCategoryPress.bind(this);
+				this._renderMenuList = this._renderMenuList.bind(this);
         this._renderCategoryList = this._renderCategoryList.bind(this);
 
 				this._renderHeader = this._renderHeader.bind(this);
+
+
+				this.categoryRefList = [];
     }
     componentDidMount(){
 			setTimeout( () => {
@@ -96,6 +104,7 @@ class Menu extends Component {
       })
       this.props.changeCartTotals(cartTotals)
       this.props.checkOpen(menuState.open)
+
     }
 
     renderMenuList(category,categoryIndex){
@@ -141,7 +150,8 @@ class Menu extends Component {
 
       if(item.category_name){
         return  (
-              <View  style={{flex:1,backgroundColor:'#ffffff',overflow:"hidden"}}>
+              <View ref={(ref) => { this.categoryRefList.push({category_ref:ref,category_name:item.category_name}) }}
+										style={{flex:1,backgroundColor:'#ffffff',overflow:"hidden"}}>
                 <View style={{alignSelf:'center',marginTop:30,marginBottom:10}}>
                     <Text style={{fontSize:18,color:'#3a3b47',fontFamily:'FZZongYi-M05S',}}>
                       {item.category_name}
@@ -201,7 +211,19 @@ class Menu extends Component {
     _goBack(){
       this.props.navigator.pop();
     }
+		_handleCategoryPress(category_position){
+			// console.log(category_position,this.categoryRefList[1])
+			// const categoryRefIndex = findIndex(this.categoryRefList, function(o) { return o.category_name == category_name; });
+			// this.categoryRefList[1].category_ref.measure((ox, oy, width, height, px, py) => {
+				// console.log(oy)
+				InteractionManager.runAfterInteractions(() => {
+					this.refs._menuList.scrollTo({x: 0, y: category_position, animated: true})
+				})
 
+
+			// });
+			// this.refs._menuList.scrollTo({x: 0, y: 3000, animated: true})
+		}
 
 		_renderHeader(){
 			// return(
@@ -298,26 +320,23 @@ class Menu extends Component {
         }
       }
       return(
-
-              <ListView
-									onScroll={this.props.handleScroll()}
-									removeClippedSubviews={true}
-									scrollEventThrottle={16}
-                  dataSource={this.state.dataSource}
-                  initialListSize={50}
-                  pageSize={50}
-                  renderRow={(item) => this._renderMenuList(item)}
-									renderHeader={this._renderHeader}
-                  scrollRenderAheadDistance={300 }
-                  enableEmptySections={true}
-                  style={{overflow:'hidden',backgroundColor:"rgba(0,0,0,0)"}}
-                />
-
-
-
-
-
-
+				<View style={{flex:1}}>
+            <ListView
+								ref={'_menuList'}
+								onScroll={this.props.handleScroll()}
+								removeClippedSubviews={true}
+								scrollEventThrottle={16}
+                dataSource={this.state.dataSource}
+                initialListSize={50}
+                pageSize={50}
+                renderRow={(item) => this._renderMenuList(item)}
+								renderHeader={this._renderHeader}
+                scrollRenderAheadDistance={300 }
+                enableEmptySections={true}
+                style={{overflow:'hidden',backgroundColor:"rgba(0,0,0,0)"}}
+              />
+							<Category categoryList={this.state.categoryList} handleCategoryPress={this._handleCategoryPress}/>
+				</View>
       )
 
     }

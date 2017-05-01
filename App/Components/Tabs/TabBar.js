@@ -3,6 +3,7 @@ import React,{ Component } from 'react';
 import ReactNative from 'react-native';
 import {
   Dimensions,
+  InteractionManager,
   StyleSheet,
   Text,
   View,
@@ -45,20 +46,24 @@ class DefaultTabBar extends Component {
 
   }
   _showTabBar(){
-    Animated.timing(
-      this.state.top,
-      {toValue: height-50,
-       duration: 200,
-      }
-    ).start();
+    InteractionManager.runAfterInteractions(() => {
+      Animated.timing(
+        this.state.top,
+        {toValue: height-50,
+         duration: 200,
+        }
+      ).start();
+    })
   }
   _hideTabBar(){
-    Animated.timing(
-      this.state.top,
-      {toValue: height,
-       duration: 200,
-      }
-    ).start();
+    InteractionManager.runAfterInteractions(() => {
+      Animated.timing(
+        this.state.top,
+        {toValue: height,
+         duration: 200,
+        }
+      ).start();
+    })
   }
   renderTabOption(name, page) {
   }

@@ -13,7 +13,7 @@ module.exports ={
     ERROR_STORE:'请重新登录',
     ERROR_AUTH:'请重新登录',
     SUCCESS_LOGIN:'登录成功',
-    //wecaht
+    //wechat
     WECHAT_SCOPE: 'snsapi_userinfo',
     WECHAT_STATE: 'wechat_sdk_test',
     WECHAT_APPID: 'wx20fd1aeb9b6fcf82',

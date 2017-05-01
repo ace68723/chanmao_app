@@ -52,20 +52,25 @@ export default class Tabs extends Component {
 		}
   }
 	_hideTabBar(){
-		this.setState({
-			tabBarPosition:'overlayBottom',
-			showTabBar:false,
-		})
+		if(this.state.showTabBar){
+			this.setState({
+				tabBarPosition:'overlayBottom',
+				showTabBar:false,
+			})
+		}
+
 	}
 	_showTabBar(){
-		this.setState({
-			showTabBar:true,
-		})
-		setTimeout(() =>{
+		if(!this.state.showTabBar){
 			this.setState({
-				tabBarPosition:'bottom',
+				showTabBar:true,
 			})
-		}, 200);
+			setTimeout(() =>{
+				this.setState({
+					tabBarPosition:'bottom',
+				})
+			}, 300);
+		}
 	}
 
 	// <MainTab tabLabel='主页' navigator={this.props.navigator}/>

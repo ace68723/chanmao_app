@@ -125,6 +125,11 @@ export default class MainTab extends Component {
 				oldTab:tabRef.from,
 				updatePosition:false
 			})
+			if(tabRef.i == 0){
+				this.props.showTabBar();
+			}else{
+				this.props.hideTabBar();
+			}
 	}
 	_openMenu(py,restaurant){
 			this.props.navigator.push({
