@@ -147,7 +147,9 @@ export default class Category extends Component {
                 key={index}
                 style={{ borderColor:"#e2e2e4",
                                           borderBottomWidth: 1,
-                                          height:40,
+                                          // height:40,
+                                          paddingTop:10,
+                                          paddingBottom:10,
                                           flex:1,}}>
               <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
                 <Text

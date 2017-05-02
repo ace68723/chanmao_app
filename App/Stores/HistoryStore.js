@@ -52,6 +52,9 @@ const HistoryStore = Object.assign({},EventEmitter.prototype,{
 			  state.verifyPhoneResult = 'FAIL';
 		}
 	},
+  initVerifyPhoneResult(){
+      state.verifyPhoneResult = '';
+  },
 	doRefresh(){
 		state = Object.assign({},state,{doRefresh:true})
 	},

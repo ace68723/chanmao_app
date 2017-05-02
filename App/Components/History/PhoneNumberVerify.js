@@ -2,22 +2,79 @@ import React, {
 	Component,
 } from 'react';
 import {
+	Dimensions,
   Image,
+	Keyboard,
   View,
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import HistoryAction from '../../Actions/HistoryAction';
 
+
+const {height, width} = Dimensions.get('window');
+
 class PhoneNumberVerify extends Component{
-        constructor(props) {
-            super(props);
-            this.state={
-              getVerifyCode:false
-            }
-        }
+      constructor(props) {
+          super(props);
+          this.state={
+            getVerifyCode:false
+          }
+					// this._keyboardWillShow = this._keyboardWillShow.bind(this);
+      }
+			componentDidMount(){
+				this._keyboardWillShowSubscription = Keyboard.addListener('keyboardWillShow', (e) => this._keyboardWillShow(e));
+				this._keyboardWillHideSubscription = Keyboard.addListener('keyboardWillHide', (e) => this._keyboardWillHide(e));
+			}
+			componentWillUnmount() {
+	      // Event(Keybaord): remove keybaord event
+	      this._keyboardWillShowSubscription.remove();
+	      this._keyboardWillHideSubscription.remove();
+			}
+			// _keyboardWillShow(e) {
+			// 		// keyboard(e.endCoordinates.height): get keyboard height
+			//
+			// 		if(!this.currentPosition){
+			// 				this.originalPosition = 0
+			// 		}else{
+			// 			this.originalPosition = this.currentPosition;
+			// 		}
+			// 		const keyboardHeight = e.endCoordinates.height;
+			// 		const position  = {x: 0, y:this.currentPosition+keyboardHeight, animated: true}
+			// 		this.refs._scrollView.scrollTo(position)
+			// }
+			_keyboardWillHide(e){
+				console.log('_keyboardWillHide' )
+
+			}
+
+
+
+			_keyboardWillShow(e) {
+					// keyboard(e.endCoordinates.height): get keyboard height
+					const keyboardHeight = e.endCoordinates.height;
+
+					if(this.codeInput){
+						const currentPosition = this.props.getCurrentPosition();
+						this.codeInput.measure((ox, oy, width, objectHeight, px, py) =>{
+							if(py < height-keyboardHeight){
+								const position  = {x: 0, y:currentPosition-(height-keyboardHeight-py)+100, animated: true}
+								this.props.scrollRef.scrollTo(position)
+							}else {
+								const position  = {x: 0, y:currentPosition+(py-(height-keyboardHeight))+100, animated: true}
+								this.props.scrollRef.scrollTo(position)
+							}
+
+						})
+					}
+			}
+
+
+
+
+
       getVerifyCode(){
         this.setState({
           getVerifyCode:true
@@ -25,75 +82,93 @@ class PhoneNumberVerify extends Component{
         HistoryAction.getVerifyCode(this.props.orderId)
       }
       verifyPhone(){
+				Keyboard.dismiss();
         HistoryAction.verifyPhone(this.state.code,this.props.orderId)
       }
+
       render(){
         let _VerifyPhone = () => {
           if(!this.state.getVerifyCode){
             return(
-              <View style={styles.firstButtonBox}>
-                <TouchableHighlight
+
+                <TouchableOpacity
+										activeOpacity={0.6}
                     style={styles.button}
-                    underlayColor="rgba(118,213,255,0.7)"
                     onPress={() => {this.getVerifyCode()}}>
-                       <Text style={ styles.buttonText }>获取验证码  </Text>
-                </TouchableHighlight>
-              </View>
+                       <Text allowFontScaling={false}
+											 			style={ styles.buttonText }>获取验证码: {this.props.phoneNumber}  </Text>
+                </TouchableOpacity>
+
             )
           }else{
             return(
-              <View style={{margin:10,height: 100,}}>
+              <View style={{margin:10,height: 100,}}
+										ref={(ref)=>this.codeInput = ref}>
                 <TextInput
-                    style={{height: 40, borderColor: '#ff8b00', borderRadius:5,borderWidth: 1,paddingLeft:10,flex:1}}
+                    style={{height: 40,
+														borderColor: '#d9d9d9',
+														fontFamily:'FZZhunYuan-M02S',
+														fontSize:13,
+														borderWidth: 1,
+														paddingLeft:10,
+														marginLeft:15,
+														marginRight:15,}}
                     onChangeText={(code) => this.setState({code})}
                     value={this.state.text}
                     placeholderTextColor={'#ff8b00'}
                     placeholder={'请输入验证码'}
                   />
-                <TouchableHighlight
+                <TouchableOpacity
+										activeOpacity={0.6}
                     style={[styles.button,{marginTop:10}]}
-                    underlayColor="rgba(118,213,255,0.7)"
                     onPress={() => {this.verifyPhone()}}>
-                       <Text style={ styles.buttonText }>验证手机  </Text>
-                </TouchableHighlight>
+                       <Text allowFontScaling={false}
+											 			style={ styles.buttonText }>确认  </Text>
+                </TouchableOpacity>
               </View>
             )
           }
         }
           return (
             <View style={styles.mainContainer}>
-                {_VerifyPhone()}
-              <View style={styles.messageBox}>
-                  <Text style={styles.message}>请验证手机号: {this.props.phoneNumber}</Text>
-              </View>
+							{_VerifyPhone()}
             </View>
           )
         }
 
 
 }
-
+// <View style={styles.messageBox}>
+// 		<Text allowFontScaling={false}
+// 					style={styles.message}>请验证手机号: {this.props.phoneNumber}</Text>
+// </View>
 
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
     },
     firstButtonBox:{
-      flexDirection: 'row',
-      margin:10,
-      height: 50,
+      //
+      // flexDirection: 'row',
+      // margin:10,
+			// marginLeft:40,
+			// marginRight:40,
+
     },
     buttonText: {
-      fontSize: 20,
+			padding:8,
+      fontSize: 17,
       color: '#fff',
 			fontFamily:'FZZhunYuan-M02S',
     },
     button: {
-      flex:1,
+      // flex:1,
       backgroundColor: '#ff8b00',
       borderColor: '#ff8b00',
       borderWidth: 1,
-      borderRadius: 8,
+			marginBottom:20,
+			marginLeft:15,
+			marginRight:15,
       alignItems:'center',
       justifyContent:'center',
     },
@@ -104,7 +179,8 @@ const styles = StyleSheet.create({
     message:{
       textAlign:"center",
       fontSize:17,
-      color:'#9bc8df',
+      color:'#000000',
+			fontFamily:'FZZhunYuan-M02S',
     },
 
 });

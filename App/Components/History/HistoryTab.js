@@ -38,11 +38,12 @@ class HistoryTab extends Component {
         this._onChange = this._onChange.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
         this._doAutoRefresh = this._doAutoRefresh.bind(this);
-        this._initVerifyPhoneResult = this._initVerifyPhoneResult.bind(this);
         this._HistoryOrderDetailVisible = this._HistoryOrderDetailVisible.bind(this);
         this._reorder = this._reorder.bind(this);
 				this._handleAppStateChange = this._handleAppStateChange.bind(this);
+				this._getCurrentPosition = this._getCurrentPosition.bind(this);
     }
+
     componentDidMount(){
       setTimeout( () =>{
 				const _doAutoRefresh = this._doAutoRefresh;
@@ -60,9 +61,8 @@ class HistoryTab extends Component {
     _onChange(){
 				const state = Object.assign({},this.state,HistoryStore.getState())
         this.setState(state)
-				console.log(HistoryStore.getState())
         if(this.state.verifyPhoneResult === 'FAIL'){
-          this._initVerifyPhoneResult();
+          HistoryStore.initVerifyPhoneResult();
           Alert.alert(
             '验证码错误',
             '请检查您输入的验证码',
@@ -71,7 +71,8 @@ class HistoryTab extends Component {
             ],
           );
         }else if(this.state.verifyPhoneResult === 'SUCCESS'){
-            this._initVerifyPhoneResult();
+            HistoryStore.initVerifyPhoneResult();
+
             this._doAutoRefresh();
         }
 				if(this.state.doRefresh){
@@ -84,11 +85,7 @@ class HistoryTab extends Component {
 				HistoryAction.getOrderData()
 			}
 		}
-    _initVerifyPhoneResult(){
-        this.setState({
-          verifyPhoneResult:''
-        });
-    }
+
     _doAutoRefresh(){
       const currentRoutes = this.props.navigator.getCurrentRoutes();
       if(currentRoutes.length == 1 && currentRoutes[0].name == 'Home'){
@@ -127,6 +124,9 @@ class HistoryTab extends Component {
       }
 
     }
+		_getCurrentPosition(){
+			return this.currentPosition
+		}
     _reorder(reorderItems){
       // const restaurant = RestaurantStore.getRestaurantWithRid(this.state.rid);
       // this.props.navigator.push({
@@ -138,34 +138,42 @@ class HistoryTab extends Component {
  // <Text style={{alignSelf:'center',color:'#ff8b00',fontFamily:'FZZhunYuan-M02S',}}> 订单状态每30秒会自动刷新</Text>
     render(){
 			let orderList = this.state.orderData.map( order => {
-				return <Order key={ order.oid } order={order} HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}/>
+				return <Order key={ order.oid }
+											order={order}
+											HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}
+											scrollRef={this.refs._scrollView}
+											getCurrentPosition={this._getCurrentPosition}/>
 			});
       return(
          <View style={styles.mainContainer}>
              <Header title={'我的订单'} />
-             <ScrollView style={styles.scrollView}
-                         refreshControl={
-                           <RefreshControl
-                             refreshing={this.state.isRefreshing}
-                             onRefresh={this._onRefresh}
-                             tintColor="#ff8b00"
-                             title="正在刷新啦..."
-                             titleColor="#ff8b00"
-                           />
-                         }
-                         ref='_scrollView'
-                         >
+						 <ScrollView style={styles.scrollView}
+						 						scrollEventThrottle= {16}
+						 						onScroll={(e)=>{this.currentPosition = e.nativeEvent.contentOffset.y}}
+						 						refreshControl={
+						 							<RefreshControl
+						 								refreshing={this.state.isRefreshing}
+						 								onRefresh={this._onRefresh}
+						 								tintColor="#ff8b00"
+						 								title="正在刷新啦..."
+						 								titleColor="#ff8b00"
+						 							/>
+						 						}
+						 						ref='_scrollView'
+						 						keyboardShouldPersistTaps={"always"}
+						 						>
 
 
-               { orderList }
-             </ScrollView>
+						 	{ orderList }
+						 </ScrollView>
 						 <Modal style={styles.modal}
-						 				position={"center"}
-						 				isOpen={this.state.showHistoryOrderDetail}
-										onClosed={this._HistoryOrderDetailVisible}
-						 				swipeToClose={false}>
-						 			{this._HistoryOrderDetail()}
+						 			 position={"center"}
+						 			 isOpen={this.state.showHistoryOrderDetail}
+						 			 onClosed={this._HistoryOrderDetailVisible}
+						 			 swipeToClose={false}>
+						 		 {this._HistoryOrderDetail()}
 						 </Modal>
+
          </View>
       )
 
@@ -175,7 +183,23 @@ class HistoryTab extends Component {
 
 }
 
-
+// <ScrollView style={{flex: 1}}
+// 　　keyboardShouldPersistTaps={'always'}ref='scroll'>
+//  <TextInput
+// 		 style={{height: 40,
+// 						 borderColor: '#d9d9d9',
+// 						 fontFamily:'FZZhunYuan-M02S',
+// 						 fontSize:13,
+// 						 borderWidth: 1,
+// 						 paddingLeft:10,
+// 						 marginLeft:15,
+// 						 marginRight:15,}}
+// 		 onChangeText={(code) => this.setState({code})}
+// 		 value={this.state.text}
+// 		 placeholderTextColor={'#ff8b00'}
+// 		 placeholder={'请输入验证码'}
+// 	 />
+// </ScrollView>
 
 
 let styles = StyleSheet.create({

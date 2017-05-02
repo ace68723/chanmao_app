@@ -46,6 +46,7 @@ export default {
         const token = await AuthService.getToken();
         const io_data = {code,oid,token};
         const data = await HistoryModule.verifyPhone(io_data)
+        console.log(data)
         dispatch({
             actionType: AppConstants.VERIFY_PHONE, data
         })

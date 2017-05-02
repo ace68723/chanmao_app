@@ -6,6 +6,8 @@ import {
   Animated,
   Dimensions,
   Image,
+	ScrollView,
+	TextInput,
   Platform,
 	findNodeHandle,
   StyleSheet,
@@ -74,29 +76,56 @@ export default class Tabs extends Component {
 	}
 
 	// <MainTab tabLabel='主页' navigator={this.props.navigator}/>
+		// <ScrollableTabView  ref={(tabView) => { this.tabView = tabView; }}
+		// 										locked={true}
+		// 										tabBarPosition={this.state.tabBarPosition}
+		// 										tabBarBackgroundColor={'#fff'}
+		// 										tabBarActiveTextColor={'#ff8b00'}
+		// 										tabBarTextStyle={{fontSize:12,fontFamily:'FZZhunYuan-M02S',top:5}}
+		// 										tabBarInactiveTextColor={'#666666'}
+		// 										initialPage={0}
+		// 										prerenderingSiblingsNumber={1}
+		// 										renderTabBar={() => <TabBar />}
+		// 										keyboardShouldPersistTaps={'always'}
+		// 										showTabBar={this.state.showTabBar}>
+		//
+							// <MainTab tabLabel='主页'
+							// 				 navigator={this.props.navigator}
+							// 				 hideTabBar = {this._hideTabBar}
+							// 				 showTabBar = {this._showTabBar}/>
+		// 					<HistoryTab tabLabel='我的订单'
+		// 											navigator={this.props.navigator}
+		// 											hideTabBar = {this._hideTabBar}
+		// 											showTabBar = {this._showTabBar}/>
+		// 					<SettingTab tabLabel='设置' navigator={this.props.navigator}/>
+		// </ScrollableTabView>
   render(){
     return(
-      	<ScrollableTabView  ref={(tabView) => { this.tabView = tabView; }}
-														locked={true}
-														tabBarPosition={this.state.tabBarPosition}
-														tabBarBackgroundColor={'#fff'}
-														tabBarActiveTextColor={'#ff8b00'}
-														tabBarTextStyle={{fontSize:12,fontFamily:'FZZhunYuan-M02S',top:5}}
-														tabBarInactiveTextColor={'#666666'}
-														initialPage={0}
-														prerenderingSiblingsNumber={1}
-                            renderTabBar={() => <TabBar />}
-														showTabBar={this.state.showTabBar}>
-									<MainTab tabLabel='主页'
+
+		 <ScrollableTabView  ref={(tabView) => { this.tabView = tabView; }}
+												 locked={true}
+												 tabBarPosition={this.state.tabBarPosition}
+												 tabBarBackgroundColor={'#fff'}
+												 tabBarActiveTextColor={'#ff8b00'}
+												 tabBarTextStyle={{fontSize:12,fontFamily:'FZZhunYuan-M02S',top:5}}
+												 tabBarInactiveTextColor={'#666666'}
+												 initialPage={0}
+												 prerenderingSiblingsNumber={1}
+												 renderTabBar={() => <TabBar />}
+												 keyboardShouldPersistTaps={'always'}
+												 showTabBar={this.state.showTabBar}>
+
+							 <MainTab tabLabel='主页'
+												navigator={this.props.navigator}
+												hideTabBar = {this._hideTabBar}
+												showTabBar = {this._showTabBar}/>
+							 <HistoryTab tabLabel='我的订单'
 													 navigator={this.props.navigator}
 													 hideTabBar = {this._hideTabBar}
-											 	 	 showTabBar = {this._showTabBar}/>
-                  <HistoryTab tabLabel='我的订单'
-															navigator={this.props.navigator}
-															hideTabBar = {this._hideTabBar}
-															showTabBar = {this._showTabBar}/>
-                  <SettingTab tabLabel='设置' navigator={this.props.navigator}/>
-				</ScrollableTabView>
+													 showTabBar = {this._showTabBar}/>
+							 <SettingTab tabLabel='设置' navigator={this.props.navigator}/>
+		 </ScrollableTabView>
+
     )
   }
 }

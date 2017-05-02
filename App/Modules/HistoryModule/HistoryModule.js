@@ -89,7 +89,7 @@ const  HistoryModule = {
     const verifyPhoneResult = await HistoryApi.verifyPhone(reqData)
     const res = verifyPhoneResult;
     if(res.result != 0){
-      Alert.errorAlert(res.message)
+      // Alert.errorAlert(res.message)
     }
     return verifyPhoneResult
   },

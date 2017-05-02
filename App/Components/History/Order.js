@@ -16,6 +16,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modalbox';
+import PhoneNumberVerify from './PhoneNumberVerify';
 
 const {height, width} = Dimensions.get('window');
 const deviceWidth = width;
@@ -57,6 +58,16 @@ export default class pastOrderEN extends Component {
               {text: 'OK', onPress: () => {}},
             ]
           )
+  }
+  _phoneNumberVerify (){
+    if(this.state.orderInfo.status == 55){
+      return(
+          <PhoneNumberVerify  orderId={this.state.orderInfo.oid}
+                              phoneNumber ={this.state.orderInfo.user_tel}
+                              scrollRef={this.props.scrollRef}
+                              getCurrentPosition={this.props.getCurrentPosition}/>
+      )
+    }
   }
 
   render() {
@@ -115,7 +126,7 @@ export default class pastOrderEN extends Component {
                   <Text style={[styles.infoTitle,statusColor]} allowFontScaling={false}>{statusMessage}</Text>
                   <View style={{flexDirection:'row'}}>
                     <Text style={styles.infoText} allowFontScaling={false}>订单号 #{this.state.orderInfo.oid}</Text>
-                    <Text style={styles.infoText} allowFontScaling={false}>{this.state.orderInfo.created}</Text>
+                    <Text style={[styles.infoText,{textAlign:'right'}]} allowFontScaling={false}>{this.state.orderInfo.created}</Text>
                   </View>
               </View>
               <View style={styles.orderList}>
@@ -124,6 +135,7 @@ export default class pastOrderEN extends Component {
               <View style={styles.orderTotal}>
                 <Text style={{fontSize:18,marginLeft:40,fontWeight:'bold',fontFamily:'FZZhunYuan-M02S',}} allowFontScaling={false}>总价: ${this.state.orderInfo.total}</Text>
               </View>
+              {this._phoneNumberVerify()}
               <View style={styles.buttonContainer}>
                   <View style={[styles.ButtonStyle,{borderRightWidth:0.5,padding:6,}]}>
                       <TouchableOpacity style={{flex:1,
@@ -209,14 +221,15 @@ const styles = StyleSheet.create({
   },
   infoTitle:{
     paddingBottom:5,
-    marginLeft:40,
+    // marginLeft:40,
     fontWeight:'bold',
     fontSize:17,
     fontFamily:'FZZhunYuan-M02S',
   },
   infoText:{
+    flex:1,
     paddingBottom:5,
-    marginLeft:40,
+    // marginLeft:40,
     color:'#666666',
     fontFamily:'FZZhunYuan-M02S',
   },
