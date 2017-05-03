@@ -24,6 +24,7 @@ import {
 import Order from './Order';
 import HistoryAction from '../../Actions/HistoryAction';
 import HistoryStore from '../../Stores/HistoryStore';
+import RestaurantStore from '../../Stores/RestaurantStore';
 import Header from '../General/Header';
 import HistoryOrderDetail from './HistoryOrderDetail';
 import Modal from 'react-native-modalbox';
@@ -61,6 +62,7 @@ class HistoryTab extends Component {
     _onChange(){
 				const state = Object.assign({},this.state,HistoryStore.getState())
         this.setState(state)
+				console.log(state);
         if(this.state.verifyPhoneResult === 'FAIL'){
           HistoryStore.initVerifyPhoneResult();
           Alert.alert(
@@ -127,14 +129,21 @@ class HistoryTab extends Component {
 		_getCurrentPosition(){
 			return this.currentPosition
 		}
-    _reorder(reorderItems){
-      // const restaurant = RestaurantStore.getRestaurantWithRid(this.state.rid);
-      // this.props.navigator.push({
-      //   id: 'Menu',
-      //   restaurant: restaurant,
-      //   // reorderItems:reorderItems,
-      // })
-    }
+		_reorder(rid){
+			this.props.navigator.push({
+				 id: 'Menu',
+				 py:800,
+				 restaurant:RestaurantStore.getRestaurantWithRid(rid),
+			 })
+		}
+    // _reorder(reorderItems){
+    //   // const restaurant = RestaurantStore.getRestaurantWithRid(this.state.rid);
+    //   // this.props.navigator.push({
+    //   //   id: 'Menu',
+    //   //   restaurant: restaurant,
+    //   //   // reorderItems:reorderItems,
+    //   // })
+    // }
  // <Text style={{alignSelf:'center',color:'#ff8b00',fontFamily:'FZZhunYuan-M02S',}}> 订单状态每30秒会自动刷新</Text>
     render(){
 			let orderList = this.state.orderData.map( order => {
@@ -142,7 +151,8 @@ class HistoryTab extends Component {
 											order={order}
 											HistoryOrderDetailVisible = {this._HistoryOrderDetailVisible}
 											scrollRef={this.refs._scrollView}
-											getCurrentPosition={this._getCurrentPosition}/>
+											getCurrentPosition={this._getCurrentPosition}
+											reorder={this._reorder}/>
 			});
       return(
          <View style={styles.mainContainer}>

@@ -62,15 +62,9 @@ const RestaurantStore = Object.assign({},EventEmitter.prototype,{
     // return restaurantData
   },
 	getRestaurantWithRid(rid){
-		let eo_restaurant;
-		if(restaurantData){
-			restaurantData.open.map((restaurant,index) => {
-				if(restaurant.rid == rid){
-					 eo_restaurant = restaurant;
-				}
-			})
-		}
-		return eo_restaurant
+		rid = Number(rid);
+		const restaurantData = realm.objectForPrimaryKey('Restaurant',rid);
+		return restaurantData
 	},
 	getMenu (){
 		loaded = false;

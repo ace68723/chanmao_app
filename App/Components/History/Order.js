@@ -36,12 +36,35 @@ export default class pastOrderEN extends Component {
   }
   _renderFoodList(){
     return this.state.orderInfo.items.map((item,index)=>{
+      const soldoutColor = item.soldout == '1'? '#ef473a':'#000000';
+      const soldoutText = ()=>{
+        if(item.soldout == '1'){
+          return(
+            <Text style={{flex:1,
+                          fontSize:16,
+                          paddingLeft:20,
+                          fontFamily:'FZZhunYuan-M02S',
+                          textAlign:'center',
+                          color:soldoutColor}}
+                  allowFontScaling={false}>
+                    售完
+            </Text>
+          )
+        }
+      }
       return(
         <View key={index} style={{flexDirection:'row',alignItems:'center',paddingTop:12,paddingBottom:12}}>
             <View style={styles.quantityIcon}><Text style={{fontSize:10,fontFamily:'FZZhunYuan-M02S',}}>{item.qty}</Text></View>
-            <Text style={{fontSize:16,paddingLeft:20,fontFamily:'FZZhunYuan-M02S',}} allowFontScaling={false}>{item.name}</Text>
+            <Text style={{fontSize:16,paddingLeft:20,fontFamily:'FZZhunYuan-M02S',color:soldoutColor}}
+                  allowFontScaling={false}>
+                    {item.name}
+            </Text>
+            {soldoutText()}
             <View style={{flex:1,alignItems:'flex-end'}}>
-              <Text style={{fontSize:16,paddingLeft:20,fontFamily:'FZZhunYuan-M02S',}} allowFontScaling={false}>${item.qty*item.price}</Text>
+              <Text style={{fontSize:16,paddingLeft:20,fontFamily:'FZZhunYuan-M02S',color:soldoutColor}}
+                    allowFontScaling={false}>
+                      ${item.qty*item.price}
+              </Text>
             </View>
 
         </View>
@@ -59,6 +82,7 @@ export default class pastOrderEN extends Component {
             ]
           )
   }
+
   _phoneNumberVerify (){
     if(this.state.orderInfo.status == 55){
       return(
@@ -70,6 +94,34 @@ export default class pastOrderEN extends Component {
     }
   }
 
+  _renderDetialButton(){
+    if(this.state.orderInfo.status == '5'){
+      return (
+        <View style={[styles.ButtonStyle,{borderRightWidth:0.5,padding:6,}]}>
+            <TouchableOpacity style={{flex:1,
+                                      justifyContent:'center',
+                                      alignItems:'center'}}
+                               onPress={this.props.reorder.bind(null,this.state.orderInfo.rid)}>
+              <Text style={{fontSize:13,color:'#ef473a',fontWeight:'bold',fontFamily:'FZZhunYuan-M02S',}}
+                    allowFontScaling={false}>
+                    重新下单
+              </Text>
+            </TouchableOpacity>
+        </View>
+      )
+    }else{
+      return(
+        <View style={[styles.ButtonStyle,{borderRightWidth:0.5,padding:6,}]}>
+            <TouchableOpacity style={{flex:1,
+                                      justifyContent:'center',
+                                      alignItems:'center'}}
+                               onPress={this.props.HistoryOrderDetailVisible.bind(null,this.state.orderInfo.oid)}>
+              <Text style={{fontSize:13,color:'#666666',fontWeight:'bold',fontFamily:'FZZhunYuan-M02S',}} allowFontScaling={false}>详情</Text>
+            </TouchableOpacity>
+        </View>
+      )
+    }
+  }
   render() {
     let statusMessage;
     let statusColor;
@@ -137,14 +189,7 @@ export default class pastOrderEN extends Component {
               </View>
               {this._phoneNumberVerify()}
               <View style={styles.buttonContainer}>
-                  <View style={[styles.ButtonStyle,{borderRightWidth:0.5,padding:6,}]}>
-                      <TouchableOpacity style={{flex:1,
-                                                justifyContent:'center',
-                                                alignItems:'center'}}
-                                         onPress={this.props.HistoryOrderDetailVisible.bind(null,this.state.orderInfo.oid)}>
-                        <Text style={{fontSize:13,color:'#666666',fontWeight:'bold',fontFamily:'FZZhunYuan-M02S',}} allowFontScaling={false}>详情</Text>
-                      </TouchableOpacity>
-                  </View>
+                  {this._renderDetialButton()}
                   <View style={[styles.ButtonStyle,{borderRightWidth:0.5,padding:10,}]}>
                       <TouchableOpacity style={{flex:1,
                                                 flexDirection:'row',

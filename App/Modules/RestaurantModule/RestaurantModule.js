@@ -110,7 +110,10 @@ const RestaurantModule = {
             const total = data.total;
             const eo_data ={pretax,pretax_ori,promoted,total}
             const startAmount = reqData.startAmount;
-            const rid = reqData.rid;
+            let rid = reqData.rid;
+            if(typeof rid !== 'string'){
+              rid = String(rid)
+            }
             realm.write(() => {
                 realm.create('Cart',{type:"pretax",value:pretax}, true );
                 realm.create('Cart',{type:"total",value:total}, true );
@@ -124,6 +127,7 @@ const RestaurantModule = {
           }
 
       }catch (e){
+        console.log(e)
         Alert.errorAlert('结账未知错误')
       }
   },
@@ -138,7 +142,7 @@ const RestaurantModule = {
         }else{
           dltype = '1';
         }
-        const pretax= realm.objectForPrimaryKey('Cart','pretax').value;
+        const pretax = realm.objectForPrimaryKey('Cart','pretax').value;
         const rid = realm.objectForPrimaryKey('Cart','rid').value;
         const uaid = realm.objectForPrimaryKey('Cart','uaid').value;
         const startAmount = realm.objectForPrimaryKey('Cart','startAmount').value;

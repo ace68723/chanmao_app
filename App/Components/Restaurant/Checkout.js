@@ -33,6 +33,7 @@ import CheckoutItem from './CheckoutItem';
 import CheckoutComment from './CheckoutComment';
 import RestaurantService from '../../Services/RestaurantService';
 import CommentModal from 'react-native-modalbox';
+import OrderConfirm from './OrderConfirm';
 
 // import RestaurantStore from '../../Stores/RestaurantStore';
 import RestaurantStore from '../../Stores/RestaurantStore';
@@ -63,6 +64,7 @@ class Confirm extends Component {
 											AnimatedImage:props.restaurant.imgUrl,
 											renderAddress:false,
 											loading: true,
+											showOrderConfirm:false,
                     }
 				this.state = Object.assign({},state,RestaurantStore.getCheckoutSate())
         this._onChange = this._onChange.bind(this);
@@ -76,6 +78,7 @@ class Confirm extends Component {
         this._doCheckout = this._doCheckout.bind(this);
         this._handleCommentChange = this._handleCommentChange.bind(this);
         this._handleSubmitComment = this._handleSubmitComment.bind(this);
+				this._closeOrderConfirm = this._closeOrderConfirm.bind(this);
     }
     componentWillMount(){
 			this._gestureHandlers = {
@@ -159,16 +162,22 @@ class Confirm extends Component {
           dldec = '定制运费'
         break;
       }
-
-      Alert.alert(
-        dldec,
-        '  税后总价: $' + this.state.total + '\n' +
-        '确认就不可以修改了哟～' ,
-        [ {text:'取消',onPress:() => { }, style: 'cancel'},
-          {text: '确认', onPress: () => this._doCheckout()},
-        ],
-      );
+			this.setState({
+				showOrderConfirm:true
+			});
+			console.log(this.state)
+      // Alert.alert(
+      //   dldec,
+      //   '  税后总价: $' + this.state.total + '\n' +
+      //   '确认就不可以修改了哟～' ,
+      //   [ {text:'取消',onPress:() => { }, style: 'cancel'},
+      //     {text: '确认', onPress: () => this._doCheckout()},
+      //   ],
+      // );
     }
+		_closeOrderConfirm(){
+			this.setState({showOrderConfirm:false});
+		}
     _goBack(){
 			if(!this.state.loading){
 	      this.props.navigator.pop();
@@ -377,6 +386,14 @@ class Confirm extends Component {
 			)
 
 		}
+		_renderOrderConfirm(){
+			if(this.state.showOrderConfirm){
+				return(<OrderConfirm doCheckout={this._doCheckout}
+														 closeOrderConfirm={this._closeOrderConfirm}
+														 selectedAddress={this.state.selectedAddress}
+														 total={this.state.total}/>)
+			}
+		}
     render(){
       let cartList = this.state.cart.map((item,index) => {
 
@@ -388,38 +405,6 @@ class Confirm extends Component {
                       qty = {dish.qty}/>
           )
       })
-      // <CartItem icon={require('./Image/money-1.png')}
-      //           title={'原始税前'}
-      //           value={this.state.pretax_ori}/>
-
-      // =======================================
-      // <Text>
-      //   运费类型{this.state.dltype}
-      // </Text>
-      // <View style={ [{flex:1,alignItems: 'center',margin:20,borderWidth:1.5,borderColor:'#cbcbcb',borderStyle:'dashed',borderRadius:10}] }>
-      //     <TextInput
-      //       style={{height: 110,flex:1, padding:10,}}
-      //       placeholder ={'有什么特别要嘱咐的？辣度？葱姜蒜香菜？'}
-      //       onChangeText={(comment) => {this.setState({comment:comment})}}
-      //       multiline={true}
-      //     />
-      // </View>
-      // <CheckoutComment submitComment={this._handleSubmitComment}
-      //               commentChange = {this._handleCommentChange}
-      //               hideCommentButton = {true}/>
-      // =======================================
-
-			// =======================================
-			// <View style={ [{flex:1,alignItems: 'center',margin:20,borderWidth:1.5,borderColor:'#cbcbcb',borderStyle:'dashed',borderRadius:10}]}>
-			// 	 <TextInput
-			// 		 style={{height: 110,flex:1, padding:10,}}
-			// 		 placeholder ={'有什么特别要嘱咐的？辣度？葱姜蒜香菜？'}
-			// 		 onChangeText={(comment) => {this.setState({comment:comment})}}
-			// 		 multiline={true}
-			// 		 ref={COMMENT_INPUT}
-			// 	 />
-			// </View>
-			// =======================================
 			const margin = this.state.anim.interpolate({
 				inputRange: [0, 100],
 				outputRange: [10, 0],
@@ -506,7 +491,7 @@ class Confirm extends Component {
 						</View>
 					</TouchableOpacity>
 					{this._renderComment()}
-
+					{this._renderOrderConfirm()}
 
         </View>
       )
